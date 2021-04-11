@@ -1,0 +1,103 @@
+	1、idea使用模板（archetype）创建项目
+		1）maven-archetype-quickstart：普通java项目
+		2）maven-archetype-webapp：web工程项目
+		
+	2、依赖的范围（<scope></scope>）：表示依赖使用的范围，也就是在maven构建项目的那些阶段起作用（清理、编译、测试、打包、安装、部署）
+		1）compile（默认）：表示该依赖（插件）在编译、测试、打包、安装、部署阶段起作用
+		2）test：表示该依赖（插件）只在测试阶段起作用
+		3）provided：表示该依赖（插件）在编译、测试阶段起作用，在打包，安装，部署时不需要
+		
+	3、maven的常用操作：
+		1）maven的属性设置：
+			<properties>
+				配置maven构建项目使用的编码方式，避免中文乱码
+				配置jdk的版本
+			</properties>
+		2）maven的全局变量：
+			自定义的属性：
+				a、通过自定义标签（在properties中）来声明变量，标签名就是变量名
+				b、在pom.xml文件的其他位置，通过${标签名}使用全局变量的值
+			自定义全局变量一般是先在properties中定义，然后在后面的依赖管理中使用${}的方式声明，这样有利于统一管理
+		3）资源插件
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/java</directory><！--所在的目录-->
+						<includes><！--目录下的所有.xml、.properties文件都会被扫描到-->
+							<include>**/*.properties</include>
+							<include>**/*.xml</include>
+						</includes>
+						<！--false表示不用启用过滤器，*.properties已经起到了过滤的作用-->
+						<filtering>false</filtering>
+					</resource>
+				</resources>
+			</build>
+			a、默认没有使用resources的时候，maven执行编译代码时，会把src/main/resources目录中的文件拷贝到target/classes中。但是位于src/main/java目录下的非java文件不会被拷贝到target中
+			b、有些程序需要把一些非java文件放在src/main/java目录下，因为java程序在执行的时候可能会需要这些文件，因此在编译的时候需要把这些文件也拷贝到target中，此时就需要把资源插件（<resource></resource>）加入到<resouces></resources>中
+
+			
+	4、Maven多模块管理 : 
+		互联网项目中多使用分布式开发,每个独立的服务都会使用一个项目来进行维护,这时就需要Maven来进行多模块管理,来实现项目的高度统一.
+		Maven多模块管理的实质就是让子模块通过pom文件继承父模块的pom文件
+		如果父模块对依赖不做任何限制,那么子模块会无条件继承父模块中的依赖
+		父模块对依赖进行管理使用 : 使用<dependencyManagement>标签可以让子模块不再无条件继承其内部的依赖
+			<dependencyManagement>
+				<dependencies>
+					<dependency>
+					</dependency>
+				</dependencies>
+			</dependencyManagement>
+			此时如果有部分子模块需要使用其中的依赖,那么只需要再子模块的pom文件中声明该依赖即可
+				<dependency>
+					<groupId>xxx</groupId>
+					<artifactId>xxx</artifactId>
+				</dependency>
+				不需要声明版本号
+		父模块可以使用 : 
+			<modules>
+				<module></module>
+			<modules>
+			来声明子模块,此时子模块必须和父模块的根目录(pom.xml)同级
+		a、第一种实现方式 : 
+			1) 首先创建一个maven父工程 : 
+				<packaging>标签的内容必须设置为pom(Project Object Module)(默认为jar)
+				src目录不可以存在
+				再父模块中可以使用
+					<properties>
+						<!--自定义标签名称 : 通常为依赖名称 + version-->
+						<junit-version>4.12</junit-version>
+					</properties>
+					来管理依赖的版本
+				此时只需要在其依赖的版本声明位置使用${自定义标签名}即可,这样以后再修改本版的时候会很方便
+			2) 创建一个Maven子模块 : 
+				创建过程中将parent设置为父模块,Maven会自动继承父模块的pom
+				子模块加上<packaging>标签后也可以成为父模块.
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			

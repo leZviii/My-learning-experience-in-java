@@ -1,0 +1,478 @@
+	1、Redis简介 :
+		Redis是一种数据库,能够存储数据、管理数据的软件.
+		
+	2、NoSQL简介 : 
+		a、数据库的演变历史 : 
+			单机数据库时代、Memcached时代、读写分离时代、分库分表时代(集群)、nosql时代
+		b、NoSQL数据库
+			NoSQL = Not Only SQL 泛指non-relational(非关系型数据库).
+			关系型数据库 : oracle、mysql、DB2、sqlserver...底层采用关系数据结构(表)来存储数据
+			非关系型数据库 : redis、mongoDB、HBase... 彻底改变底层存储机制.采用聚合数据结构存储数据
+		c、NoSQL数据模型 :
+			关系型数据库 : 表
+				tbl_student
+				id			name			age			class_id			tbl_clazz
+				1001		leviii			20			111					id			name
+				1002		mike			21			111					111			chinese
+			非关系型数据库 : 聚合模型---把一组相关联的数据作为一个整体进行存储和管理
+				BSON : 数据保存在键值对中、数据和数据之间用逗号隔开.{}表示对象,[]表示数组
+					{
+						id : 1001,
+						name : leviii,
+						age : 20,
+						clazz : {
+							id : 111,
+							name : chinese
+						}
+					}
+	3、Redis : 
+		Remote Dictionary Server(远程字典服务器),是一个用c语言编写的,开源的,基于内存运行并支持持久化的,高性能NoSQL数据库.
+		a、Redis的特点 : 
+			1) 支持数据持久化
+				Redis支持数据的持久化,可以将内存中的数据保存在磁盘上,重启的时候可以从内存中加载进行使用,适合存储频繁访问,数据量较小的数据(也叫做缓存数据库)
+			2) 支持多种数据结构
+				Redis不仅仅支持简单的key-value类型的数据,同时还提供list,set,zset,hash等数据结构的存储
+			3) 支持数据备份
+				Redis支持数据的备份,即master-slave模式的数据备份
+				
+	4、启动Redis服务 : 
+		1) 前台启动 : 
+			在任何目录下启动 : redis-server
+		2) 后台启动(推荐使用) : 
+			在任何目录下执行 : redis-server &
+		3) 启动Redis服务时,指定配置文件 : 
+			redis-server redis.conf &
+	
+	5、关闭Redis服务 : 
+		1) 通过 kill命令关闭redis进程
+			ps -ef | grep redis 查看pid
+			kill -9 pid
+		2) 通过redis命令 : 
+			redis-cli shutdown
+	
+	6、Redis的客户端 : 
+		Redis的客户端是一个程序,通过网络连接到Redis服务器,从而实现跟Redis服务器的交互
+		redis-cli(Redis Command Line Interface)是Redis自带的基于命令行的Redis客户端
+		1) 启动客户端 : 
+			a、直接连接redis(默认ip : 127.0.0.1(本机),端口 :  6379) 
+				在任意目录 : redis-cli -p 6379
+			b、指定ip
+				redis-cli -h ip -p port
+		2) 退出客户端 : 在客户端执行exit或者quit
+	
+	7、redis的基本知识 : 
+		1) redis-benchmark :
+			测试Redis服务性能,在任意目录下执行
+		2) ping [信息段]: 
+			查看redis服务是否正常运行 : 如果返回pong那么redis服务正常
+			需要在客户端中使用该命令
+		3) info [信息段]:
+			统计redis服务器的信息,也可以指定信息段 
+			需要在客户端中使用该命令
+		4) redis的数据库实例 : 
+			redis中的数据库实例只能由redis来创建和维护,开发人员不能修改和自行创建数据库实例
+			redis默认会自动创建16个数据库实例,并且给这些数据库实例进行了编号,开发人员使用编号来选择使用数据库
+			可以通过配置文件来指定redis自动创建的数据库实例个数
+			redis创建的数据库实例本身版用的存储空间很小,不会造成内存的浪费
+			切换数据库命令 : 
+				select index
+				index : 就是数据库实例的编号,从0开始
+			查看当前数据库中的key数量 :
+				dbsize
+			查看当前数据库实例中所有的key : 
+				keys *
+			清空当前数据库实例 : 
+				flushdb
+			清空所有数据库实例 : 
+				flushall
+			查看redis的配置信息 : 
+				config get * : 查看所有信息
+				config get parameter : 查看某项参数的配置信息
+		
+	8、Redis的五种数据结构 : 
+		Redis是用来存储数据的,程序处理完的数据需要保存在Redis中.不同特点的数据需要Redis中的不同的数据结构.
+		a、字符串 : 单key 单value
+		b、list集合(有序,可重复) : 单key 多有序value 
+			顺序是存放的顺序,不可以重复
+		c、set集合(无序,不可重复) : 单key  多无序value
+		d、pojo(对象)hash : 单key 对象value
+			Redis的hash是一个String类型的key和value的映射表,这里的value是一系列的键值对,hash特别适合用来存放对象
+			哈希类型的数据操作总体的思想是通过key和field操作value,key是数据标识,field是域,value是我们感兴趣的业务数据
+		e、zset : 单key 多有序value
+			有序的set,顺序是元素的分数顺序,所以元素不能重复(分数可以重复),redis通过分数来为zset集合中的成员进行从小到大的排序
+			每一个元素都必须关联一个分数
+		
+	9、Redis的常用命令 :
+		1) Redis的key操作命令 :
+			a、keys pattern : 
+				查找所有符合模式pattern的key.  pattern可以使用通配符
+				通配符 : 
+					* : 表示0个或多个字符,例如 : keys * 查询所有的key
+					? : 表示单个字符,例如 : wo?d,匹配 : word,wood
+					[] : 表示选择[]内的一个字符,例如 : wo[or]d,匹配 : word,wood,不匹配 : wold、woord
+			b、exists key[key1 key2 key3...] : 
+				判断key在数据库中是否存在,若存在,则返回1;若不存在,则返回0
+				exists key1 key2 key3 : 若3个key都存在,则返回3
+			c、move key index : 
+				移动到指定key和指定数据库实例的位置
+			d、ttl(time to live) key : 
+				查看指定key的剩余生存时间
+				如果key没有设置生存时间,则返回-1
+				如果key不存在,则返回-2
+			e、expire key seconds : 
+				设置key的最大生存时间
+			f、type key : 
+				查看指定key的数据类型
+			g、rename key newkey :
+				重命名key
+			h、del key[key1 key2 key3...] : 
+				删除指定的key,返回值是实际删除的key的数量
+		2) Redis中有关String类型数据的命令 : 
+			a、set key value(String) :
+				将String类型的数据保存在redis中 
+				如果key已经存在,那么会覆盖掉原来的value
+			b、get key
+				从redis获取String类型的数据
+			c、append key value
+				追加字符串,key不存在,则相当于新建一个key
+			d、strlen key
+				获取字符串的长度
+			e、incr key
+				将字符串数值进行加一运算,返回加一之后的数据,如果key不存在,首先会创建一个key初始值为0,然后进行incr运算
+				要求value值必须是数值,否则报错
+			f、decr key
+				将字符串进行减一运算
+			g、incrby key offset
+				将字符串数值进行加offset运算,返回运算后的数值
+			h、decrby key offset
+				将字符串进行减offset运算,返回运算结果
+			i、getrange key startIndex endIndex
+				获取字符串中的子字符串,下标是从0开始,从左边开始
+				startIndex 和 endIndex都是闭区间
+				字符串中每个下标也可以是负数,负下标表示自右致左,从-1开始,依次往前,最右边一个下表为-1
+			j、setrange key startIndex value
+				修改字符串中的某部分,value能覆盖几个字符就覆盖几个字符
+			k、setex key seconds value : 
+				设置字符串数据的同时设置他的生命周期
+			l、setnx key value : 
+				设置字符串类型的数据,但是当key不存在时设置成功,否则设置失败
+			m、mset key1 value1 key2 value2 ...
+				批量设置String数据,会一次根据key value设置String数据
+			n、mget key1 key2 key3...
+				批量从redis获取String数据
+			o、msetnx key1 value1 key2 value2 key3 value3...
+				批量设置Stirng,只有当所有的key都不存在时才能成功设置String,否则全部放弃
+		3) redis有关List类型数据的命令 : 
+			a、lpush key value[value1 value2...] : 
+				将一个或多个值依次插入到列表的表头(左侧)
+			b、lrange key startIndex endIndex :
+				获取指定列表指定下标区间中的元素 
+			c、rpush key value[value1 value2 value3...] :
+				将一个或多个值依次插入到列表的末尾(右侧)
+			d、	loop key :
+				从指定列表中移除表头元素并且返回表头元素
+			e、roop key : 
+				从指定列表移除表尾元素并且返回表尾元素
+			f、lindex key index :
+				获取列表中指定下标的元素
+			g、llen key :
+				获取指定列表的长度
+			h、lrem key [count] value :
+				移除列表中某一些数据
+				count > 0 : 从列表的左侧移除count个value
+				count < 0 : 从列表的右侧移除count个value
+			i、ltrim key startIndex endIndex : 
+				截取指定列表中指定区间的元素组成新的列表
+			j、lset key index value : 
+				将指定列表中的指定下标的元素设置为指定值
+			l、linsert key before/after pivot value
+				将value插入到指定列表中pivot元素之前/之后的位置
+		4) redis中有关set类型数据的操作命令 : 
+			a、sadd key value[value1 value2 value3...] : 
+				将一个或多个数据添加到指定的集合中
+				如果元素已经存在,则忽略添加,如果不存在,则添加后返回添加成功的个数
+			b、smembers key :
+				获取指定集合中所有元素
+			c、sismember key member : 
+				判断指定元素是否在指定集合中
+				若存在,则返回1
+				不存在,则返回0
+			d、scard key : 
+				获取指定集合的长度
+			e、srem key member[member1 member2 member3...] :
+				移除指定集合中一个或者多个元素
+				若元素不存在,则忽略
+				返回成功移除的元素个数
+			f、srandmember key[count] : 
+ 				搜集获取指定集合中的一个或多个元素
+				如果count > 0 : 那么随机获取的多个数之间不能重复
+				如果count < 0 : 那么随机获取的多个数之间可以重复
+			g、spop key [count] : 
+				随机从指定集合中移除一个或多个元素
+				返回被移除的元素
+			h、smove sourcekey destkey member
+				将指定集合中的指定元素移动到另一个集合
+			i、sdiff key key1[key2 key3 key4...] : 
+				返回第一个集合中有,但是其他集合中都没有的元素组成的集合
+			j、sinter key [key1 key2 key3...] : 
+				获取所有指定集合中都有的元素
+			k、sunion key[key1 key2 key3...] : 
+				获取所有指定集合中的元素组成的大集合
+		5) redis中有关hash集合类型数据的操作命令 : 
+			a、hset key field1 value1 [field2 value2 field3 value3...] : 
+				将一个或者多个field-value存到hash表中
+			b、hget key field : 
+				获取指定hash表中指定field的值
+			c、hmset key field1 value1 [field2 value2 field3 value3...] : 
+				批量将多个filed-value设置到hash表中
+			d、hmget key field1 [field2 field3...] : 
+				批量获取指定hash表中的filed的值
+			e、hgetall key : 
+				获取指定hash表中所有的field和value
+			f、hdel key field [field1 field2...] : 
+				从指定hash表中删除一个或者多个field
+			g、hlen key : 
+				统计指定hash表中所有的field个数
+			h、hexists key field
+				判断指定的hash表中是否存在某一个field
+				若存在则返回1;
+				否则返回0
+			i、hkeys key : 
+				获取指定hash表中所有的field列表
+			j、hvals key : 
+				获取指定hash表中的所有value
+			k、hincrby key field int :
+				对指定的hash表中指定的field的value值进行整数加法运算
+				返回加法运算之后的value值
+			l、hincrbyfloat key field float : 
+				对指定hash表中的指定field值进行浮点数加法运算
+			m、hsetnx key field value [field1 value1 field2 value2...] : 
+				将一个或者多个field-value对设置到指定的hash表中,若field已经存在,则放弃添加
+		6) redis中有关zset类型数据的操作命令 : 
+			a、zadd key score[必须是数值] member [score1 member1 score2 member2 ...] :
+				将一个或者多个member及其分数加入到有序集合中
+			b、zrange key startIndex endIndex [withscores] : 
+				获取指定有序集合中指定下标区间的元素
+				withscores : 可以同时获取score
+			c、zrangebyscore key min max [withscores] : 
+				获取指定有序集合中指定分数区间(闭区间)的元素
+			d、zrem key member [member1 member2 member3...] : 
+ 				删除指定有序集合中一个或者多个member
+			e、zcard key : 
+				获取指定有序集合中所有元素的个数
+			f、zrank key member : 
+				获取指定有序集合中指定元素的排名
+			g、zcount key min max : 
+				获取指定有序集合中分数在指定区间内的元素个数
+			h、zscore key member : 
+				获取指定有序集合中指定元素的分数
+			i、zrevrank key member : 
+				获取指定有序集合中指定元素的排名(从大到小)
+		
+	10、Redis的配置文件 : 
+		在redis的安装根目录下提供,默认叫做redis.conf
+		可以配置一些redis服务端运行时一些参数;
+		如果没有配置参数文件,那么redis会按照默认参数运行
+		如果需要使用配置文件,在启动redis时必须指定所使用的配置文件
+		1) redis配置文件中关于网络的配置 : 
+			a、port : 指定redis服务所使用的port,默认使用6379
+			b、bind : 配置客户端连接redis服务时,所能使用的ip地址,默认是使用redis服务所在主机的任何一个ip都可以,一般情况下都会配置一个ip,
+				而且通常是一个真实的ip,而不是127.0.0.1
+				如果配置了port和ip,则客户端在连接redis服务时,必须指定端口和ip : 
+					redis-cli -h 192.168.11.128 -p 6380
+					redis-cli -h 192.168.11.128 -p 6380 shutdown
+			c、tcp-keepalive : tcp连接保活策略,可以通过tcp-keepalive配置项来进行设置,单位为秒
+				加入配置为60秒,那么server端会每隔60秒相连接的空闲的客户端发起一次ACK请求,以检查客户端是否已经挂掉,对于无相应的客户端则会关闭其连接.
+				如果设置为0,则不会进行保活检测
+		2) redis的常规配置 : 
+			a、loglevel : 日志级别,开发阶段可以设置为debug,生产阶段通常设置为notice或者warning 
+			b、logfile : 指定日志文件名,如果不指定,redis只进行标准输出(输出到控制台).要保证日志文件所在的目录必须存在,文件可以不存在.还要在redis启动时指定所使用的
+				配置文件,否则配置不起作用.
+			c、databases : 配置redis数据库的个数,默认是16个	
+		3) redis的安全配置 : 
+			a、requirepass : 配置redis的安全访问密码.默认不配置密码,及访问不需要密码验证.此配置项需要在protected-mode=yes是起作用.
+				使用密码登录redis客户端 : redis-cli -h ip -p port -a password
+		4) redis的RDB配置 : 
+			a、save<seconds><changes> : 配置复合的快照触发条件,即redis在seconds秒内key改变changes次,redis把快照内的数据保存在磁盘内一次.
+				默认策略是 : 1分钟改变了10000次或者5分钟内改变了10次或者15分钟内改变了一次
+				如果需要禁用Redis的持久化功能,则需要将所有的save配置都注释掉
+			b、stop-wrtie-on-bgsave-error : 当bgsave快照操作出错时停止写数据到磁盘,这样能保证内存数据和磁盘数据的一致性,但如果不在乎这种一致性,即
+				在bgsave快照出错时继续向磁盘中写数据,这里需要配置为 : no.
+			c、rdbcompression : 设置对于存储到磁盘的快照是否进行压缩,设置为yes时,Redis会采用LZF算法进行压缩;如果不希望消耗CPU进行压缩,可以设置为 : no,
+				关闭此功能.
+			d、rdbchecksum : 在存储快照之后,还可以让Redis使用CRC64算法来进行数据校验,但这样会消耗一定的性能,如果系统比较在意性能的提升,可以设置为 : no,
+				关闭此功能.
+			e、dbfilename : Redis持久化生成的文件名,默认是dump.rdb,也可以自己配置
+			f、dir : Redis持久化数据生成文件的保存位置,默认是./即redis的启动目录,也可以自己配置.
+		5) Redis的AOF配置 : 
+			a、appendonly : 配置是否开启AOF,yes表示开启,no表示不开启.默认为no.
+			b、appendfilename : AOF保存文件名.
+			c、appendfsync : AOF异步持久化策略
+				always : 同步持久化,每次发生数据变化都会立刻写入磁盘.性能较差,但是数据完整性较好(慢,安全)
+				everysec : 出厂默认推荐,每秒异步记录一次(默认值)
+				no : 不及时同步,由操作系统决定何时同步
+			d、no-appendfsync-on-rewrite : 重写时是否可以运用appendfsync,默认no,可以保证数据的安全性.
+			e、auto-aof-rewrite-percentage : 设置重写的基准百分比
+			f、auto-aof-rewrite-min-size : 设置重写的基准值
+				
+	11、Redis的持久化 :	
+		redis是内存数据库,他把数据存储在内存中,这样在加快读取速度的同时也对数据安全性产生了新的问题,即当redis所在服务器发生宕机后,redis数据库里的所有数据
+			将会全部丢失.为了解决这个问题,redis提供了持久化功能--RDB和AOF(Append Only File).
+		1) RDB(Redis DataBase) : 是redis默认的持久化方案.在指定的时间间隔内,执行指定次数的写操作,则会将内存中的数据写入到磁盘中.即在指定目录下生成一个
+			dump.rdb文件,Redis重启会通过加载dump.rdb文件来恢复数据
+			RDB原理 : 
+				Redis会开启一个新的进程.新进程的所有数据(变量,环境变量,程序计数器等)数值都和原进程一致,redis会让这个新的进程来负责持久化操作.
+				整个过程都不会影响到主进程,这样就极大程度的保证了性能.
+		2) AOF策略 : 采用操作日志来记录每一次写操作,每次重启redis服务器时,都会重新执行一边操作日志中的指令.
+			操作日志会存放在磁盘上,所以效率比较低,redis默认不开启AOF策略
+		小结 : 根据数据的特点来决定开启哪种策略,一般情况下开启RDB(Redis官方推荐)就足够了.
+	
+	12、Redis的事务 : 
+		事务 : 把一组数据库的操作放在一起执行,保证操作的原子性(要么同时成功,要么同时失败)
+		Redis的事务 : 允许把一组Redis操作命令放在一起,把这些命令进行序列化(排序),然后依次执行.这样只能够保证部分原子性.
+		1) multi : 标记事务的开始
+		2) exec : 用来执行事务队列中的所有命令
+		3) redis的事务只能保证部分原子性 : 
+			a、如果一组命令中,在压入事务队列的时候就发生错误,那么本事务中的所有命令都不再执行,这样就保证了事务的原子性
+			b、如果一组命令在压入事务队列的过程中正常,但是在执行事务命令时发生了错误,则只会影响发生错误的命令,这样就不能保证事务的原子性
+		4) discard : 清除所有已经压入队列中的命令,并且结束整个事务.
+		5) watch key: 监控某一个或者某几个键,当事务执行过程中这些键代表的值发生了变化,那么这个事务放弃执行.
+		6) unwatch : 放弃监控所有键
+	
+	13、redis的事务 : 
+		a、单独的隔离操作 : 事务中所有的命令都会序列化、顺序的执行.事务在执行过程中,不会被其他客户端发来的命令请求打断.除非使用watch监控一些键.
+		b、不保证事务的原子性 : redis同一个事务中如果一条命令失败,其后的命令任然有可能被执行,redis的事务不支持回滚.redis为了更高的运行速度,对事务进行了简化.
+		
+	14、redis消息的发布和订阅 : 
+		a、redis客户端订阅频道,消息的发布者往频道上发布消息,所有订阅此频道的客户端都能接收到此消息.
+			1) subscribe ch1 [ch2 ch3...] : 订阅一个或多个频道
+			2) publish ch1 : 将消息发布到指定频道上.
+			3) psubscribe ch1 [ch2 ch3...] : 订阅一个或者多个频道(频道名支持通配符).
+	
+	15、redis的主从复制(读写分离) : 主机数据更新后根据配置和策略,自动同步更新到从机的master/slave机制,Master以写为主,Slave以读为主
+		主少从多,主写从读,读写分离
+		搭建一主二从redis集群 : 
+			1) 搭建三台redis服务器 : 使用一个redis模拟三台redis服务器
+				提供三份redis配置文件 : redis6379.conf,redis6380.conf,redis6381.conf
+				修改三份配置文件 : 
+					redis6379.conf : 
+						port : 6379
+						pidfile : /var/run/redis_6379.pid
+						logfile : "6379.log"
+						dbfilename : dump6379.rdb
+				分别使用三个配置文件启动三个redis服务 : 
+					redis-server redis6379.conf &
+					redis-server redis6380.conf &
+					redis-server redis6381.conf &
+			2) 通过redis客户端连接三台redis服务器 : 
+				redis-cli -h 127.0.0.1 -p 6379
+				redis-cli -h 127.0.0.1 -p 6380
+				redis-cli -h 127.0.0.1 -p 6381
+			3) 查看三台redis服务在集群中的主从角色 : 
+				info replication 
+					默认情况下,所有的redis服务都是主机,即都能写和读,但是都没有从机
+			4) 在6379上进行写操作
+				三台redis服务相互独立,互不影响.
+			5) 设置主从关系 : 设从不设主 
+				在6380和6381上执行 : slaveof 127.0.0.1 6379
+			6) 全量复制 : 一旦主从关系确定,会自动将主机上已有的数据同步复制到从库上
+			7) 增量复制 : 主机写数据会自动同步到从库
+			8) 主写从读,读写分离 :  从库只能读,不能写(会报错)
+			9) 主机宕机 : 从机原地待命
+				关闭6379服务 : redis-cli -h 127.0.0.1 -p 6379 shutdown
+			10) 主机恢复 : 一切恢复正常
+				重启6379服务 : redis-server redis6379.conf & 
+				客户端连接6379 : redis-cli -h 127.0.0.1 -p 6379
+			11) 从机宕机 : 主机少一个从机,其他从机不变
+				关闭6380服务 : redis-cli -h 127.0.0.1 -p 6380 shutdown
+			12) 从机恢复 : 必须重新设置主从关系,否则其不再从属于任何一个主机
+				重启6380服务 : redis-server redis6380.conf &
+				客户端连接6380 : redis-cli -h 127.0.0.1 -p 6380
+				重新设置从属关系 : slaveof 127.0.0.1 6379
+			13) 从机上位 : 
+				a、主机宕机 : 从机原地待命
+				关闭6379服务 : redis-cli -h 127.0.0.1 -p 6379 shutdown
+				b、从机断开原来的主从关系 ; 
+					在6380上执行 : slaveof no one
+				c、重新设置主从关系 : 
+					在6381上执行 : slaveof 127.0.0.1 6380
+			14) 既是主机也是从机 :
+					在6381上执行 : slaveof 127.0.0.1 6379
+				6379不可写 : 只要有从机的角色,那么这个redis就不可写
+	16、redis的哨兵模式 : 主机宕机、从机上位的自动版.
+		1) 提供哨兵配置文件(sentinel.conf) : 
+			在redis安装目录下创建配置文件 : redis_sentinel.conf,并编辑里面的内容 : sentinel monitor dc-redis 127.0.0.1 6379 1(票数)
+				表示 : 指定监控主机的ip地址,port端口,得到哨兵的投票数(当哨兵投票数大于或等于此数时切换主从关系)
+		2) 新开窗口,启动哨兵模式 : redis-sentinel/opt/redis- /redis_sentinel.conf
+			此时关闭主机,哨兵模式会自动选择一个从机成为主机,之前的主机同时也成为这个新主机的从机
+	
+	17、操作 :
+		a、查看主从关系命令 : info replication
+		b、设置主从关系命令 : slaveof 主机ip 主机port
+		c、开启哨兵模式命令 : ./redis-sentinel sentinel.conf
+		d、主从复制原则 : 开始时是全量复制,之后是增量复制
+		e、哨兵模式三大任务 : 监控,提醒,自动故障转移
+	
+	18、缺点 : 
+		Redis的主从复制最大的缺点就是延迟,主机负责写,从机负责备份,这个过程有一定的延迟,当系统很繁忙的时候,延迟问题会更加严重,从及数量的增加也会使这个问题
+		愈发严重
+		
+	19、Jedis操作Redis :
+		a、Jedis简介 : 使用Redis官方推荐的Jedis,在java应用中操作Redis.Jedis几乎涵盖了Redis的所有命令.操作Redis的命令在Jedis中以方法的形式出现.
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			

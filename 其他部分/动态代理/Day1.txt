@@ -1,0 +1,57 @@
+	1、代理：代理模式是指，为其他对象提供一种代理用来控制这个对象的访问。在某些情况下，一个对象不适合或者不能直接引用另一个对象，而代理对象可以在客户类和目标对象之间起到中介的作用
+	2、使用代理模式的作用：
+		1）功能增强：在原有的基础上，增加了额外的功能
+		2）控制访问：代理类不允许访问目标，此时可以通过代理间接访问目标
+	3、实现代理的方式：
+		a、静态代理：
+			1）代理类是自己手工实现的（自己创建java类）
+			2）索要代理的目标类是固定的
+			3）特色是：实现简单；容易理解
+			4）代理类的功能：目标类的方法的调用；功能增强
+			5）缺点是：当目标类增加了，代理类可能也需要成倍增加；当接口内的功能增加了，或者修改了，会影响其他的实现类，影响比较大
+		b、动态代理：
+			1）在静态代理中目标类很多时，可以使用动态代理的方式，
+			2）动态代理中即使目标类很多，a、代理类数量可以很少；b、当修改接口中的方法时，不会影响代理类
+			3）动态代理就是使用jdk的反射机制创建对象，创建的是代理类的对象，而不用创建java类文件
+			4）动态：在程序执行的时候，必须调用jdk提供的方法才能创建代理类的对象
+	4、动态代理的实现方式：
+		1）jdk动态代理：
+			使用java反射包中的类和接口实现动态代理的功能
+				包：java.lang.reflect
+				类：InvocationHandler、Method、Proxy
+		2）cglib（Code Generation Library）动态代理:
+			cglib是第三方的工具库，cglib的原理是继承，cglib是通过继承目标类，在子类中重写父类中同名的方法。cglib的要求目标比较宽松，只要能继承就行了。cglib在很多的框架中使用，Mybatis、spring框架中都有使用
+			对于无接口的类，可以用cglib来为其创建动态代理类，因为，jdk动态代理方式要求必须有接口。
+	5、jdk动态代理：
+		a、反射，Method类，表示方法。类中的方法，可以通过Method执行
+		b、jdk动态代理的实现：
+			1、InvocationHandler接口
+				1）InvocationHandler（调用处理器）接口，其中有一个方法：invoke（）：表示代理对象要执行的功能代码：
+					a、调用目标方法，执行目标方法
+					b、目标方法功能的增强
+				2）public Object invoke(Object proxy, Method method, Object[] args)
+						throws Throwable;
+					Object proxy：jdk创建的代理对象，无需赋值
+					Method method：目标类提供的方法，由jdk提供的
+					Object【】 args：目标类中方法的参数，由jdk提供
+				3）用法：
+					a、创建一个类去实现InvocationHandller接口
+					b、重写invoke（）方法，把原来静态代理中代理类要完成的功能写在方法中
+			2、Method类
+				1）Method类：用来表示目标类中的方法
+				2）作用：通过Method可以执行某个目标类的方法
+				3）用法：
+					method.invoke（目标对象，方法参数）
+			3、Proxy类
+				1）Proxy类：用来创建代理对象
+				2）public static Object newProxyInstance(ClassLoader loader,
+															  Class<?>[] interfaces,
+															  InvocationHandler h) 
+					ClassLoader loader：类加载器，负责向内存中加载对象（使用反射机制获取对象的Classloader）
+					Class<？>[] interfaces：目标对象实现的接口，通过反射获取
+					InvocationHandler h：自己定义的代理类需要完成的功能
+		c、实现动态代理的步骤：
+			1）创建接口，定义目标类要完成的功能
+			2）创建目标类实现接口
+			3）创建InvocationHandler接口的实现类，在invoke（）方法重完成功能（调用目标方法、增强功能）
+			4）使用Proxy类的静态方法，创建代理类对象，并把返回值转为接口类型

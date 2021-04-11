@@ -1,0 +1,67 @@
+	1、仓库：仓库是用来存放东西的
+		1）项目中用到的jar包
+		2）maven使用的插件（jar包）
+	2、仓库的分类：
+		1）本地仓库：个人计算机上的文件夹
+		2）远程仓库：在互联网上，必须使用网络才能使用
+			a、中央仓库：最权威的（所有的开发人员都共享使用的集中的仓库）位于欧洲的一个服务器
+			b、中央仓库的镜像：中央仓库的备份，在各大洲和一些重要的城市都有
+			c、私服：用在局域网中，在公司的内部使用
+	3、仓库的使用：
+		a、仓库的使用不需要人为参与
+		b、当你需要使用mysql的驱动时：
+			1）maven首先检查本地仓库
+			2）其次检查私服
+			3）访问中央仓库的镜像
+			4）访问中央仓库
+	4、pom：项目对象模型（pom.xml）
+		a、坐标（gav）：唯一值，在互联网中唯一标识一个项目
+			<groupId>com.leviii.maven</groupId>：公司域名的倒写
+			<artifactId>01_maven</artifactId>：自定义的项目名称
+			<version>1.0-SNAPSHOT</version>：自定义的版本号（-SNAPSHOT表示不稳定版本，还在开发中）
+		b、packaging：打包后压缩文件的扩展名（默认jar，web应用war），可以不指定
+		c、依赖：dependencies和dependency：
+			表示项目中需要使用的各种资源
+				<dependencies>
+						<dependency>
+							<groupId>mysql</groupId>
+							<artifactId>mysql-connector-java</artifactId>
+							<version>8.0.22</version>
+						</dependency>
+				</dependencies>
+		d、properties：用来定义一些配置属性
+		e、build：maven在进行项目的构建时的一些配置信息，例如编译java代码使用的jdk版本可以在这里设置
+	5、maven的常用命令：必须在pom.xml所在目录下执行
+		1）mvn clean：清理（会删除原来编译和测试的目录（target目录），安装到仓库的jar包不会删除）
+		2）mvn compile：编译主程序（在当前目录生成一个target目录，存放编译后的字节码文件）
+		3）mvn test-compile：编译测试程序（也存放在target目录下）
+		4）mvn test：测试（会生成一个surefire-reports，保存测试结果）
+		5）mvn package：打包主程序（会编译、编译测试、测试、并且按照pom.xml配置把主程序打包成jar或者war包，不包括test目录下的内容）
+		6）mvn install：安装主程序（会把本工程打包，并且按照本工程的坐标保存到本地仓库中）
+		7）mvn deploy：部署主程序（会把本工程打包，按照本工程的坐标保存在本地仓库中，并且还会保存在私服仓库中，还会自动把项目部署到web容器中）
+	6、maven的生命周期：就是maven构建项目的过程（清理、编译、测试、报告、打包、安装、部署）
+	7、maven的插件：maven命令的执行是通过插件完成的，插件就是一些jar文件
+	8、单元测试：用的是junit（一个专门用来测试的框架）
+		1）测试内容：
+			类中的方法，每一个方法都是独立测试的，方法就是测试的基本单位
+		2）maven可以借助单元测试来批量测试类中的大量方法是否符合预期
+		3）使用步骤：
+			a、加入依赖：
+				在pom.xml文件中加入依赖
+					<!-- https://mvnrepository.com/artifact/junit/junit -->
+					<dependency>
+						<groupId>junit</groupId>
+						<artifactId>junit</artifactId>
+						<version>4.12</version>
+						<scope>test</scope>
+					</dependency>
+			b、在maven项目的src/test/java目录下创建测试程序
+				推荐的一种方式：
+					1）测试类的名称：Test + 要测试的类名
+					2）测试方法的名称：test + 方法名称
+						a、测试方法是public
+						b、测试方法不可以有返回值
+						c、测试方法的上面加上@Test
+	9、在idea中设置maven，让idea和maven结合使用
+		1）idea中内置了maven，但是我们一般不去使用，因为修改配置不方便
+		2）我们使用自己安装的maven，需要覆盖idea中默认的设置
