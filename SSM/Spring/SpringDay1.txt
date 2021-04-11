@@ -1,0 +1,90 @@
+	1、Spring全家桶：Spring、SpringMVC、Spring Boot、Spring Cloud
+		a、Spring出现在2002年左右，主要是用来解决企业开发的难度，减轻对项目模块之间的管理，帮助开发人员创建对象，并管理对象之间的关系
+		b、Spring核心：ioc（控制反转）、aop（面向切面编程），能够实现模块之间和类之间的解耦合
+	2、IOC（控制反转）：Inversion of Control
+		a、把对象的创建、赋值、管理工作队交给代码之外的容器完成，也就是对象的创建是由其他的外部资源完成的，Spring就是一个容器
+		b、控制：创建对象、给对象的属性赋值、对象之间的关系管理
+		c、反转：把原来的开发人员管理创建对象的权限转移给代码之外的容器来实现，由容器来代替开发人员，创建并管理对象
+		d、正转：由开发人员在代码中使用new的方式创建对象，开发人员可以主动管理对象
+		e、使用ioc的目的就是减少代码的改动，同时还能实现不同的功能（也就是实现解耦合）
+	3、java中创建对象的方式
+		a、构造方法（new）
+		b、反射
+		c、序列化
+		d、克隆
+		e、ioc：由容器来创建对象
+		f、动态代理
+	4、ioc的一个体现：servlet
+		1）创建一个类继承HttpServlet
+		2）在web.xml文件中注册servlet
+		3）我们不需要创建这个servlet的实例对象，Tomcat服务器会自动创建这个对象（此时Tomcat就是一个容器）
+	5、IOC的技术实现
+		a、DI（Dependency Injection）依赖注入：是IOC的技术实现
+			1）只需要在程序内部提供要使用的对象的名称，其余操作都由容器来实现
+		b、Spring就是使用的DI实现了IOC的功能，Spring底层创建对象使用的是反射机制
+	6、Spring使用步骤
+		a、创建maven项目
+		b、往maven中加入spring的依赖
+		c、创建类（接口和他的实现类）
+		d、把这个类的信息，交给spring，创建spring需要使用的配置文件
+		e、测试spring
+	7、spring的配置文件
+		a、<beans>：根标签，spring中把java对象称为bean
+		b、spring-beans.xsd：约束文件
+	8、DI表示依赖注入（创建对象、给对象赋值）
+		a、在spring的配置文件中，使用标签和属性来完成（基于xml的DI实现）
+		b、使用spring中的注解，完成属性赋值（基于注解的DI实现）
+	9、DI的语法分类
+		a、set注入（设值注入）：spring调用类的set方法，在set方法中可以实现属性的赋值
+			1）简单类型的set注入方式：<property name="age" value="10"/>
+			使用<property>标签可以给对象的属性赋值（这种方式是通过set方法赋值的，所以在这个对象的类中，必须有这个属性的set方法）
+			2）引用类型的set注入方式：<property name="age" ref="是这个对象在配置文件中的别名"/>
+			
+		b、构造注入：spring调用类的有参构造方法，创建对象并给对象的属性赋值
+			1）使用<constructor-arg>标签（一个<constructor>标签表示构造方法的一个参数）
+			2）<constructor-arg>的属性：
+				name：表示构造方法的形参名
+				index：表示构造方法的参数的位置，参数从左往右位置依次是0、1、2
+				value：构造方法的形参类型是简单类型时，用value
+				ref：构造方法的形参类型是引用类型时，用ref
+	10、简单类型：spring中规定java中基本数据类型和String都是简单类型数据
+	11、引用类型的自动注入方式：
+		a、Spring可以根据某些规则来给引用类型自动赋值
+		b、常用的规则：
+			1）byName：按名称注入，java类中引用类型的属性名和Spring容器中<bean>标签的id名称一样且数据类型（这个<bean>声明的对象）是一致的
+				语法：<bean id=“xxx” class=”xxx“ autowire=”byName“/>
+			2）byType：按类型注入，java类中引用数据类型和Spring容器中（配置文件）<bean>的class属性是同源关系的
+				三种同源关系：
+					a、java类中引用数据类型的数据类型和class的值是一样的
+					b、java类中引用数据类型的数据类型和class的值是父子类关系 
+					c、java类中引用数据类型的数据类型和calss的值是接口和实现类的关系
+				语法：<bean id=“xxx” calss=“xxx” autowire=“byType”/>
+	12、创建多个配置文件的优势：
+		a、
+			1）每个文件的大小比一个文件要小很多，效率高
+			2）避免多人竞争带来的冲突（多模块）
+		b、多个配置文件分配方式
+			1）按功能模块，一个模块一个配置文件
+			2）按类的功能分，数据库相关的配置一个文件，service功能一个文件……
+		c、需要有一个主配置文件，用来声明其他配置文件的目录（类路径），使用<import/>标签，其中的resource属性
+			<import resource="classpath:student.xml"/>
+	13、基于注解的DI：通过注解完成java对象创建，以及属性的赋值
+		a、使用注解的步骤：
+			1）在maven中加入依赖：spring-context，这个依赖会自动加上spring-aop依赖，使用注解必须通过spring-aop依赖
+			2）在类中加入spring注解（多个不同功能的注解）
+			3）在spring的配置文件中，加入一个组件扫描器的标签，说明注解在你项目中的位置
+				 <context:component-scan base-package="com.leviii.service"/>
+		b、常用注解：
+			1）@Component：用来创建对象，等同于<bean>的功能
+					属性：value（唯一的）：对象的名称，相当于<bean>的id值
+					位置：在类的上面，表示创建这个类的对象
+			2）@Respostory（持久层注解）：放在dao的实现类上面，表示创建dao对象，dao对象是能访问数据库的
+			3）@Service（业务层注解）：放在service的实现类上面，创建service对象，service对象是做业务处理的，可以有事务等功能
+			4）@Controller（控制器注解）：放在控制器（处理器）类的上面，创建控制器对象，能够接收用户提交的参数，显示请求的处理结果
+			5）@Value
+			6）@Autowired
+			7）@Resource
+		c、在配置文件种指定多个包的方式：
+			1）使用多个<context：component-scan base-package=“”>标签
+			2）使用“；”分隔符或“，”逗号来分割多个包名
+			3）指定父包（父包中包含多个子包）

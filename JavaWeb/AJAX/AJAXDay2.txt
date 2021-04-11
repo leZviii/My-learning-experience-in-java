@@ -1,0 +1,15 @@
+	1、AJAX发起请求--------------Servlet（返回一个JSON格式的字符串）
+	2、JSON
+		a、JSON对象，JSONObject
+			格式：名称：值；（key：value；）
+		b、JSON数组，JSONArray
+			格式：【{}，{}，{}，{}，{}】（{}内是一个或多个JSON对象）
+		c、为什么要使用JSON：
+			1）JSON格式好理解
+			2）JSON格式数据在多种语言中，比较容易处理。使用Java、JavaScript处理JSON格式的数据比较容易
+			3）JSON格式的数据占用的空间比较小，在网络中传输快，用户体验好
+		d、处理JSON的工具库：gson（google）、fastjson（阿里）、jackson，json-lib
+	3、在JS中把JSON格式的字符串转为JSON对象，JSON中的key就是JSON对象的属性名
+	4、在初始化异步请求对象时，open（“get/post”，“url”，true/false）；
+		true：异步请求处理，使用异步处理发起请求后，不需要等待数据处理完毕，就可以执行其他的操作
+		false：同步请求处理，使用同步处理请求的时候，必须等待服务端返回数据后，才能执行send（）之后的代码

@@ -1,0 +1,112 @@
+		1、现在处理AJAX请求的步骤：
+			1）在maven中加入JSON工具库的依赖，SpringMVC默认使用jackson
+			2）在SpringMVC配置文件中加入<mvc:annotation-driven>注解驱动
+			3）在控制器方法的上面加上@ResponseBody注解
+			
+		2、@ResponseBody：
+			a、位置：控制器方法的上面
+			
+		3、控制方法返回值是String：
+			1）返回值是String：如果方法上面有@ResponseBody注解，那么String代表数据，如果没有，那么就代表视图
+			
+		4、<url-partten>:
+			1）使用扩展名的方式：
+				a、语法：*.xxxx，xxxx是自定义的扩展名。常用的方式有：*.do、*.action...不能使用*.jsp
+			2）使用斜杠：
+				a、语法："/xxx"或"/"
+					当你的项目中使用了"/"，他会代替Tomcat中默认的servlet，导致所有的静态资源都会交给这个servlet处理
+					
+		5、SpringMVC中处理静态资源的方式：
+			1）在SpringMVC的配置文件中加入：<mvc:default-servlet-handler>标签
+				a、<mvc:default-servlet-handler>标签和@ResquestMapping注解有冲突
+					<mvc:default-servlet-handler>会导致所有的请求都会交给这个servlet来处理，@ResquestMapping注解的方法会不起作用
+					这是可以加入<mvc:annotation-driven>标签解决这个冲突
+			2）<mvc:resources mapping="" location="">标签：
+				加入这个标签后，框架会自动创建ResourceHttpRequestHandler这个处理器对象，让这个处理器对象来处理静态资源的请求，不再依赖Tomcat服务器
+				属性：
+					mapping：请求索要的静态资源的url地址，使用通配符"**"
+					location：静态资源在你的项目制中的目录位置
+					
+		6、在jsp、html中使用的地址，都是在前端页面使用的地址，都是相对地址
+			地址分类：
+				1）绝对地址：带有协议名称的就是绝对地址
+				2）相对地址：没有协议的都是相对地址，相对地址不能单独使用，必须有一个参考地址。
+				
+			a、在jsp文件中，如果地址不以"/"开头，那么Tomcat默认访问的地址就是当前的页面地址加上jsp文件中的地址
+				
+			b、如果地址以"/"开头，那么Tomcat默认访问的地址是你的服务器地址加上jsp文件中的地址
+				此时可以在jsp中使用EL表达式：${pageContext.request.contextPath}表明当前页面的地址
+				
+		7、html的<base>标签：
+			表示当前页面访问地址的基地址，你的页面中所有不以"/"开头的地址都是以base标签中的地址为参考地址
+			<base href="http://localhost:8080/myWeb/">
+			
+		8、SSM整合开发：
+			1）XML配置方式
+			2）注解方式
+			3）SpringMVC + Spring + MyBatis
+				a、SpringMVC：视图层（界面层），负责接收请求，显示处理结果
+				b、Spring：业务层，管理service、dao、工具类对象
+				c、MyBatis：持久层，访问数据库
+			4）用户发起请求------->SpringMVC接受请求--------->Spring中的service对象-------->MyBatis访问数据库
+			5）SSM整合也叫做SSI（IBatis也就是MyBatis的前生）
+			6）SSM整合需要两个容器：
+				a、SpringMVC：管理Controller控制器对象
+				b、Spring：管理service、dao、工具类对象
+				我们需要将需要使用的对象交给合适的框架来管理：
+					a、把Controller还有web开发的相关对象交给SpringMVC容器，web相关的对象写在SpringMVC配置文件中
+					b、把service、dao、工具类对象定义在Spring容器中
+				c、SpringMVC容器和Spring容器之间的关系：
+					1）SpringMVC容器是Spring容器的子容器
+					2）在子容器中的Controller对象可以使用父容器中的Service对象
+			7）实现步骤：
+				1）新建maven项目
+				2）加入依赖：
+					Spring、SpringMVC、MyBatis、jackson、mysql、druid、jsp、servlet
+				3）写web.xml:
+					a、注册DispatcherServlet：
+						1、创建SpringMVC对象，从而创建Controller对象
+						2、创建的是一个servlet，这样才可以接收用户请求
+					b、注册Spring监听器：ContextLoaderListener：
+						1、创建Spring容器对象，从而创建Service、dao等对象
+					c、创建字符集过滤器，解决POST请求乱码问题
+				4）创建包：Controller、service、dao、实体类的包
+				5）写SpringMVC、Spring、MyBatis的配置文件：
+					a、SpringMVC：
+					b、Spring：
+					c、MyBatis:：
+					d、数据库配置文件：
+				6）写代码：dao接口和mapper文件，service和实现类，controller,实体类
+				7）写jsp页面
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					

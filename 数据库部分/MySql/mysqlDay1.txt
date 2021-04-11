@@ -1,0 +1,105 @@
+	一、学习MySQL主要还是学习通用的SQL语句
+		DQL（数据查询语言）Data query language：查询语句，凡是select语句都是查询语句
+		DML（数据操作语言）Data manipulation language ：insert delete update，对表中的数据进行修改
+		DDL（数据定义语言）Data definition language ：create drop alter，对表结构的增删改
+		TCL（事务控制语言）Transaction control language ：commit提交事务，rollback回滚事务。TCL中的T是Transaction
+		DCL（数据控制语言）Data control language ：grant授权，revoke撤销权限
+	二、以.sql结尾的文件被称为“sql脚本”（里面有大量的sql命令）
+		 使用source可以在终端中导入脚本。
+	查看表结构：desc 表名;
+							+------------------+
+							| Tables_in_mytest |
+							+------------------+
+							| dept             |
+							| emp              |
+							| salgrade         |
+							+------------------+  
+		mysql> desc dept;
+		+--------+-------------+------+-----+---------+-------+
+		| Field  | Type          | Null | Key | Default | Extra |        
+		+--------+-------------+------+-----+---------+-------+
+		| DEPTNO | int         | NO   | PRI | NULL    |           |         部门编号
+		| DNAME  | varchar(14) | YES  |     | NULL    |           |              部门名称
+		| LOC    | varchar(13) | YES  |     | NULL    |          |              部门位置
+		+--------+-------------+------+-----+---------+-------+
+		
+		
+		mysql> desc emp;
+		+----------+-------------+------+-----+---------+-------+
+		| Field    | Type        | Null | Key | Default | Extra |
+		+----------+-------------+------+-----+---------+-------+
+		| EMPNO    | int         | NO   | PRI | NULL    |       |                员工编号
+		| ENAME    | varchar(10) | YES  |     | NULL    |       |         员工姓名
+		| JOB      | varchar(9)  | YES  |     | NULL    |       |              工作岗位
+		| MGR      | int         | YES  |     | NULL    |       |                       上级领导编号
+		| HIREDATE | date        | YES  |     | NULL    |       |             入职日期
+		| SAL      | double(7,2) | YES  |     | NULL    |       |              月薪
+		| COMM     | double(7,2) | YES  |     | NULL    |       |          补助
+		| DEPTNO   | int         | YES  |     | NULL    |       |                部门编号
+		+----------+-------------+------+-----+---------+-------+
+		
+		mysql> desc salgrade;
+		+-------+------+------+-----+---------+-------+
+		| Field | Type | Null | Key | Default | Extra |
+		+-------+------+------+-----+---------+-------+
+		| GRADE | int  | YES  |     | NULL    |       |                                   等级
+		| LOSAL | int  | YES  |     | NULL    |       |                            最低薪资
+		| HISAL | int  | YES  |     | NULL    |       |                             最高薪资
+		+-------+------+------+-----+---------+-------+
+		
+	查看表中的数据 ：select *from 表名；
+
+	三、数据库常用命令
+		  1、查询当前使用的数据库：select   database();
+			2、查询当前使用数据库版本：select    version();
+			3、终止一条语句：\c
+		  4、退出 mysql：exit;
+			5、查看创建表语句：show create  table  表名;
+			6、简单的查询语句：select  字段名1，字段名2，字段名3，…from 表名；
+								   注意：所有的sql语句都是以“；”结尾的；
+											 sql语句不区分大小写；
+		   7、给查询结果的列重命名：select 字段名1 as 改名 from 表名;
+													 中文属于字符串，数据库中的字符串要加 '' 单引号
+						mysql> select ename ,sal * 12 as '年薪' from emp;
+						+--------+----------+
+						| ename  | 年薪     |
+						+--------+----------+
+						| SMITH  |  9600.00 |
+						| ALLEN  | 19200.00 |
+						| WARD   | 15000.00 |
+						| JONES  | 35700.00 |
+						| MARTIN | 15000.00 |
+						| BLAKE  | 34200.00 |
+						| CLARK  | 29400.00 |
+						| SCOTT  | 36000.00 |
+						| KING   | 60000.00 |
+						| TURNER | 18000.00 |
+						| ADAMS  | 13200.00 |
+						| JAMES  | 11400.00 |
+						| FORD   | 36000.00 |
+						| MILLER | 15600.00 |
+						+--------+----------+
+
+
+			  8、查询全部字段：select  * from  表名;
+												* 号效率低，开发中不建议使用
+	四、条件查询
+		  1、语法格式：select 
+											  字段，字段…
+										 from  
+											   表名
+								where  
+											   条件;
+					   执行顺序：先from，然后where，最后select
+			   查询工资等于5000的员工姓名:
+					   select ename from emp where sal = 5000;
+							+-------+
+							| ename |
+							+-------+
+							| KING  |
+							+-------+
+				找出工资在1100到3000之间的员工，包括1100和3000
+			   写法1： select  ename ,sal  from  emp  where  sal >=  1100  and  sal  <=  3000;
+				  写法2：select  ename ,sal from  emp  where  sal  between  1100   and  3000;
+		2、between…   and  …  是闭区间，在使用的时候必须左小右大
+			  between…and…也可以使用在字符串之间，此时为左闭右开 

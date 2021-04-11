@@ -1,0 +1,35 @@
+	1、CSS（Cascading Style Sheet）：层叠样式表单
+	2、CSS的作用：修饰HTML页面中的某些元素的样式，让HTML页面更好看
+	CSS依赖与HTML
+	3、在HTML页面中嵌套使用CSS的三种方式
+	内联定义（Inline Styles）：内联定义即是在对象的标记内使用对象的style属性定义适用其的样式属性表。
+	语法格式：
+		<标签： style = "样式名：样式值；样式名：样式值；"></标签>
+	定义内部样式块对象（Embedding a Style Block）：在HTML文档的<HTML>和<BODY>标记之间加入一个<STYLE>…</STYLE>块对象
+	语法格式：
+		<head>
+			<style type = “text/css”>
+				选择器{
+					样式名：样式值；
+					样式名：样式值；
+					样式名：样式值；
+					……
+				}
+				选择器{
+					样式名：样式值；
+					样式名：样式值；
+					样式名：样式值；
+					……
+				}
+				选择器{
+					样式名：样式值；
+					样式名：样式值；
+					样式名：样式值；
+					……
+				}
+			</style>
+		</head>
+	链入外部样式表文件（最常用）：将样式写到一个独立的xxx.css文件当中，在需要的网页上直接引入css文件。
+	语法格式：
+		<link type="text/css" rel="stylesheet" href="css文件的路径"/>
+	这种方式易于维护，维护成本低。

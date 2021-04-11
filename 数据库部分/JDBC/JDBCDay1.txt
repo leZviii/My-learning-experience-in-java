@@ -1,0 +1,38 @@
+	1、JDBC：Java Database Connectivity （java 语言连接数据库）
+	JDBC是sun公司制定的一套接口（intreface）
+	接口都有调用者和实现者。面向接口调用、面向接口实现类，这都属于面向接口编程。
+	面向接口编程可以降低程序的耦合度，提高程序的扩展力。
+	多态就是一种典型的面向抽象编程。多态就是面向父类编程。父类就是一种抽象类。
+	面向接口编程，接口是一个完全抽象类。
+	2、JDBC本质是一套接口：.class文件。
+	3、JDBC编程六步：
+	第一步：注册驱动（告诉JVM即将连接的数据库类型）
+	第二步：获取连接（JVM的进程和数据库的进程之间的通道打开了。这是两个进程之间的通道，使用完之后一定要关闭）
+	第三步：获取数据库操作对象（专门执行sql语句的对象）
+	第四步：执行sql语句
+	第五步：处理查询结果集（当第四步执行的是查询语句时，才会有第五步）
+	第六步：释放资源（关闭第二步中的进程通道）
+	4、url：统一资源定位符（网络中某个资源的绝对路径）
+	https://www.baidu.com/  这就是一个URL
+	URL包括哪几部分：
+	协议：通信协议是通信之前就提前定好的数据传送格式
+	IP：
+	PORT：
+	资源名：
+	http://61.135.185.32:80/index.html
+	http://      通信协议
+	61.135.185.32      服务器IP地址
+	80     服务器上软件的端口
+	index.html      是服务器上的某个资源名
+	jdbc:mysql://127.0.0.1:3306/test
+	jdbc:mysql://     通信协议
+	127.0.0.1（localhost）     IP地址 ，本机IP地址
+	3306      mysql数据库端口
+	test    database 名字
+	5、JDBC中SQL语句不用写分号
+	6、Statement和PreparedStatement对比：
+	Statement存在SQL注入现象，PreparedStatement解决了SQL注入问题
+	Statement编译一次执行一次，而PreparedStatement是编译一次可执行N次，PreparedStatement效率较高
+	PreparedStatement会在编译期做类型的安全检查
+	综上所述，PreparedStatement使用较多，Statement只有在业务要求必须支持SQL注入（SQL语句拼接）时才使用。
+	7、在MySQL中如果输入的命令和上一次完全一样时，第二次的语句就不会去编译，而是直接执行。

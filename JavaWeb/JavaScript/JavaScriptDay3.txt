@@ -1,0 +1,95 @@
+	1、JS中类的定义和构造方法的定义是放在一起的。
+	2、JS中访问类的属性可以使用：对象名【“属性名”】的方式。
+		例如：student["sname "]来获取student类的sname属性。
+	3、可以通过prototype这个属性来给类动态扩展属性以及函数（和JAVA相比，就是在类外边定义一个新的函数）
+	4、null、NaN、undefined的区别：
+		数据类型不一样：
+			typeof(null)		"object"
+			typeof(NaN)			"number"
+			typeof(undefined)	"undefined"
+	5、在JS中有两个比较特殊的运算符
+		==	等同运算符（只比较值）
+		===	全等运算符（即比较值，又比较数据类型）
+	  
+		null == NaN			false	null === NaN		false
+		null == undefined	true	null === undefined	false
+		NaN == undefined	false	NaN === undefined	false
+	6、JS中的常用事件：
+			--blur失去焦点
+			--focus获取焦点
+			
+			--click鼠标单击
+			--dblclick鼠标双击
+			
+			--keydown键盘按下
+			--keyup键盘弹起
+			
+			--mousedown鼠标按下
+			--mouseover鼠标经过
+			--mouseout鼠标离开
+			--mouseup鼠标弹起
+			--mousemove鼠标移动
+			
+			--reset表单重置
+			--select文本被选定
+			--submit表单提交
+			--load页面加载完毕
+			--change下拉列表选中项改变，或文本框内容改变
+		每个事件都对应一个事件句柄（onxxxx）以属性的方式存在
+	7、注册事件的第一种方式：直接在标签中使用onxxxx句柄
+	8、注册事件的第二种方式：使用纯JS代码完成事件的注册
+		在JS中获取对象：document.getElementById(id);
+		document是一个内置对象，可以直接使用，document代表整个html页面
+	9、回车键的键值是13，ESC键的键值是27。每个键盘事件都有一个keyCode属性，可以获得键盘事件的键值。
+	10、JS中的void运算符void(表达式) ：原理就是执行括号内的表达式，但并不返回任何结果。
+	JS中如果超链接的herf=""内没有任何内容，那么默认就是页面本身。
+	11、JS中数组的创建：var arr = [];括号内可以是任意类型的的数据
+	并且JS会自动扩容
+	用with(){
+		 }也可以访问对象的属性。
+	12、JavaScript包括三块：ECMAScript、DOM、BOM
+	ECMAScript:JS的核心语法
+	DOM：Document Object Model（文档对象模型：对网页当中的节点进行增删改的过程）HTML被当作一棵DOM树看待
+	BOM：Browser Object Model（浏览器对象模型）
+		关闭浏览器窗口、打开一个新的浏览器窗口、后退、前进、浏览器地址栏上的地址等，都是BOM编程。
+	13、BOM和DOM的区别和联系
+	BOM的顶级对象是：window
+	DOM的顶级对象是：document
+	实际上BOM是包括DOM的。
+	14、正则表达式：Regular Expression
+		正则表达式主要用在字符串格式的匹配方面
+	15、常见的正则表达式符号：
+		.	匹配除换行符以外的任意字符
+		\w	匹配字母或数字或下划线或汉字
+		\s	匹配任意的空白符
+		\d	匹配任意的数字
+		\b	匹配单词的开始或结束
+		^	匹配字符串的开始
+		$	匹配字符串的结束
+		
+		\W	匹配任意不是字母、数字、下划线、汉字的字符
+		\S	匹配任意不是空白符的字符
+		\D	匹配任意非数字的字符
+		\B	匹配不是单词开头或结束的位置
+		[^x]	匹配除了x以外的任意字符
+		[^aeiou]	匹配除了aeiou这几个字母以外的任意字符
+		
+		*	重复零次或更多次
+		+	重复一次或更多次
+		？	重复零次或一次
+		{n}	重复n次
+		{n,}	重复n次或更多次
+		{n,m}	重复n次到m次
+		|	或者
+	16、QQ号的正则表达式
+		^[1-9][0-9]{4,}$
+	17、创建正则表达式的方式
+		第一张创建方式：
+					var regExp = /正则表达式/flags；
+		第二种创建方式：
+					var regExp = new RegExp("正则表达式","flags");
+		关于flags：
+		g：全局匹配出现的表达式
+		i：忽略大小写的匹配
+		m：多行查找的匹配（ES规范制定之后才支持m）当前面是正则表达式的时候，m不能使用，只有前面是普通字符串的时候m才有用
+

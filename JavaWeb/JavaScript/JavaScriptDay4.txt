@@ -1,0 +1,43 @@
+	1、关于JS中内置的支持类：Date，可以用来获取时间/日期。
+	var nowDate = new Date();
+	2、JS中变量的默认值是undefined;
+	3、JS中的数组可以自动模拟栈结构：
+	push()：压栈
+	pop()：弹栈
+	reverse()：反转
+	4、在BOM编程中，window对象是顶级对象，代表浏览器窗口
+		window有open和close方法，可以开启和关闭窗口 
+	5、从浏览器向服务器发送请求：
+		--表单form的提交
+		--超链接
+		--document.location
+		--window.location
+		--window.open（“url”）
+		--在浏览器的地址栏上输入地址
+	以上方式都可以携带数据给服务器，只有通过表单提交的数据才是动态的。
+	6、JSON：JavaScript Object Notation，简称JSON
+		JSON最主要的作用就是进行数据交换。
+	7、JSON是一种标准的轻量级数据交换格式。特点是：体积小、易解析。JSON在JS中以JS对象的方式存在。
+	8、在实际开发中，有两种常用的数据交换格式：JSON、XML
+		XML体积较大，解析麻烦。但是其语法严谨。（通常银行相关的系统之间进行数据交换的话会使用XML。）
+	9、HTML和XML有一个父亲：SGML（标准通用的标记语言）
+		HTML主要做页面展示：所以语法松散。
+		XML主要做数据存储和数据描述：所以语法严格。
+	10、JSON也可以称为无类型对象，轻量级、轻巧、易解析。
+	11、JSON的语法格式：
+		var jsonObj = {
+			"属性名" : "属性值"，
+			"属性名" : "属性值"，
+			"属性名" : "属性值"，
+			"属性名" : "属性值"，
+			"属性名" : "属性值"，
+			……
+		};
+	12、window.eval（）函数的作用是：将括号内的字符串当作一段JS代码解释并执行。
+	13、Java连接数据库，查询数据之后，将数据在Java程序中拼接成JSON格式的字符串，并将其响应到浏览器。也就是说Java响应到浏览器的只是一个JSON格式的字符串，这使使用eval()函数将这个字符串转换为JSON对象直接执行。
+				 var fromJava = "{\"name\":\"zhangsan\",\"password\":\"123\"}";
+		        window.eval("var jsonObj = " + fromJava);
+		        alert(jsonObj.name + "," + jsonObj.password)
+	14、在JS中的中括号和大括号的区别：
+		[]是数组
+		{}是JSON

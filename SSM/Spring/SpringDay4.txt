@@ -1,0 +1,140 @@
+	Spring处理事务
+		1、事务：
+			事务是指一组sql语句的集合（insert,update,select,delete），我们希望这一组sql语句要么同时成功，要么同时失败，作为一个整体执行
+			
+		2、事务的使用时机：
+			1）当操作涉及到多个表，或者是多个sql语句（update,insert,delete），需要保证这些操作或语句同时成功才能完成任务
+			2）在java代码中处理事务，一般将事务处理放在service类的业务方法内
+			
+		3、JDBC访问数据库，处理事务：
+			1）Connection con; con.commit();con.rollback();
+			
+		4、MyBatis访问数据库，处理事务：
+			1）SqlSession session;session.commit();session.rollback();
+			
+		5、JDBC和MyBatis处理事务的不足：
+			1）需要掌握多种数据库中事务的处理逻辑
+			2）需要了解处理事务的多种方法
+			
+		6、Spring提供了一种处理事务的统一模型，能够使用一种步骤（方式）来完成多种不同数据库访问技术的事务处理
+		
+		7、Spring处理事务步骤：
+			1）把事务的信息交给Spring框架
+			2）Spring创建事务管理对象，代替你完成事务的commit,rollback
+			3）向Spring指明你需要使用的数据库访问技术，Spring就会创建对应的事务管理器对象来处理事务
+			4）说明事务的类型
+			
+		8、事务管理器对象：
+			1）是一个接口和他的众多实现类
+			2）接口：
+				PlatformTransactionManager，其中定义了处理事务的commit,rollback
+			3）实现类：
+				Spring把每种数据库处理技术都写成了一种实现类
+					MyBatis------->DataSourceTransactionManager
+					HiberNate-------->HibernateTransactionManager
+					...
+					
+		9、说明事务：
+			1）事务的隔离级别：
+			ISOLATION_DEFAULT
+			ISOLATION_READ_UNCOMMITTED
+			ISOLATION_READ_COMMITTED
+			ISOLATION_REPEATABLE_READ
+			ISOLATION_SERIALIZABLE
+			2）事务的超时时间(TIMEOUT_DEFAULT)：
+				表示一个方法最长的执行时间，表示当一个方法执行时间超过了这个时间，那么事务就回滚
+				单位是秒，默认值-1（表示没有超时时间），一般不去配置
+			3）事务的传播行为：
+				a、控制业务方法是否有事务，是什么样的事务，一共有7个传播行为
+				b、传播行为：
+					常用：
+					PROPAGATION_REQUIRED（Spring默认）：
+						指定方法必须在事务内执行，若当前有事务，就加入到当前事务中，若当前没有事务，则创建一个新事务
+		            PROPAGATION_REQUIRES_NEW：
+						总是新建一个事务，若当前存在事务，就将当前事务挂起，直到新事务执行完毕
+		            PROPAGATION_SUPPORTS：
+						指定的方法支持当前事务，但若当前没有事务，也可以以非事务的方式执行
+					不常用：
+					PROPAGATION_MANDATORY
+		            PROPAGATION_NESTED
+		            PROPAGATION_NEVER
+		            PROPAGATION_NOT_SUPPORTED
+					
+		10、Spring提交事务和回滚事务的时机：
+			1）当你的业务方法执行成功，没有异常抛出时，Spring会在方法执行完毕后提交事务
+			2）当你的业务方法执行时抛出了运行时异常或ERROR，Spring会执行回滚操作
+				运行时异常的定义：RuntimeException和它的子类都是运行时异常
+				例如：NullPointerException,NumberFormatException...
+			3）当你的方法执行时抛出的是非运行时异常，主要是受查(编译时异常)异常，会提交事务
+				受查异常：在你写代码时必须处理的异常
+				例如：IOException,SQLException...
+				
+		11、Spring框架提供的事务处理方案
+			1）适合中小型项目：注解方案（@Transactional）
+				Spring自己使用AOP实现给业务方法增加事务
+				@Transactional：
+					位置：public方法上面，表示当前方法有事务
+					属性：隔离级别、传播行为、异常信息
+				使用@Transactional的步骤：
+					a、声明事务管理器对象
+					<bean id="xxx" class="DataSourceTransactionManager"/>
+					b、开启事务注解驱动，通知Spring框架，要使用注解的方式管理事务
+					c、Spring给业务方法加入事务：
+						Spring使用AOP机制，创建@Transactional代理对象，给方法加入事务
+		    2）适合大型项目：AspectJ框架
+				这种方式业务方法和事务配置完全分离
+				实现步骤：
+					a、要使用的是AspectJ框架，要加入依赖
+					b、声明事务管理器对象
+					<bean id="xxx" class="DataSourceTransactionManager"/>
+					c、声明方法需要的事务的类型（配置方法的事务属性：隔离级别、传播行为、超时时间）
+					d、配置AOP，指定需要创建代理对象的类
+					
+		12、web项目中使用Spring框架
+			1）web项目是在tomcat服务器上运行的，tomcat不关闭，项目就会一直运行，每次刷新都会重新创建Spring容器对象
+			2）使用监听器，当全局作用域对象被创建时，创建Spring容器对象，并把它放在ServletContext(全局作用域对象)中，以后就可以直接使用
+			3）监听器的作用：
+				a、创建Spring容器对象，执行ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+				b、把这个对象放在ServletContext中，ServletContext.setAttribute(key,context);
+			4）监听器可以自己创建，也可以使用Spring框架中提供的ContextLoaderListener
+				原理：
+					private WebApplicationContext context;
+					public interface WebApplicationContext extends ApplicationContext(){}
+					//这里把Spring容器对象放入到全局作用域对象中
+					servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE,this.context); 
+			5）WebApplicationContext是Spring创建的专门在web项目中使用的Spring容器对象
+			ApplicationContext是Spring创建的在javase项目中使用的Spring容器对象
+			6）WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE是一个字符串，代表的是WebApplicationContext这个类的全限定名称
+					
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

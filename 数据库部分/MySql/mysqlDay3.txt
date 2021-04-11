@@ -1,0 +1,536 @@
+	1、insert语句插入数据
+	insert into 表名（字段名1，字段名2，字段名3，….）  values（值1，值2，值3….）
+	要求：字段的数量和值的数量必须相同，并且数据类型要对应相同。
+	mysql> insert into t_student(no,name,sex,classno,birth) values(1,'zhangsan','1','gaosan1ban','1950-10-12');
+	下面这条语句会把name写成lisi但是其他的字段会插入默认值。
+	当一条insert语句执行成功之后，表格中一定会多一行记录，并且后期不可以使用insert修改，只能使用update更新数据。
+	mysql> insert into t_student(name) values('lisi');
+	insert into 语句前边的字段名可以省略，但是后面的values的数量和顺序都要和插入时的数量和顺序一样。
+	mysql> insert into t_student values(2,'wangwu','2','gaosan2ban','1998-04-09');
+	insert into语句同时插入多条记录，使用“,”号隔开。
+	mysql> insert into t_student(no,name,sex,classno,birth) values(3,'rose','1','gaosan2ban','1952-12-14')
+		-> ,(4,'jack','2','gaosan3ban','1956-05-06');
+
+	2、删除一个表使用drop table if exists 表名; 
+	3、表的复制：create table 表名 as select 语句;
+	复制一个表的所有内容
+	mysql> create table emp1 as select * from emp;
+	复制一个表的部分内容
+	mysql> create table emp2 as select e.ename,e.sal,e.comm,e.job from emp e;
+	4、将查询结果插入到一张表中
+	mysql> create table dept1 as select *from dept;
+	mysql> insert into dept1 select *from dept;
+	5、修改数据：update 表名 set 字段名1=值1，字段名2=值2… where 条件;
+	注意：没有条件的话整张表的数据全部更新。
+	将部门10的LOC修改为SHANGHAI，将部门名称修改为RENSHIBU
+	mysql> update dept1 set dname = 'RENSHIBU',LOC = 'SHANGHAI' where deptno = 10;
+	mysql> select * from dept1;
+	+--------+------------+----------+
+	| DEPTNO | DNAME      | LOC      |
+	+--------+------------+----------+
+	|     10 | RENSHIBU   | SHANGHAI |
+	|     20 | RESEARCH   | DALLAS   |
+	|     30 | SALES      | CHICAGO  |
+	|     40 | OPERATIONS | BOSTON   |
+	|     10 | RENSHIBU   | SHANGHAI |
+	|     20 | RESEARCH   | DALLAS   |
+	|     30 | SALES      | CHICAGO  |
+	|     40 | OPERATIONS | BOSTON   |
+	+--------+------------+----------+
+	6、删除数据：delete from 表名 where 条件;
+	注意：没有条件的话全部删除，但是表还在，只是删除掉数据。
+	删除10部门的数据。delete语句可以回滚。
+	mysql> delete from dept1 where deptno = 10;
+	mysql> select *from dept1;
+	+--------+------------+---------+
+	| DEPTNO | DNAME      | LOC     |
+	+--------+------------+---------+
+	|     20 | RESEARCH   | DALLAS  |
+	|     30 | SALES      | CHICAGO |
+	|     40 | OPERATIONS | BOSTON  |
+	|     20 | RESEARCH   | DALLAS  |
+	|     30 | SALES      | CHICAGO |
+	|     40 | OPERATIONS | BOSTON  |
+	+--------+------------+---------+
+	怎样删除大表（数据量庞大）truncate table 表名;
+	这个方式不能回滚。这个表还在，和drop不同。
+	mysql> truncate table emp1;
+	7、增删改查有一个术语：CRUD
+	Create（增） Retrieve（检索） Update（修改） Delete（删除）
+	8、约束（Constraint）：为了保证表中数据的合法性、完整性、有效性，可以在创建表的时候给某个字段添加约束。
+	常见的约束有：
+	非空约束：not null（约束的字段不能为null）
+	唯一约束：unique（约束的字段不能重复）
+	主键约束：primary key（约束的字段既不能为null也不能重复）简称PK
+	外键约束：foreign kry（）简称FK
+	检查约束：check（目前oracle数据库有check约束，mysql没有）
+	9、非空约束
+	mysql> create table t_user(
+		-> id int,
+		-> username varchar(255) not null,
+		-> password varchar(255)
+		-> );
+	mysql> insert into t_user
+		-> values(1,'lisi','62500');
+	mysql> select * from t_user;
+	+------+----------+----------+
+	| id   | username | password |
+	+------+----------+----------+
+	|    1 | lisi     | 62500    |
+	+------+----------+----------+
+	此时username就不能为空，如果为空，就会报错。
+	mysql> insert into t_user(id,password)
+		-> values(2,'62500');
+	ERROR 1364 (HY000): Field 'username' doesn't have a default value
+	10、唯一性约束（unique）
+	唯一约束修饰的字段具有唯一性，不能重复，但是可以为null。
+	mysql> create table t_user(
+		-> id int,
+		-> username varchar(255) unique
+		-> );
+	Query OK, 0 rows affected (0.05 sec)
+
+	mysql> insert into t_user
+		-> values(1,'lisi');
+	Query OK, 1 row affected (0.01 sec)
+	如果重复插入相同的username那么就会报错。
+	mysql> insert into t_user
+		-> values(1,'lisi');
+	ERROR 1062 (23000): Duplicate entry 'lisi' for key 't_user.username'
+	unique语句可以为空，null和null不相同。
+	mysql> insert into t_user(id)
+		-> values(1);
+	Query OK, 1 row affected (0.01 sec)
+
+	mysql> insert into t_user(id)
+		-> values(2);
+	Query OK, 1 row affected (0.01 sec)
+
+	mysql> select * from t_user;
+	+------+----------+
+	| id   | username |
+	+------+----------+
+	|    1 | lisi     |
+	|    1 | NULL     |
+	|    2 | NULL     |
+	+------+----------+
+	给多个列添加唯一性约束
+	这种方式表示多个字段联合起来不能重复，这种方式叫做表级约束。
+	unique(字段名1，字段名2,….)
+	这种方式表示多个字段各自都不可以重复，这种方式叫做列级约束。
+	字段名1 unique,
+	字段名2 unique,
+	….
+	11、主键约束（主键约束既不可以重复，也不可以为空）
+	drop table if exists t_user;
+	create table t_user(
+		  id int primary key,                 //是一个列级约束
+		  username varchar(255),
+		  email varchar(255)
+	);
+	insert into t_user(id,username,email)  values(1,'zs','zs@123.com');
+	insert into t_user(id,username,email)  values(2,'ls','ls@123.com');
+	insert into t_user(id,username,email)  values(3,'ww','ww@123.com');
+	select * from t_user;
+	+----+----------+------------+
+	| id | username | email      |
+	+----+----------+------------+
+	|  1 | zs       | zs@123.com |
+	|  2 | ls       | ls@123.com |
+	|  3 | ww       | ww@123.com |
+	+----+----------+------------+
+	insert into t_user(id,username,email)  values(1,'zs','zs@123.com');
+	ERROR 1062 (23000): Duplicate entry '1' for key 't_user.PRIMARY'
+	insert into t_user(username,email)  values('zs','zs@123.com');
+	ERROR 1364 (HY000): Field 'id' doesn't have a default value
+	12、主键相关的术语
+	主键约束：primary key
+	主键字段：带有主键约束的字段
+	主键值：主键字段上的值
+	13、主键的作用
+	表的设计三范式中有要求，第一范式要求任何一张表都要有主键
+	主键为一张表提供了一个唯一标识。
+	14、主键的分类
+	根据主键的字段数量：
+	单一主键（推荐的，常用的）
+	复合主键（多个字段联合起来添加一个主键约束）表级主键约束（复合主键违背了三范式，可能产生部份依赖）
+	根据主键的性质来划分：
+	自然主键（主键值是一个和业务没有任何关系的自然数）（推荐使用）
+	业务主键（主键值和系统的业务挂钩，例如：银行卡号、身份证号）（不推荐用）
+	15、一张表的主键约束只能有一个。
+	16、mysql提供主键值自增：auto_increment 以1开始，每次递增。
+	drop table if exists t_user;
+	create table t_user(
+		  id int primary key auto_increment,               
+		  username varchar(255),
+		  email varchar(255)
+	);
+	insert into t_user(username,email)  values('zs','zs@123.com');
+	insert into t_user(username,email)  values('ls','ls@123.com');
+	insert into t_user(username,email)  values('ww','ww@123.com');
+	select * from t_user;
+	+----+----------+------------+
+	| id | username | email      |
+	+----+----------+------------+
+	|  1 | zs       | zs@123.com |
+	|  2 | ls       | ls@123.com |
+	|  3 | ww       | ww@123.com |
+	+----+----------+------------+
+	Oracle当中也提供了一种自增叫做序列（Sequence）对象。
+	17、外键约束：foreign key (字段名) references 表名(被引用字段名)
+	被引用的字段不一定是主键，但必须要具有唯一性。
+	相关术语：
+	外键约束：foreign key
+	外键字段：添加有外键约束的字段
+	外键值：外键字段中的每一个值
+	业务背景：设计一个数据库表，用来维护学生和班级的信息
+	第一种：一张表存储所有数据
+	no（PK）	name	classno	classname
+	1	zs1	101	山东省济南市山东大学兴隆山校区101班
+	2	zs2	101	山东省济南市山东大学兴隆山校区101班
+	3	zs3	102	山东省济南市山东大学兴隆山校区102班
+	4	zs4	102	山东省济南市山东大学兴隆山校区102班
+	5	zs5	103	山东省济南市山东大学兴隆山校区103班
+	这种方案缺点：冗余【不推荐】
+	第二种：两张表（班级表和学生表）
+	t_class  班级表
+	cno（PK）	cname
+	101	山东省济南市山东大学兴隆山校区101班
+	102	山东省济南市山东大学兴隆山校区102班
+	103	山东省济南市山东大学兴隆山校区103班
+	t_student  学生表
+	sno（PK）	sname 	classno（FK）
+	1	zs1	101
+	2	zs2	101
+	3	zs3	102
+	4	zs4	102
+	5	zs5	103
+	cno加了外键约束之后，就不可以添加指定字段外的值，否则报错
+	t_student表中的classno字段引用t_class表中的cno字段。此时t_student叫做子表，t_class表叫做父表。
+	删除数据时，先删子表，再删父表
+	添加数据时，先加父表，再加子表
+	创建表时，先创建父表，再创建子表
+	删除表时，先删除子表，再删除父表
+	sql语句
+	drop table if exists t_student;
+	drop table if exists t_class;
+	create table t_class (
+	cno int primary key,
+	cname varchar(255)
+	);
+	create table t_student(
+	sno int primary key,
+	sname varchar(255),
+	classno int,
+	foreign key (classno) references t_class (cno)
+	);
+	insert into t_class values(101,'xxxxxxxxxxxx');
+	insert into t_class values(102,'xxxxxxxxxxxx');
+	insert into t_class values(103,'xxxxxxxxxxxx');
+	insert into t_student values(1,'zs1','101');
+	insert into t_student values(2,'zs2','101');
+	insert into t_student values(3,'zs3','102');
+	insert into t_student values(4,'zs4','102');
+	insert into t_student values(5,'zs5','103');
+	select * from t_class;
+	+-----+--------------+
+	| cno | cname        |
+	+-----+--------------+
+	| 101 | xxxxxxxxxxxx |
+	| 102 | xxxxxxxxxxxx |
+	| 103 | xxxxxxxxxxxx |
+	+-----+--------------+
+
+	select * from t_student;
+	+-----+-------+---------+
+	| sno | sname | classno |
+	+-----+-------+---------+
+	|   1 | zs1   |     101 |
+	|   2 | zs2   |     101 |
+	|   3 | zs3   |     102 |
+	|   4 | zs4   |     102 |
+	|   5 | zs5   |     103 |
+	+-----+-------+---------+
+	insert into t_student values(6,'zs6','104');
+	ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`mytest`.`t_student`, CONSTRAINT `t_student_ibfk_1` FOREIGN KEY (`classno`) REFERENCES `t_class` (`cno`))
+	外键可以为null。
+	insert into t_student(sno,sname) values(6,'zs6');
+	mysql> select *from t_student;
+	+-----+-------+---------+
+	| sno | sname | classno |
+	+-----+-------+---------+
+	|   1 | zs1   |     101 |
+	|   2 | zs2   |     101 |
+	|   3 | zs3   |     102 |
+	|   4 | zs4   |     102 |
+	|   5 | zs5   |     103 |
+	|   6 | zs6   |    NULL |
+	+-----+-------+---------+
+	18、存储引擎，数据库中的各表均被（在创建表时）指定的存储引擎来处理
+	存储引擎不同，存储方式就不同。
+	MySQL的默认存储引擎是：InnoDB方式
+	默认字符集是：UTF8
+	存储引擎：这个叫法只有再MySQL中使用（Oracle中叫存储机制）
+	MySQL支持很多存储引擎，每一个存储引擎都对应不同的存储方式，但是都有各自的优点和缺点，需要自己选择。
+	查看当前MySQL版本
+	select version();
+	+-----------+
+	| version() |
+	+-----------+
+	| 8.0.22    |
+	+-----------+
+	查看当前MySQL支持的存储引擎
+	show engines \G
+	*************************** 1. row ***************************
+		  Engine: MEMORY
+		 Support: YES
+		 Comment: Hash based, stored in memory, useful for temporary tables
+	Transactions: NO
+			  XA: NO
+	  Savepoints: NO
+	*************************** 2. row ***************************
+		  Engine: MRG_MYISAM
+		 Support: YES
+		 Comment: Collection of identical MyISAM tables
+	Transactions: NO
+			  XA: NO
+	  Savepoints: NO
+	*************************** 3. row ***************************
+		  Engine: CSV
+		 Support: YES
+		 Comment: CSV storage engine
+	Transactions: NO
+			  XA: NO
+	  Savepoints: NO
+	*************************** 4. row ***************************
+		  Engine: FEDERATED
+		 Support: NO
+		 Comment: Federated MySQL storage engine
+	Transactions: NULL
+			  XA: NULL
+	  Savepoints: NULL
+	*************************** 5. row ***************************
+		  Engine: PERFORMANCE_SCHEMA
+		 Support: YES
+		 Comment: Performance Schema
+	Transactions: NO
+			  XA: NO
+	  Savepoints: NO
+	*************************** 6. row ***************************
+		  Engine: MyISAM
+		 Support: YES
+		 Comment: MyISAM storage engine
+	Transactions: NO
+			  XA: NO
+	  Savepoints: NO
+	*************************** 7. row ***************************
+		  Engine: InnoDB
+		 Support: DEFAULT
+		 Comment: Supports transactions, row-level locking, and foreign keys
+	Transactions: YES
+			  XA: YES
+	  Savepoints: YES
+	*************************** 8. row ***************************
+		  Engine: BLACKHOLE
+		 Support: YES
+		 Comment: /dev/null storage engine (anything you write to it disappears)
+	Transactions: NO
+			  XA: NO
+	  Savepoints: NO
+	*************************** 9. row ***************************
+		  Engine: ARCHIVE
+		 Support: YES
+		 Comment: Archive storage engine
+	Transactions: NO
+			  XA: NO
+	  Savepoints: NO
+	19、再mysql当中，凡是标识符都可以使用“`”漂号括起来。最好别用，因为再Oracle中报错。
+	20、常见的存储引擎
+		 Engine: MyISAM
+		 Support: YES
+		 Comment: MyISAM storage engine
+		Transactions: NO                                      不支持事务
+			  XA: NO
+	  Savepoints: NO
+	用这个存储引擎管理的表具有以下特征：
+	使用3个文件表示每个表：
+	--格式文件——存储表结构的定义（mytable.frm）
+	--数据文件——存储表行的内容（mytable.MYD）
+	--索引文件——存储表中的索引（mytable.MYI）
+	灵活的AUTO_INCREMENT字段处理
+	可被转换为压缩、只读表来节省空间
+	============================================================
+	   Engine: InnoDB
+		 Support: DEFAULT
+		 Comment: Supports transactions, row-level locking, and foreign keys
+	Transactions: YES
+			  XA: YES
+	  Savepoints: YES
+	每个InnoDB表在数据库目录中以.frm格式文件表示
+	表内容存储在tablespace（这是一个逻辑概念的虚拟空间，无法进行压缩）中
+	这种存储引擎的优点就是：支持事务、行级锁、外键等，这种存储引擎数据的安全得到了保证。InnoDB存储引擎在MySQL服务器奔溃后提供自动恢复。InnoDB引擎还提供级联更新和级联删除。
+	============================================================
+		 Engine: MEMORY
+		 Support: YES
+		 Comment: Hash based, stored in memory, useful for temporary tables
+	Transactions: NO
+			  XA: NO
+	  Savepoints: NO
+	每个表均以.frm格式的文件表示
+	表数据和索引都在内存中
+	这种引擎的缺点是：不支持事务；数据容易丢失（断电会丢失），因为所有的数据和索引都是存储在内存当中
+	优点：查询速度最快
+	21、事务（Transaction）
+	一个事务是一个完整的业务逻辑单元，不可再分
+	比如：银行账户转账，从A 账户向B账户转账10000，需要执行两条update语句
+	update t_act set balance = balance - 10000 where actno = 'act-001';
+	update t_act set balance = balance + 10000 where actno = 'act-002';
+	以上两条DML语句必须要求同时成功或同时失败，不允许一条成功一条失败。
+	为了保证这两条语句同时成功或同时失败，就需要使用数据库的事务机制。
+	22、只有DML语句才和事务有关系。（insert、delete、update）
+	23、事务的特性：ACID
+	A：原子性，事务是最小的工作单元，不可再分
+	C：一致性，事务必须保证多条DML语句同时成功或同时失败
+	I：隔离性，事务A与事务B之间具有隔离
+	D：持久性，最终数据必须持久化到硬盘文件中，事务才算是成功结束
+	24、关于事务之间的隔离性
+	理论上隔离级别包括4个：由低到高
+	第一级别：读未提交（read uncommitted)，当前事务可以读取到对方事务未提交的数据，这一级别存在脏读（Dirty Read）现象。不可以重复读取同一数据。
+	第二级别（Oracle默认隔离等级）：读已提交（read committed）当前事务可以读取对方事务提交之后的数据，但是不可重复读取同一数据。
+	第三级别（MySQL默认隔离等级）：可重复读（repeatable read），但是这里读取到的数据可能不正确，因为其他事务可能已经将数据修改或这删除了。
+	第四级别：序列化读/串行化读（serializable）。两个事务不能并发，只能一个一个的执行。这样解决了以上所有问题，但是效率低。
+	25、演示事务
+	MySQL事务默认情况下是自动提交（执行每条DML语句都会自动提交）的。
+	关闭自动提交：start transaction;
+	演示：
+	drop table if exists t_user;
+	create table t_user(
+		 id int primary key auto_increment,          //这里的自增即使回滚，数据也会一直自加。
+		 username varchar(255)
+	);
+	insert into t_user(username) values('zhangsan');
+	mysql> start transaction;
+	mysql> insert into t_user(username) values ('lisi');
+	mysql> select * from t_user;
+	+----+----------+
+	| id | username |
+	+----+----------+
+	|  1 | zhangsan |
+	|  2 | lisi     |
+	+----+----------+
+	mysql> rollback;                                  //回滚成功
+	mysql> select * from t_user;
+	+----+----------+
+	| id | username |
+	+----+----------+
+	|  1 | zhangsan |
+	+----+----------+
+	26、read uncommmitted演示
+	设置事务的全局隔离级别
+	set global transaction isolation level read uncommitted;
+	查看事务的全局隔离级别
+	 select @@global.transaction_isolation;
+	+--------------------------------+
+	| @@global.transaction_isolation |
+	+--------------------------------+
+	| READ-UNCOMMITTED               |
+	+--------------------------------+
+	27、read committed演示
+	设置事务的全局隔离级别
+	set global transaction isolation level read committed;
+	查看事务的全局隔离级别
+	select @@global.transaction_isolation;
+	+--------------------------------+
+	| @@global.transaction_isolation |
+	+--------------------------------+
+	| READ-COMMITTED                 |
+	+--------------------------------+
+	27、repeatable read事务演示
+	设置事务的的全局隔离级别
+	set global transaction isolation level repeatable read;
+	查看事务的全局隔离级别
+	select @@global.transaction_isolation;
+	+--------------------------------+
+	| @@global.transaction_isolation |
+	+--------------------------------+
+	| REPEATABLE-READ                |
+	+--------------------------------+
+	28、serializable事务演示
+	设置事务的的全局隔离级别
+	set global transaction isolation level serializable;
+	查看事务的全局隔离级别
+	select @@global.transaction_isolation;
+	+--------------------------------+
+	| @@global.transaction_isolation |
+	+--------------------------------+
+	| SERIALIZABLE                   |
+	+--------------------------------+
+	29、索引
+	索引就相当于一本书的目录，在数据库中，查询一张表的时候有两种检索方式：
+	第一种：全表扫描
+	第二种：根据索引扫描检索（效率比较高），缩小了扫描的范围
+	索引虽然可以提高检索效率，但是不可以随意添加索引，因为索引也是数据库中的对象，也需要不断地维护。是有维护成本的。
+	30、什么时候需要添加索引（添加索引是给某个字段或者某些字段加的）
+	--数据量庞大的时候（根据客户的需求和线上的环境）
+	--该字段很少的DML操作（因为字段修改后，索引也需要维护）
+	--该字段经常出现在where子句中（经常根据哪个字段查询）
+	31、主键和具有unique约束的字段自动具有索引 ，所以根据主键查询效率较高
+	32、查看mysql中语句的执行计划 explain …
+	mysql> explain select ename,sal from emp where sal = 5000;
+	+----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
+	| id | select_type | table | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra       |
+	+----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
+	|  1 | SIMPLE      | emp   | NULL       | ALL  | NULL          | NULL | NULL    | NULL |   14 |    10.00 | Using where |
+	+----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
+	给薪资sal字段创建索引
+	create index emp_sal_index on emp(sal);
+	mysql> explain select ename,sal from emp where sal = 5000;
+	+----+-------------+-------+------------+------+---------------+---------------+---------+-------+------+----------+-------+
+	| id | select_type | table | partitions | type | possible_keys | key           | key_len | ref   | rows | filtered | Extra |
+	+----+-------------+-------+------------+------+---------------+---------------+---------+-------+------+----------+-------+
+	|  1 | SIMPLE      | emp   | NULL       | ref  | emp_sal_index | emp_sal_index | 9       | const |    1 |   100.00 | NULL  |
+	+----+-------------+-------+------------+------+---------------+---------------+---------+-------+------+----------+-------+
+	33、创建索引：create index 索引名 on 表名（字段名）;
+			  删除索引：drop index 索引名 on 表名; 
+	34、索引底层采用的数据结构是：B + Tree
+	底层的实现原理：通过B Tree缩小扫描范围，底层索引进行了排序、分区。索引会携带数据在表中的物理地址，通过索引检索到数据之后，获取到关联的物理地址，通过物理地址定位表中的数据，这样的效率是最高的。
+	35、索引的分类：
+	单一索引：给单个字段添加索引
+	复合索引：给多个字段联合起来添加1个索引
+	主键索引：主键上会自动添加索引
+	唯一索引：有unique约束的字段会自动添加索引
+	….
+	36、索引失效的时候：
+	模糊查询的时候，第一个通配符使用%，这个时候索引会失效。
+	select ename from emp where ename like '%A%';
+	37、视图（view）
+	站在不同的角度去看待同一个数据
+	对视图进行增删改查操作，会影响到原表数据（通过视图影响原表，不是直接操作原表的数据），可以对视图进行CRUD操作。
+	38、创建视图
+	create view 视图名 as select empno,ename from emp;
+	39、查看视图
+	select 字段名1,字段名2… from 视图名;
+	40、修改数据
+	update 视图名 set 字段名 = 值… where 条件语句;
+	delete from 视图名 where 条件语句;
+	41、视图的作用
+	试图可以隐藏表的实现细节。保密级别较高的系统，数据库只对外提供相关的视图，java程序员只对视图对象进行CRUD 。
+	42、DBA命令
+	--将数据库中的数据导出：
+	在windows的dos命令窗口中执行
+	导出（整个库）
+	PS C:\Users\leviii> mysqldump mytest > E:\MySql\note\script\mytest.sql -uroot -p625008237
+	导出（指定库中的指定表）
+	PS C:\Users\leviii> mysqldump test emp > E:\MySql\note\script\mytest.sql -uroot -p625008237
+	43、导入数据
+	create database test ;
+	use test;
+	source E:\MySql\note\script\mytest.sql ;
+	44、数据库设计三范式，数据库设计按照这个三范式设计的表不会出现数据冗余。
+	三范式包括：
+	第一范式：任何一张表都因该有主键，每个字段原子性不可再分
+	第二范式：建立在第一范式基础上，所有非主键完全依赖主键，不能产生部份依赖。
+	多对多的情况，使用三张表，加一张关系表两个外键
+	第三范式：建立在第二范式基础上，所有非主键字段要直接依赖主键，不能产生传递依赖。
+	一对多，两张表，多的表加外键。
+	在实际开发中，以客户的需求为主，有的时候会拿冗余换取执行速度。表越多，检索效率越低。表联查扫描结果是笛卡尔积。

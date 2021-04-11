@@ -1,0 +1,112 @@
+	1、SpringMVC：
+		1）是基于Spring的一个框架，实际上就是Spring的一个模块，专门做web开发
+		2）SpringMVC就是servlet的一个升级版
+		3）web开发底层大多数是servlet,框架是在servlet基础上加一些功能，使你做web开发更加方便
+		4）SpringMVC实际上就是一个Spring，也可以创建对象，并把对象放入SpringMVC容器中
+		5）SpringMVC容器中存放的对象一般是控制器对象
+		
+	2、SpringMVC中有一个对象：DispatcherServlet(中央调度器)
+		DispatcherServlet：负责接收用户的请求，把请求转发给Controller对象，最后Controller对象处理请求
+		
+		index.jsp----->DispatcherServlet------->转发（分派）-------->Controller对象（使用@Controller注解创建）
+		
+	3、DispatcherServlet（中央调度器）：
+		1）DispatcherServlet继承HttpServelt
+		2）DispatcherServlet也叫做前端控制器
+		3）DispatcherSerlvet负责接受用户的请求，调用其他控制器对象，并把处理结果显示给用户
+		
+	4、使用SpringMVC的步骤：
+		1）创建web项目
+		2）在pom.xml文件中加入SpringMVC的依赖
+		3）在web.xml文件中注册DispatcherServlet(中央调度器)
+			a、需要在注册DispatcherServlet的时候，加上<load-on-startup>1</load-on-startup>
+			b、DispatcherServlet在创建的过程中会同时创建SpringMVC容器对象，并读取SpringMVC的配置文件，把里面需要创建的对象都创建好，
+				当用户发起请求时就可以直接使用
+		4）创建jsp文件
+		5）创建控制器类：
+			a、在类的上面加上@Controller注解
+			b、在类的方法上面加上@RequestMapping注解
+		6）创建SpringMVC的配置文件
+			a、声明组件扫描器，指定@Controller注解所在的包名
+			b、声明视图解析器，帮助处理视图
+			
+	5、<load-on-startup>1</load-on-startup>：表示Tomcat启动后创建对象的顺序，它的值是整数，数值越小，Tomcat创建对象的时间就越早
+			
+	6、@RequestMapping（请求映射）：
+		1）作用：把一个请求地址和一个方法绑定在一起
+		2）属性：
+			a、value：String，表示请求的url地址，必须是唯一的，不可重复
+			b、method：表示请求的方式，它的值是RequestMethod类的枚举值，例如：RequestMethod.GET...
+			c、produces：表示字符编码的格式{"text/plain;charset=utf-8"}
+			
+		3）位置：
+				1）在方法的上面
+				2）在类的上面
+		3）方法：public ModelAndView doSome(){}
+			a、ModelAndView（是SpringMVC中自带的类）：表示本次请求的处理结果
+				1）Model：数据，请求处理完成后要显示给用户的数据
+				2）View：视图，例如jsp文件
+				3）框架会自动把ModelAndView对象写入到request作用域中
+				
+	7、处理器中的方法（@RequestMapping标注的）的参数：
+		a、这三个参数可以直接在方法的参数部位声明，在方法体内直接使用即可
+			1）HttpServletRequest
+			2）HttpServletResponse
+			3）HttpSession
+		
+		b、请求中所携带的请求参数
+			在方法的参数位置直接声明，注意参数的名字和请求参数要一致
+	
+	8、当方法中参数的名字和请求中参数的名字不一样时：
+		使用@RequestParam注解：
+			1）属性：
+				value：请求中参数的名字
+				required：默认为true（意思是这个参数必须有，否则报错）
+			2）位置：在处理器方法的参数的前面
+			
+	9、按照对象来接收请求参数：
+		1）创建一个java类，这个类的属性名和请求中的参数名一致
+		2）在控制器方法的参数中直接声明这个类，就可以在方法中使用这个类的属性来接收请求参数的值
+		
+	10、控制器方法的返回值：
+		ModelAndView：有数据和视图，对视图执行forward()请求转发
+		String：表示视图，可以是逻辑名称，也可以是完整视图路径
+		void：它既不表示数据，也不能去表示视图
+			在处理AJAX时，可以使用void返回值
+		Object：控制器方法也可以返回Object对象，主要用来处理AJAX请求的处理
+			返回对象时需要使用@ResponseBody注解，将转换后的JSON数据放入到响应体中
+				
+	
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			

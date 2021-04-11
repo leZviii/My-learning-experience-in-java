@@ -1,0 +1,38 @@
+	1、全局刷新和局部刷新：
+		a、全局刷新：整个浏览器被新的数据覆盖。会在网络中传递大量的数据。浏览器需要加载、渲染页面。
+		b、局部刷新：在浏览器的内部发起请求获取数据，改变页面中的部分内容，而其余页面无需加载和渲染。这种方式数据传输量比较少，给用户的感受少
+	2、AJAX就是用来局部刷新的，局部刷新使用的核心对象是异步对象（XMLHttpRequest）。这个异步对象是存储在浏览器内存中的，使用JavaScript语法来创建和使用XMLHttpRequest对象
+	3、AJAX：Asynchronous JavaScript and XML（异步的JavaScript和XML（一种数据格式）），AJAX是一种做局部刷新的方法（2003年），不是一种语言。AJAX包含的技术主要有：JavaScript、Dom、CSS、XML等。核心是JavaScript和XML。
+		JavaScript：负责创建异步对象，发送请求，更新页面的DOM对象，AJAX请求需要服务端的数据
+		XML：一种网络中的传输的数据格式，现在使用的是JSON
+	4、AJAX中使用XMLHttpRequest对象
+		1）创建异步对象：var xmlHttp = new XMLHttpRequest（）；
+		2）给异步对象绑定事件：
+			onreadystatechange：当异步对象发起请求、获取对象时都会触发这个事件，这个事件需要绑定一个指定函数，在函数中处理状态的变化。每当readyState属性改变的时候，这个事件就会被触发。
+			例如：xmlHttp.onreadystatechange = function（）{
+				处理语句；
+				if（xmlHttp.readyState == 4 && xmlHttp.status == 200）{
+					//此时说明异步对象已经将数据解析完毕，可以使用
+					//并且网络请求状态也是成功的，可以处理数据
+				}
+			}
+			异步对象的属性：
+				a、readyState（表示异步对象请求的状态变化）
+					1）readyState = 0：请求未初始化，创建异步请求对象
+						var xmlHttp = new XMLHttpRequest（）； 
+					2）readyState = 1：初始化异步请求对象，
+						xmlHttp.open（请求方式，请求地址，true）
+					3）readyState = 2：异步对象发送请求
+						xmlHttp.send（）
+					4）readyState = 3：异步对象接收应答数据，从服务端返回数据，XMLHttpRequest内部处理
+					5）readyState = 4：异步对象已经将数据解析完毕，此时可以读取数据
+				b、status（表示网络请求的状态）200、404、500
+		3）初始异步请求对象：
+			xmlHttp.open（”请求方式【get/post】“，“服务端的访问地址”，【同步请求false/异步请求true默认】）
+			例如：xmlHttp.open（“get”，“loginServlet？name=zs&pwd=123”，true）；
+		4）使用异步对象发送请求
+			xmlHttp.send（）；
+	5、获取服务端的数据，使用异步对象的属性：responseText
+		例如：var data = xmlHttp.responseText；    //获取返回数据
+		document.getElementById（“name”）.value = data；//更新数据
+	6、异步对象的回调：当请求的状态发生变化的时候，异步对象会自动调用onreadystatechange事件的绑定函数

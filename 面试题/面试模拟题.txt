@@ -1,0 +1,2395 @@
+	1、重写与重载区别：
+		重载：
+			JAVA中允许同一个类中出现多个方法名相同
+			但是参数列表不同的方法，这种现象就被称之为重载。
+			
+			重载要求两个方法的名称必须相同，但是参数列表不同（个数不同或者参数类型不同或者参数类型的出现顺序不同）
+			
+			目的：方法在接受不同的参数时实现不同的功能
+		
+		重写：
+			发生在继承的过程中，子类对父类的方法实现细节进行重新的定义，
+			
+			1）在重写的时候，子类不能降低方法的访问权限，但是可以扩大。
+			2）由private或者final修饰的方法都不能被重写。private修饰的方法不能被继承，final修饰的不能被修改。
+			3）在重写方法的时候，抛出的异常可以是父类方法抛出的异常的全集或者子集或者空集，即不能比父类抛出更多异常。
+			4）在重写方法的时候方法的返回值类型必须是原方法返回值类型的子类或者一样，即可以缩小，但是不可以扩大范围。
+			
+	2、throw与throws的区别：
+		throws：
+			1）声明位置：方法名之后
+			2）作用：通知开发人员，当前方法在运行时有可能抛出的异常
+			3）携带数据：throws后面携带的【异常类型】可以是一个，也可以是多个，使用”，“隔开。
+			4）调用：当一个方法被throws修饰时，调用该方法必须要考虑异常的处理。
+		throw：
+			1）声明位置：在当前方法的执行体中
+			2）作用：throw是一个命令，执行时会抛出一个指定的异常对象
+			3）携带数据：throw后面携带的是【异常对象】，一次只能携带一个异常对象。
+			4）调用：当一个方法的内部存在throw命令时，在调用的时候可以考虑异常的处理，也可以不去考虑处理。
+			
+	3、接口和抽象类的区别：
+		接口：
+			1）是一种特殊的类文件
+			2）作用：制定规则、降低耦合度
+			3）使用规则：
+				接口中属性默认都是静态常量属性，
+				接口中的方法都是抽象的，
+				如果需要定义具体方法的实现，此时方法应使用default关键字修饰该方法。
+				接口的方法不可以是private修饰。
+				接口与接口之间可以多继承，但是接口和接口之间不能相互实现，
+				接口不能存在构造方法，所以接口不能被实例化
+		抽象类：
+			1）抽象类由abstract修饰
+			2）抽象类的作用：降低接口和类之间的实现难度
+			3）使用规则：
+				抽象类中可以声明抽象方法，也可以声明具体方法
+				抽象类声明抽象方法必须由子类进行重写
+				抽象类实现接口时，不需要对接口的方法进行重写
+				抽象类有构造方法，但是不能使用
+				
+		JDK1.8之前 : 
+			语法 : 
+				抽象类 : 方法可以有抽象的,也可以有非抽象(实现一些共同的方法)的,有构造器
+				接口 : 方法都是抽象的,属性都是常量,默认有public static final修饰
+			设计 : 
+				抽象类 : 同一类事物的抽取,比如针对Dao层的封装,比如BaseDao,BaseServiceImpl
+				接口 : 通常更像是一种标准的制定,系统之间对接的标准
+				例子 : 
+					a、单体项目,分层开发,interface作为各层之间的纽带,在controller层注入UserService在Service层注入UserDao
+					b、分布式项目,面向服务的开发,抽取服务service,这个时候,就会产生服务的提供者和服务的消费者两个角色,而这两个角色之间的纽带依然是接口
+		JDK1.8之后 : 
+			接口可以有实现的方法,主要需要在方法的上面加上default或者static(但是一般是空实现)
+			多继承、多重继承、多实现
+				多重继承 : A -> B -> C(爷孙三代)
+				多实现 : Person implments Runable Enable
+				多继承 : 接口可以多继承,类只支持单继承
+				
+	4、HttpSession与Cookie的区别：
+		1）存储位置不同：
+			Cookie：存放在客户端的计算机上（浏览器内存/硬盘）
+			HttpSession：存放在服务端计算机的内存中
+		2）存储的数据类型不同：
+			Cookie：存储的共享对象只能是String类型
+			HttpSession：存储的对象可以是任意类型的共享数据Object
+		3）数据的数量：
+			Cookie：一个Cookie对象只能存放一个共享数据
+			HttpSession：HttpSession使用Map集合存储共享数据，所以可以存放任意数量的共享数据
+		4）参照物：
+			Cookie：Cookie相当于客户在服务端的【会员卡】
+			HttpSession：相当于客户在服务端的【私人保险柜】
+			
+	5、Http服务器调用JSP文件的步骤：
+		1）Http服务器将JSP文件内容【编辑】到一个Servlet接口实现类中
+		2）Http服务器将这个Servlet接口实现类【编译】为.class文件
+		3）Http服务器负责创建这个class的实例对象，这个实例对象就是Servlet实例对象
+		4）Http服务器通过Servlet实例对象调用_jspService（）方法，将JSP文件内容写入到响应体
+		
+		Http服务器【编辑】与【编译】JSP文件的位置：在IDEA的work文件夹下
+		
+	6、面向对象三大特征：分装、继承、多态
+	
+	7、多线程工作状态，各个状态之间的转换
+	
+	8、多线程的同步和异步
+	
+	9、数据库七个查询命令
+	
+	10、MyBatis映射文件中#和$的区别：
+		1）#使用“？”在sql语句中占位，配合PrepareStatement执行sql语句，效率较高
+		2）#能够避免sql注入的问题，更安全
+		3）$在sql语句中不使用占位符，配合Statement执行sql语句，效率低
+		4）$有sql注入的风险
+		5）$经常用在替换表名和列名的地方
+	
+	11、怎样理解面向切面编程（AOP）
+		１）需要在分析项目功能时，找出切面
+		２）合理的安排切面的执行时间（在目标方法之前还是在目标方法之后）
+		３）合理的安排切面执行的位置（哪个类、哪个方法需要增强功能）
+	
+	12、动态代理
+		a、实现方式：
+			1）JDK动态代理：使用JDK中的Proxy（类）、Method（类）、InvocationHandler（接口）来创建代理对象，要求目标类必须实现接口
+			2）CGLIB动态代理：第三方的一个工具库，创建代理对象，原理是继承，通过继承这个目标类，创建一个子类，这个子类就是代理对象。CGLIB要求目标类不能是final修饰的
+		b、作用：
+			1）在代码不改动的情况下，实现功能的增强
+			2）减少代码的重复
+			3）专注业务逻辑，不需要考虑其他
+			4）解耦合，让业务功能和非业务功能分离
+			
+	13、SpringMVC执行过程源码分析：
+		1）Tomcat启动，创建容器对象；
+			a、通过<load-on-start>标签创建DispatcherServlet对象
+			b、DispatcherServlet继承了HttpServlet，是一个servlet，在被创建是会执行init()方法
+			c、init()方法会将容器对象放入servlet的全局作用域对象中
+				init(){
+					WebApplicationContext context = new ClassPathXmlApplicationContext("SpringMVC配置文件");
+					getServletContext().setAttribute(key,context);
+				}
+			d、创建容器对象的作用：
+				1）创建容器对象时会读取SpringMVC配置文件中的内容，会将其中需要创建的对象都创建好，放在SpringMVC容器中
+					例如Contorller对象
+		2）处理请求：
+			a、执行servlet的service()方法
+				protected void service(HttpServletRequest req, HttpServletResponse resp){
+					protected void doService(HttpServletRequest request, HttpServletResponse response){
+						protected void doDispatch(HttpServletRequest request, HttpServletResponse response){
+							这里就会调用@RequestMapping注解标注的方法;
+						}
+					}
+				}
+				
+	14、HttpMessageConvert（接口）：SpringMVC的消息转换器源码分析：
+		HttpMessageConvert{
+			//canWrite方法作用是检查控制器方法的返回值，能不能转换为var2表示的数据格式，如果能就返回true，否则false
+			MediaType表示数据格式：例如JSON、xml...
+			MediaType类的内部定义了一些常量，用来表示各种数据格式，并在静态代码块中初始化了一些格式
+			boolean canWrite(Class<?> var1, @Nullable MediaType var2);
+			
+			//write方法可以把控制器方法的返回值对象，转换为期望的数据格式
+			void write(T var1, @Nullable MediaType var2, HttpOutputMessage var3) throws IOException, HttpMessageNotWritableException;
+		}
+		
+		<mvc:annotation-driven>注解驱动：
+		1）完成java对象到json、xml、text、二进制等数据格式的转换
+			HttpMessageConvert(接口)：消息转换器，其中定义了上述转换的方法
+		2）<mvc:annotation-driven>注解驱动被加入到SpringMVC配置文件后，SpringMVC会自动创建HttpMessageConvert接口的8个实现类对象,这8个对象会存放在
+		一个ArrayList<HttpMessageConvert>集合中
+		包括：
+			a、MappingJackson2HttpMessageConvert：负责读取和写入JSON格式的数据，利用Jackson的ObjectMapper读写JSON数据，操作Object类型数据，
+				可以读取application/json，响应媒体类型：application/json
+			b、StringHttpMessageConvert：负责读取字符串格式的数据和写出字符串格式的数据
+			
+		控制方法的返回值为Object时框架的处理过程：
+		1）框架会把返回值对象，调用框架中ArrayList<HttpMessageConvert>中的每个类的canWrite()方法，检查哪个HttpMessageConvert接口的实现类可以处理这个对象
+		2）然后调用这个实现类的write()方法，将对象按照指定的数据类型完成转换
+		
+	15、拦截器和过滤器的区别：
+		1）过滤器是Servlet规范中的对象，拦截器是框架定义的对象
+		2）过滤器是实现Filter接口，拦截器实现HandlerInterceptor接口
+		3）过滤器用来设置request、response的参数、属性，侧重对数据进行过滤；拦截器是用来验证请求的，能够截断请求
+		4）过滤器是在拦截器之前执行的
+		5）过滤器是Tomcat服务器创建的对象，拦截器是SpringMVC框架创建的对象
+		6）过滤器是一个执行时间点，而拦截器有三个执行时间点
+		7）过滤器可以处理jsp、js、html等等，拦截器是侧重拦截Controller对象，如果你的请求不能被DispatcherServlet接收，
+			这个请求就不会被拦截器处理
+			
+	16、SpringMVC中将拦截器对象和处理器对象存放在HandlerExecutionChain（类）中：
+		public class HandlerExecutionChain{
+			private final Object handler; //处理器对象
+			@Nullable
+			private HandlerInterceptor[] interceptors;
+			@Nullable
+			private List<HandlerInterceptor> interceptorList;//拦截器对象存放在一个集合中
+		}
+	
+	17、SpringMVC中请求的处理过程：
+		1）用户发起请求
+		2）DispatcherServlet（中央调度器）接收请求
+		3）DispatcherServlet将请求转交给处理器映射器，处理器映射器可以根据请求从容器中拿到处理器对象，
+			将这个对象存放在处理器执行链（HandlerExecutionChain:类，拦截器对象也存放在这里）中
+			处理器映射器：
+				SpringMVC框架中的一种对象，框架把实现了HandlerMapping接口的类都叫做映射器
+		4）DispatcherServlet将HandlerExecutionChain中的处理器对象交给处理器适配器对象（多个）
+			处理器适配器：
+				实现了HandlerAdapter接口的类
+				作用：执行处理器方法
+		5）DispatcherServlet将处理器方法返回的ModelAndView对象交给视图解析器,视图解析器对象：InternalResourceViewResolver
+			InternalResourceViewResolver会创建InternalResourceView对象，InternalResourceView对象中有一个属性：url=xxxx/xxx/xx.jsp
+			视图解析器：
+				实现了ViewResolver接口的类
+				作用：组成视图的完成路径，使用前缀和后缀，并创建View对象，View是一个接口，表示视图。在框架中的jsp、html不是用String表示的，而是用
+					视图表示的
+		6）DispatcherServlet把InternalResourceView对象获取到调用View类中的方法，把Model中的数据，放入到request作用域对象中，执行对象的forward，
+			完成请求
+			
+	18、jsp中的九大内置对象:
+		pageContext		PageContext
+		request		HttpServletRequest
+		session		HttpSession
+		application		ServletContext
+		page		Object(this)
+		response		HttpServletResponse
+		config		ServletConfig
+		out		JspWriter
+		exception		Throwable
+		
+	19、java对象转换为js中的变量,当java对象为8大基本数据类型或者String类型时,可以直接转换
+	
+	20、面向对象和面向过程的区别 : 
+		1) 出发点不同
+			面向对象使用符合常规思维的方式来处理客观世界的问题，强调把解决问题领域的“动作”直接映射到对象之间的接口上。
+			而面向过程则强调的是过程的抽象化与模块化，是以过程为中心构造或处理客观世界问题。
+		2) 层次逻辑关系不同
+			面向对象使用计算机逻辑来模拟客观世界中的物理存在，以对象的集合类作为处理问题的单位，尽可能地使计算机世界向客观世界靠拢，
+			以使处理问题的方式更清晰直接，面向对象使用类的层次结构来体现类之间的继承与发展。面向过程处理问题的基本单位是能清晰准确地表达过程的模块，
+			用模块的层次结构概括模块或模块间的关系与功能，把客观世界的问题抽象成计算机可以处理的过程。
+		3) 数据处理方式与控制程序方式不同
+			面向对象将数据与对应的代码封装成一个整体，原则上其他对象不能直接修改其数据，即对象的修改只能由自身的成员函数完成，
+			控制程序方式上是通过“事件驱动”来激活和运行程序的。而面向过程是直接通过程序来处理数据，处理完毕后即可显示处理的结果，在控制方式上是按照设计调用或返回程序，
+			不能自由导航，各模块之间存在着控制与被控制，调动与被调用的关系。
+		4) 分析设计与编码转换方式不同
+			面向对象贯穿于软件生命周期的分析、设计及编码中，是一种平滑的过程，从分析到设计再到编码是采用一致性的模型表示，实现的是一种无缝连接。
+			而面向过程强调分析、设计及编码之间按规则进行转换贯穿于软件生命周期的分析、设计及编码中，实现的是一种有缝的连接。
+			
+	21、JDK、JRE和JVM :
+		JDK : Java Development Kit,Java开发工具包,提供了Java的开发环境和运行环境,包含了编译Java源文件的编译器Javac,还有调试和分析的工具
+		JRE : Java Runtime Environment,Java运行时环境,包含了Java虚拟机以及一些基础库类
+		JVM : Java Virtual Machine,Java虚拟机,提供了执行字节码文件的能力
+		JVM是实现Java跨平台的核心,但JVM本身并不是跨平台的,不同的平台需要不同的JVM
+		
+	22、== 和 equals : 
+		== : 比较基本数据类型时,比较的是数值,比较引用类型时,比较的是对象指向的地址
+		equals : 默认比较的是地址,因为这个方法最初定义在Object上,默认的实现就是比较地址
+				当需要使用equals去比较值时,那么就需要对象的实体类中重写equals方法,就比如String
+				
+	23、final : 
+		final修饰类,表示类不可变,不可继承,比如String的不可变性,是由于底层的byte数组被final修饰
+		final修饰方法,便是该方法不可以被重写,比如模板方法,可以固定我们的算法
+		final修饰变量,这个变量就是一个常量
+		当final修饰的是基本数据类型时,这个值不能被改变
+		修饰的是引用数据类型时,引用的指向不能被改变
+		
+	24、String、StringBuffer、StringBuilder
+		String跟其他两个类的区别是 : 
+			String是final类型,每次声明都是不可变对象,所以每次操作都会产生新的String对象,然后将指针指向新的String对象.
+		StringBuffer,StringBuilder都是在原有对象上进行操作,所以当需要频繁修改字符串的内容时推荐使用StringBuilder和StringBuffer
+		StringBuffer和StringBuilder : 
+			前者是线程安全的,后者是线程不安全的.
+			线程不安全性能更高,所以在开发中,优先使用StringBuilder
+			
+	25、ArrayList和LinkedList : 
+		1) ArrayList底层是一个数组,在内存中是一块连续的内存空间,长度是固定的
+			LinkedList底层是双向链表,在内存中不连续
+		2) ArrayList,查找快,因为是连续的内存空间,方便寻址,但删除,插入慢,因为需要发生数据的迁移
+			LinkedList,查找慢,因为需要通过指针一个一个寻找,但删除,插入快,因为只需要改变前后两个节点的指针指向即可
+			如果需要确定某个元素的位置,那么需要对数组和链表进行遍历,这时两种数据结构速度差不多
+		3) 数组的扩容,数组的初始容量是10 : 
+			a、创建一个新数组,新数组的长度是原数组的1.5倍(采用位运算) : 
+				int oldCapacity = elementData.lenth;
+				int newCapacity = elementData.legth + (elementData.length >> 1);
+			b、将原数组的数据再迁移到新数组
+				elementData = Array.copyOf(elementData,newCapacity);
+		4) ArrayList : 基于动态数组,连续内存存储.数组长度固定.
+			LinkedList : 基于链表,可以存储在分散的内存中.查询时需要逐一遍历,只能使用iterator,不能使用for循环.
+				因为如果使用for循环,那么每次在调用get(i)取得元素时都需要对整个集合进行遍历,效率低
+				另外不要试图使用indexOf(i)来获取元素下标,然后利用下标对List进行遍历.因为如果indexOf(i)返回空值时,会遍历整个集合
+				
+	26、SpringIOC的使用方式 : 
+		1) 配置文件的方式 :
+			<bean>
+				<args></args>
+			</bean>
+			a、解析XML文件(Dom4j框架)
+			b、调用方法(set方法)实现注入(反射机制)
+		2) 使用注解 : 
+			class UserController{
+				@Autowired
+				private UserService userService;
+			}
+			a、解析类(将使用到注解的这个类交给Spring容器管理),获取到类的注解信息和属性的注解信息(使用反射)
+			b、赋值
+			
+	27、如何在双向链表A和B之间插入C,假设我们现在定位到了A节点
+		C.pre = A;
+		C.next = A.next;
+		A.next.pre = C;
+		A.next = C;
+		
+	28、HashSet底层采用的是HashMap来实现存储,其值作为HashMap的key
+		public boolean add(E e){
+			return map.put(e,PRESENT)==null;
+		}
+		a、采用Hash算法,通过计算存储对象的hashcode,然后跟(数组长度-1)做位运算,得到我们要存储在数组的那个下标下,如果此时计算出的位置没有其他元素,直接存储,
+			无需比较,这是此需要使用到hashCode()方法.但是随着元素的不断增加,就可能出现"哈希冲突",不同的对象计算出来的Hash值是相同的,这个时候,我们就需要比较,
+			需要使用到equals()方法.如果equals()方法结果相同,那么就不再插入,如果不相同,那么就会在此节点形成一个链表(1.7加到链头,1.8加到链尾)
+			1.8后,随着链表的长度不断增加,链表会转换为红黑树
+	
+	29、ArrayList和Vector
+		ArrayList : 线程不安全,效率高,常用
+		Vector(动态数组) : 线程安全的,效率低
+		Vector的源码 : 
+			public synchronized void ensureCapacity(int minCapacity){
+				if (minCapacity > 0){
+					modCount++;
+					ensureCapacityHelper(minCapacity);
+				}
+			}
+			
+	30、HashTable&HashMap&ConcurrentHashMap : 
+		HashTable : 线程安全的对象,但是效率比较低
+		HashMap : 线程不安全的对象,但是效率比较高
+		Collections.synchronizedMap(),工具类提供了同步包装器的方法,来返回具有线程安全的集合对象,但是性能依然有问题
+		public static <K,V> Map<K,V> synchronizedMap(Map<K,V> m){
+			return new SynchronizedMap<>(m);
+		}
+		//在这个类的内部方法实现上,也只是单纯的加上了锁
+		public V put(K key,V value){
+			synchronized (mutex) {
+				return m.put(key,value);
+			}
+		}
+		为了解决这样的矛盾,所以JDK提供了并发包,来平衡这样的问题(java.util.concurrent)
+		ConcurrentHashMap(分段锁) : 将锁的力度变小,兼顾安全和效率
+			将一个HashMap分成多段,每个段添加各自的同步锁
+			
+		这三种集合在实际开发中 : 
+			a、如果不是多个线程同时访问一个资源,那么优先使用HashMap
+			b、多个线程共享一个资源时,优先使用ConcurrentHashMap
+		HashMap : 底层数组 + 链表
+			HashMap的主干是一个Entry数组。Entry是HashMap的基本组成单元，每一个Entry包含一个key-value键值对。
+			JDK8开始链表高度达到8,数组长度达到64,链表会转化为红黑树,元素以内部类Node节点存在
+			hashMap存值过程 : 
+				1) 计算key的hash值,二次hash,然后对数组长度取模,对应到数组下标
+				2) 如果没有产生hash冲突(下标位置没有元素),那么直接创建Node存入数组
+				3) 如果产生了hash冲突,那么先进行equals()比较,不同则会判断链表的长度插入到链表中,链表高度达到8,并且数组长度达到64,那么会转换为红黑树
+					长度低于64则将红黑树转换为链表
+				4) key值为null,存在下标为0的位置
+		哈希冲突的解决方案有多种:开放定址法（发生冲突，继续寻找下一块未被占用的存储地址），再散列函数法，链地址法，
+		而HashMap即是采用了链地址法，也就是数组+链表的方式
+		ConcurrentHashMap : 
+			JDK7 : 
+				数据结构 : ReentranLock + Segment + HashEntry,一个Segment中包含一个HashEntry数组,每个HashEntry又是一个链表结构
+				元素查询 : 二次Hash,每一次Hash定位到Segment,第二次Hash定位到元素所在的链表的头部
+				锁 : Segment分段锁,Segment继承了ReentranLock,锁定操作的Segment,其他的Segment不受影响,并发度为Segment个数,可以通过构造函数指定,数组扩容
+					不会影响到其他的Segment.
+				get方法无需加锁,volatile保证
+			JDK8 : 
+				数据结构 : synchronized + CAS(Compare and swap) + Node + 红黑树,Node的val和next都用volatile修饰,保证可见性.
+					查找,替换,复制操作都使用CAS
+				锁 : 锁链表的head节点,不影响其他元素的读写,锁粒度更细,效率更高,扩容时,阻塞所有的读写操作,并发扩容
+				读操作无锁 : 
+					Node的val和next都用volatile修饰,读写线程对该变量互相可见
+					数组用volatile修饰,保证扩容时被读线程感知
+				CAS :
+					1) 在内存地址V当中，存储着值为10的变量
+					2) 此时线程1想要把变量的值增加1。对线程1来说，旧的预期值A=10，要修改的新值B=11
+					3) 在线程1要提交更新之前，另一个线程2抢先一步，把内存地址V中的变量值率先更新成了11
+					4) 线程1开始提交更新，首先进行A和地址V的实际值比较（Compare），发现A不等于V的实际值，提交失败
+					5) 线程1重新获取内存地址V的当前值，并重新计算想要修改的新值。此时对线程1来说，A=11，B=12。这个重新尝试的过程被称为自旋
+					6) 这一次比较幸运，没有其他线程改变地址V的值。线程1进行Compare，发现A和地址V的实际值是相等的
+					7) 线程1进行SWAP，把地址V的值替换为B，也就是12
+					从思想上来说，Synchronized属于悲观锁，悲观地认为程序中的并发情况严重，所以严防死守。CAS属于乐观锁，乐观地认为程序中的
+						并发情况不那么严重，所以让线程不断去尝试更新
+						
+	31、开发一个自己的栈 : 
+		FILO(First In Last Out) : 先进后出
+		底层是一个数组,存数据 : 
+			array[index++] = value;
+		取数据 : 
+			array[array.length - 1];
+		
+	32、实现一个双向链表 : 
+		1) 节点类 : 
+			class Node<T>{
+				Node pre;
+				Node next;
+				T data;
+			}
+	
+	33、IO流的分类及选择 : 
+		1) 分类 : 
+			按方向分 : 输入流,输出流(注意,是站在程序的角度来看方向),输入流用于读文件,输出流用于写文件
+			按读取的单位分 : 字节流(二进制文件),字符流(文本文件)
+			按处理的方式分 : 节点流,处理流,比如FileInputStream和BufferedInputStream(后者带有缓冲区功能-byte[])
+			IO流的四大基本类 : 
+				InputStream、OutputStream、Reader、Writer
+		2) 选择 : 
+			字节流操作的基本单元为字节；字符流操作的基本单元为Unicode码元。
+			字节流默认不使用缓冲区；字符流使用缓冲区。
+			字节流通常用于处理二进制数据，实际上它可以处理任意类型的数据，但它不支持直接写入或读取Unicode码元；
+			字符流通常处理文本数据，它支持写入及读取Unicode码元
+	
+	34、Java序列化 : 
+		Java提供了一种对象序列化的机制,该机制中,一个对象可以被表示为一个字节序列,该字节序列包含该对象的数据、有关对象的类型的信息和存储在对象中的
+		数据的类型.
+		将序列化对象写入文件之后,可以从文件中读取出来,并且进行反序列化,也就是说,对象的类型信息、对象的数据,还有对象中的数据类型可以用来在内存中新建对象
+		整个过程都是在Java虚拟机(JVM)独立的,也就是说,在一个平台上序列化的对象可以在另一个完全不同的平台反序列化.
+		
+	35、serialVersionUID : 
+		当执行序列化的时候,我们写对象到磁盘中,会根据当前这个类的结构生成一个版本号ID
+		当反序列化的时候,程序会比较磁盘中的序列化版本号ID跟当前的类结构生成的版本号ID是否一致,如果一致,则反序列化成功,否则失败
+		加上版本号,有助于当我们的类结构发生改变时,依然可以反序列化成功
+		注意 : 
+			静态变量不会被序列化（ static,transient）
+			当一个父类实现序列化，子类自动实现序列化，不需要显式实现Serializable接口。
+			当一个对象的实例变量引用其他对象，序列化该对象时也把引用对象进行序列化。
+			
+	36、罗列常见的5个运行时异常 : 
+		算数异常
+		空指针异常
+		类型转换异常
+		数组下标越界异常
+		NumberFormatException(数字格式化异常)
+	
+	37、罗列常见的5个非运行时异常 : 
+		IOException
+		SQLException
+		FileNotFoundException
+		NoSuchFileException
+		NoSuchMethodException
+		
+	38、创建线程的三种方式 : 
+		继承Thread
+		实现Runable接口
+		实现Callable接口(可以获取线程执行后的返回值)
+		但实际后两种,更准确的理解是创建了一个可执行的任务,要采用多线程的方式执行,
+		还需要通过创建Thread对象来执行,比如new Thread(new Runable(){}).start();这样的方式来执行
+		在实际开发中,我们常采用线程池的方式来完成Thread的创建,更好的管理线程池.
+		案例 : 
+			实现Runable接口只是创建了一个可以执行的任务,并不是开启了一个线程
+			实现Callable接口和Runable接口都是创建一个可执行的任务,但是不同的是Callable可以获取返回值
+			后两种方法本质上也是继承Thread,然后创建Thread对象,执行start()方法
+			public static void main(String[] args){
+				MyThread myThread = new MyThread();
+				myThread.start();
+			
+				//创建任务对象
+				MyTask mytask = new MyTask();
+				new Thread(mytask).start();//启动线程
+			}
+			class MyTask implements Runable{
+				@override
+				public void run(){
+					System.out.println(Thread.currentThread().getName() + ": running....");
+				}
+			}
+			class MyThread extends Thread{
+				@override
+				public void run(){
+					System.out.println(Thread.currenThread().getName() + ": running....");
+				}
+			}
+			class myTask2 implements Callable<T>{
+				@override
+				public T call() throws Exception{
+					return T;
+				}
+			}
+	
+	38、线程的状态 : 
+		new、runnable、blocked、waiting、timed waiting、terminated
+		1) 当进入synchronized同步代码块或同步方法时,且没有获取到锁,线程就进入了blocked状态,直到锁被释放,重新进入runnable状态
+		2) 当线程调用wait()或者join时,都会进入到waiting状态,当调用notify或者notifyAll时,或者join的线程执行结束后,会进入runnable状态
+		3) 当线程调用sleep(time),或者wait(time)时,进入timed waiting状态,当休眠时间结束后,或者调用notify或notifyAll时会重新进入runnable状态
+		4) 程序执行结束后,线程进入terminated状态
+		
+	39、线程安全 : 
+		当多个线程同时访问一个对象时,如果不进行额外的同步控制或其他的协调操作,调用这个对象的行为都可以获取正确的结果,那我们就说这个线程是安全的
+		实现线程安全的方式 : 
+			在源码中,采用synchronized关键字给代码块或者方法加锁,比如StringBuffer
+		在实际开发中,如果需要拼接字符串 : 	
+			场景一 : 如果是多个线程访问同一个资源,那么就需要上锁,才能保证线程的安全性
+			场景二 : 如果每个线程访问的是各自的资源,那么就不需要考虑线程的安全
+	
+	40、sleep和wait的区别
+		1) 所属的类不同 : 
+			sleep方法是定义在Thread上
+			wait方法是定义在Object上
+		2) 对于锁资源的处理方式不同 : 
+			sleep不会释放锁,
+			wait会释放锁
+		3) 适用范围 : 
+			sleep可以使用在任何代码块
+			wait方法必须在同步代码块执行
+		4) 与wait配套使用的方法
+			void notify() : 随即唤醒一个线程
+			Wakes up a single thread that is waiting on this object's monitor.
+			唤醒在此对象监视器上等待的单个线程
+			void notifyAll()
+			Wakes up all threads that are waiting on this object's monitor.
+			唤醒所有在此对象监视器上的所有线程
+			void wait()
+			Causes the current thread to wait until another thread invokes the notify() method or the notifyAll() method for this object.
+			导致当前线程等待,知道其他线程调用此对象的notify()方法或者notifyAll()方法
+		5) wait为什么要定义在Object中,而不是定义在Thread中 : 
+			在同步代码块中,我们需要一个对象锁来实现多线程的互斥效果,也就是说,Java的锁是对象级别的,而不是线程级别的
+		6) wait为什么需要写在同步代码块中
+			原因是避免CPU切换到其他线程,而其他线程又提前执行了notify()方法,那样就无法达到我们预期的效果(先wait再由其他线程来唤醒),
+			所以需要一个同步锁来保护.
+		7) 生命周期 : 
+			当线程调用wait()或者join()时,都会进入到waiting状态,当调用notify()或者notifyAll()时,或者join的线程执行结束后,会进入runnable状态
+			当线程调用sleep(time),或者wait(time)时,进入time waiting状态
+			
+	41、ThreadLocal : 
+		ThreadLocal实现在线程的上下文传递对象
+		为每个线程创建一个副本,实现在线程的上下文传递对象
+		1）实际的通过ThreadLocal创建的副本是存储在每个线程自己的threadLocals中的；
+	　	2）为何threadLocals的类型ThreadLocalMap的键值为ThreadLocal对象，因为每个线程中可有多个threadLocal变量，就像上面代码中的longLocal和stringLocal；
+	　	3）在进行get之前，必须先set，否则会报空指针异常；
+	　　    如果想在get之前不需要调用set就能正常访问的话，必须重写initialValue()方法。
+		最常见的ThreadLocal使用场景为 用来解决 数据库连接、Session管理等
+		不管是什么框架,最本质的操作都是基于JDBC,当我们需要跟数据库打交道的时候,都需要有一个connection
+		事务的提交 : connection.commit();
+		事务的回滚 : connection.rollback();
+		我们可以在ThreadLocal中保存这个connection对象,这样可以保证不同的dao接口中事务可以同时提交或者回滚.
+		
+	42、Java中的类加载机制 : 
+		1) JVM使用Java的流程 : 
+			a、Java源文件---->编译---->class文件
+			b、类加载器ClassLoader会读取这个.class文件,并将其转换为java.lang.Class的实例对象.有了该实例对象,就可以使用它来创建对象,调用方法.
+		2) Java中需要用到的Class类
+			a、Java内部自带的核心类,位于$JAVA_HOME/jre/lib,其中最著名的莫过于rt.jar
+			b、Java内部的扩展类,位于$JAVA_HOME/jre/lib/ext目录下
+			c、我们自己开发的类或项目开发用到的第三方jar包,位于我们的项目下,比如WEB-INF/lib目录下
+		3) 针对不同的来源,Java分了不同的ClassLoader来加载
+			a、Java核心类,这些Java运行的基础类,由一个名为BootstrapClassLoader加载器负责加载.这个类加载器被称为"根加载器或者引导加载器"
+				注意 : BootstrapClassLoader不继承ClassLoader,是由JVM内部实现.法力无边,所以通过Java程序访问不到,得到的是null.
+			b、Java扩展类,是由ExtClassLoader负责加载,被称为"扩展类加载器"
+			c、项目中编写的类,是由AppClassLoader来负责加载,被称为"系统类加载器"
+			
+	43、Ajax : 
+		1) 原理 : 
+			通过XMLHttpRequest对象来向服务器发异步请求,从服务器获取数据,然后用JavaScript来操作DOM而更新页面
+		2) Ajax应用的五个步骤 : 
+			a、建立XMLHttpRequest对象
+			b、设置回调函数
+			c、使用open方法与服务器建立连接
+			d、向服务端发送数据
+			e、在回调函数针对不同响应状态进行处理
+		3) XMLHttpRequest是Ajax的核心机制,他是在IE5中首先引入的,是一种支持异步请求的技术,简单的说,就是JavaScript可以及时向服务器提出服务器请求和处理
+			响应,而不阻塞用户.达到无刷新的效果.
+			
+	44、JavaScript的原型机制 : 
+		JavaScript的原型有一个关键的作用就是来扩展其原有类的特性,比如下面这段代码,给String扩展了hello方法.很多的框架就是采用这种方式进行扩展,
+		从而让框架更加易用.
+		var str = "abc";
+		String.prototype.hello=function(){
+			alert("通过原型的方式来扩展原有的类的方法或者属性");
+		}
+		str.hello();
+		
+	45、JSP和Servlet的区别
+		技术的角度 :
+			JSP本质上是一个Servlet
+			JSP的工作原理 : JSP-->翻译-->Servlet(java)-->编译-->class(最终跑的文件)
+		应用的角度 : 
+			JSP = HTML + java
+			Servlet = Java + HTML
+			各取所长,JSP的特点在于实现视图,Servlet的特点在于实现控制逻辑
+		1) Servelt是单实例的
+			生命周期 : 
+				创建对象-->初始化-->service()-->doXXX()-->销毁
+			创建对象的时机 :
+				a、默认是每一次访问该Servlet的时候创建
+				b、也可以通过配置web.xml文件来改变创建时机,比如在容器启动的时候去创建
+					例如DispatcherServlet(SpringMVC前端控制器)就是一个例子
+					<load-on-startup>1</load-on-startup>
+			执行的次数 :
+				对象的执行只有一次,单例
+				初始化一次
+				销毁一次
+			关于线程安全 : 
+				构成线程不安全的三个因素 : 
+					a、多线程的环境(有多个客户端同时访问一个Servlet)
+					b、多个线程共享资源,比如一个单例对象(Servlet就是单例的)
+					c、这个单例对象是有状态的(比如在Servlet方法中采用的是全局变量,并且以该变量的运算结果作为下一步操作的判断依据)
+					
+	46、描述Session和Cookie的区别 : 
+		1) 存储的位置不同 :
+			Session : 服务端
+			Cookie : 客户端
+		2) 存储的数据格式不同 : 
+			Session : value为对象,Object类型
+			Cookie : value为字符串,如果我们存储一个对象,这个时候需要将对象转换为json
+		3) 存储数据的大小 : 
+			Session : 受服务器内存的控制
+			Cookie : 一般来说,最大为4K
+		4) 生命周期不同 : 
+			Session : 服务端控制,默认是30分钟,注意,当用户关闭了浏览器,session并不会消失
+			Cookie : 客户端控制,其实是客户端的一个文件,分两种情况
+				a、默认是会话级的cookie,这种随着浏览器的关闭会消失,比如保存sessionID的cookie
+				b、非会话级的cookie,通过设置有效期来控制(setMaxAge())
+				cookie的其他配置 : 
+					httpOnly=true : 防止客户端的XSS攻击
+					path="/" : 访问路径
+					domain="" : 设置cookie的域名
+		5) session和cookie的联系 : 
+			http协议是一种无状态的协议,服务器为了记住用户的状态,会在用Session的机制,而Session机制的原理就是,服务器会自动生成会话级的Cookie来保存
+			session的标识
+			
+	47、转发和重定向的的区别 : 
+		1) 转发 : 
+			发生在服务器内部的跳转,所以,对于客户端来说,至始至终就是一次请求,所以在这期间,request对象可以用来传递数据
+		2) 重定向 : 
+			发生在客户端的跳转,所以是多次请求,这个时候,如果需要在多次请求间传递数据,就需要使用session对象
+		3) 在后台程序,想跳转到百度,应该使用转发还是重定向
+			重定向,因为转发的范围限制在服务器内部
+			
+	48、JavaEE将企业级软件架构分为三个层次 : 
+		web层 : 负责与用户的交互并对外提供服务接口
+		业务逻辑层 : 实现业务逻辑模块
+		数据存取层 : 将业务逻辑处理的结果持久化,方便后续查询
+		每个层各自的框架 : 
+			WEB层 :  SpringMVC,Struts2,Struts1
+			业务逻辑层 : Spring
+			数据持久层 : Hibernate,MyBatis,SpringDataJPA,SpringJDBC
+			
+	49、谈谈对MVC的理解 : 
+		MVC是对Web层作了进一步的划分,更加细化
+			Model(模型) : 模型代表一个存储数据的对象或者JAVA POJO
+			View(视图) : 视图代表模型包含的数据的可视化,比如HTML,JSP,Thymeleaf,Freemarker等等.
+			Controller(控制器) : 控制器作用于模型和视图上,它控制数据流向模型对象,并在数据变化时更新视图.它使视图和模型分离开,目前的代表技术
+				有Servlet、Controller
+			SpringMVC中分为两个控制器 : 
+				DispatcherServelt : 前端控制器,由他来接受客户端的请求,再根据客户端请求的URL的特点,分发到对应的业务层控制器(我们自己写的Controller),
+	
+	50、JSP的四大域对象 : 
+		ServletContext		context域
+		HttpSession		session域
+		HttpServletRequest		request域
+		PageContext		page域
+		作用范围 : 
+			page域 : 只能在当前jsp页面使用
+			request域 : 只能在同一个请求中使用(转发有效,重定向无效)
+			session域 : 只能在同一个会话(session对象)中使用(私有的,多个请求和响应之间)
+			context域 : 只能在同一个web应用中使用(全局的)
+			
+	51、并发和并行的区别 : 
+		并发 : 同一个CPU执行多个任务,按细分的时间片交替执行
+		并行 : 在多个CPU上处理多个任务
+		
+	52、数据库的三大范式 : 
+		第一范式 : 列不可分
+		第二范式 : 要有主键
+		第三范式 : 不可存在传递依赖
+			比如商品表中关联商品类别表,那么只需要关联字段product_type_id即可,其他信息可以通过表关联查询获取
+			如果商品表中还存在一个商品类别名称字段,product_type_name,那么就属于存在传递依赖的情况,第三范式主要是从空间的角度来考虑,避免产生冗余信息
+			浪费磁盘空间.
+		反范式设计 : (第三范式)
+			为什么会有反范式设计 : 
+				原因一 : 提高查询效率(读多写少) 
+					比如上述的信息,描述商品信息时,经常要伴随商品类别信息的展示,所以这个时候,为了提高查询效率,可以通过冗余一个商品名称字段,
+					就可以将原来的多表联查转换为查单表
+					
+	53、SQL注入 : 
+		通过字符串的拼接构成了一种特殊的查询语句
+			比如 ：select * from t_user where username='' and password=''
+				此时传递参数 : 'or 1=1 #
+				sql语句就变为 : 
+					select * from t_user where username='' or 1=1 #'and password=''
+					#标识注释掉后面的内容
+		解决方案 : 
+			采用预处理的方式,PreparedStatement而不是Statement
+		MyBatis如何解决SQL注入问题 : 
+			采用#可以解决SQL注入
+			$不能解决SQL注入
+			
+	54、JDBC是如何实现对事务的控制的 : 
+		try{
+			//开启事务
+			connection.setAutoCommit(false);
+			//做业务操作
+			doSomething();
+			//提交事务
+			connection.commit();
+		}catch(Exception e){
+			try{
+				connection.rollback();
+			}catch(SQLException e1){
+				e1.printStackTrace();
+			}
+		}
+		注意 : 事务的边界一般是放在业务层进行控制,因为业务层通常包含多个dao层的操作
+		
+	55、事务的特点 :
+		原子性是基础,隔离性是手段,一致性是约束条件,而持久性是我们的目的
+		简称 : ACID
+			原子性(Atomicity)、一致性(Consistency)、隔离性(Isolation)和持久性(Durability)
+		原子性 : 事务是数据库的逻辑工作单位,事务中包含的各操作要么同时完成,要么都不完成
+		一致性 : 事务一致性是指数据库中的数据在事务操作前后都必须满足业务规则约束.
+			比如A转账给B,那么转账前后,AB账户的总金额应该是一致的
+		隔离性 : 一个事务的执行不能被其他事务所干扰,即一个事务内部的操作及使用的数据对其他事务是隔离的,并发执行的各个事务之间不能相互干扰
+			设置不同的隔离级别,互相干扰的程度会不相同
+		持久性 : 事务一旦提交,结果便是永久性的.即使发生宕机,依然可以依靠事务日志完成数据的持久化
+			日志包括回滚日志(undo)和重做日志(redo),当我们通过事务修改数据时,首先会将数据库变化的信息记录到重做日志中,然后再对数据库中的数据进行修改.
+			这样即使数据库系统发生奔溃,我们还可以通过重做日志进行数据恢复.
+			
+	56、事务的隔离级别 : 
+		READ UNCOMMITTED 读未提交		脏读,不可重复读,有可能发生幻读
+		READ COMMITTED 读已提交		没有脏读,但是不可重复读,幻读有可能发生
+		REPEATABLE READ 可重复读		没有脏读,可以重复读,但是幻读有可能发生
+		SERIALIZABLE 串行化				没有脏读,可以重复读,也没有幻读,但是性能较低
+			幻读 : 是指本地事务查询数据时只能看到三条,但是当执行更新时,却会更新四条,所以称为幻读
+			
+	57、synchronized和lock的区别 : 	
+		1) 作用的位置不同 : 
+			synchronized可以给方法,代码块加锁
+			lock只能给代码块加锁
+		2) 锁的获取和释放机制不同 :
+			synchronized无需手动获取锁和释放锁,发生异常时自动解锁,不会出现死锁.
+			lock需要自己手动加锁和释放锁,如lock()和unlock(),如果忘记使用unlock(),那么就有可能出现死锁
+			所以一般在finally里面使用unlock();
+		synchronized修饰成员方法时,默认的锁对象,就是当前对象
+		synchronized修饰静态方法时,默认的锁对象就是当前类的class对象
+		synchronized修饰代码块时,可以自己来设置锁对象,比如 : 
+			synchronized(this){
+				//线程进入,就自动获取到锁
+				//线程执行结束,自动释放锁
+			}
+	
+	58、TCP和UDP的区别 : 
+		首先两者都是传输层的协议
+		TCP提供可靠的传输协议,传输前需建立连接,面向字节流,传输慢
+		UDP无法保证传输的可靠性,无需创立链接,以报文的方式传输,效率高
+		1) 计算机网络体系结构的通信协议划分为七层，自下而上依次为：物理层（Physics Layer）、数据链路层（Data Link Layer）、
+			网络层（Network Layer）、传输层（Transport Layer）、会话层（Session Layer）、表示层（Presentation Layer）、应用层（Application Layer）
+		2) ACK (Acknowledge character）即是确认字符，在数据通信中，接收站发给发送站的一种传输类控制字符。表示发来的数据已确认接收无误。
+		3) SYN : 同步序列编号（Synchronize Sequence Numbers）。是TCP/IP建立连接时使用的握手信号。
+		4) FIN : TCP首部中的结束标志
+		5) SEQ : tcp发送数据的序列号
+		
+	59、TCP是因特网中的传输层协议，使用三次握手协议建立连接。当主动方发出SYN连接请求后，等待对方回答SYN+ACK，并最终对对方的 SYN 执行 ACK 确认。
+		这种建立连接的方法可以防止产生错误的连接，TCP使用的流量控制协议是可变大小的滑动窗口协议
+		1) 客户端发送SYN（SEQ=x）报文给服务器端，进入SYN_SEND状态。
+		2) 服务器端收到SYN报文，回应一个SYN （SEQ=y）ACK（ACK=x+1）报文，进入SYN_RECV状态。
+		3) 客户端收到服务器端的SYN报文，回应一个ACK（ACK=y+1）报文，进入Established状态。
+			三次握手完成，TCP客户端和服务器端成功地建立连接，可以开始传输数据了。
+		
+	60、建立一个连接需要三次握手，而终止一个连接要经过四次握手，这是由TCP的半关闭（half-close）造成的。 
+		（1） 某个应用进程首先调用close，称该端执行“主动关闭”（active close）。该端的TCP于是发送一个FIN分节，表示数据发送完毕。
+		（2） 接收到这个FIN的对端执行 “被动关闭”（passive close），这个FIN由TCP确认。
+			注意：FIN的接收也作为一个文件结束符（end-of-file）传递给接收端应用进程，放在已排队等候该应用进程接收的任何其他数据之后，因为，
+			FIN的接收意味着接收端应用进程在相应连接上再无额外数据可接收。
+		（3） 一段时间后，接收到这个文件结束符的应用进程将调用close关闭它的套接字。这导致它的TCP也发送一个FIN。
+		（4） 接收这个最终FIN的原发送端TCP（即执行主动关闭的那一端）确认这个FIN。
+		
+	61、死锁 : 	
+		线程A持有独占锁资源a,并尝试获取独占锁资源b,同时线程B持有独占锁资源b并尝试获取独占锁资源a,
+		这样线程A和线程B互相持有对方需要的锁,从而发生堵塞,最终变为死锁
+		如何防止死锁 : 
+			尽量采用tryLock(timeout)方法,可以设置超时时间,这样超时之后,就可以主动退出,防止死锁
+			减少同步代码块的嵌套操作
+			降低锁的使用粒度,不要几个功能共用一把锁
+			
+	62、反射 : 
+		反射是一种能力,是一种在程序执行的时候动态获取当前类对象的所有属性和方法的能力,可以动态执行方法,给属性赋值等操作的能力
+		通过获取类的Class对象,从而获取类的属性和方法.
+		反射可以使Java程序具备动态性
+		
+	63、Spring : 
+		核心的IOC容器技术(控制反转),帮助我们自动管理依赖的对象,不需要我们自己创建和管理依赖对象,从而实现层与层之间的解耦,所以重点是解耦
+		核心的AOP技术(面向切面编程),方便我们将一些非核心业务逻辑抽离,从而实现核心业务和非核心业务的解耦,比如添加一个商品信息,那么核心业务就是
+			做添加商品信息记录的这个操作,非核心业务比如事务的管理,日志,性能检测,读写分离的实现等等
+		Spring的bean作用域 : 
+			1) 默认是singleton,即单例模式
+			2) prototype,每次从容器调用bean时都会创建一个新的对象,比如整合Struts2框架时,spring管理action对象就需要这么设置
+			3) request,每次http请求都会创建一个对象
+			4) session,同一个session共享一个对象
+			5) global-sesion
+			
+	64、Spring的bean的线程安全性 : 
+		构成线程不安全的三个因素 : 
+			1) 多线程环境
+			2) 访问同一个资源
+			3) 资源具有状态性
+			Spring的bean基本是无状态的,所以从这个点来说,是安全的
+			所谓的无状态就是没有存储数据,既没有通过数据的状态来作为下一步操作的判断依据
+			
+	65、事务的传播特性 : 
+		我们一般都是将事务的边界设置在service层
+		当我们调用Service层的一个方法时,它能够保证我们的这个方法中执行的所有对数据库的更新操作保持在一个事务中,
+		在事务层调用的方法要么全部成功,要么全部失败.
+		如果在Service层的方法中调用另一个Service层中的方法,此时就产生了事务的传播问题.
+		1) Spring支持的事务传播特性 :
+			在Spring中,针对传播特性的多种配置,我们大多数情况下只用其中的一种 : PROPGATION_REQUIRED.
+			这个配置项的意思是说当我们调用service层的方法时开启一个事务,那么在调用这个Service层中的其他方法时,如果当前方法产生了事务,
+			就用当前方法产生的事务,否则就新建一个事务
+			这个工作由Spring来完成
+		2) Spring支持的事务传播特性 :
+			PROPAGATION_SUPPROTS : 支持当前事务,如果没有事务,就以非事务的的方式执行
+			PROPAGATION_MANDATORY : 支持当前事务,如果没有当前事务,那么就抛出异常
+			PROPAGATION_REQUIRES_NEW : 新建事务,如果当前存在事务,就把当前事务挂起
+			PROPAGATION_REQUIRED(常见) : 支持当前事务,如果当前没有事务,那么就新建一个事务,否则使用原来的事务
+			PROPAGATION_NOT_SUPPORTED : 以非事务的方式方式执行操作,如果当前存在事务,就把当前事务挂起
+			PROPAGATION_NEVER : 以非事务的方式执行操作,如果当前存在事务就抛出异常
+			
+	66、悲观锁和乐观锁 : 
+		1) 悲观锁就是利用数据库本身的锁机制来实现,会锁记录
+			实现的方式为 : select * from t_table where id=1 for update
+		2) 乐观锁是一种不锁记录的实现方式,采用CAS(compare and set)模式,采用version字段来作为判断依据
+			每次对数据的更新操作,都会对version + 1,这样提交更新操作时,如果version的值已被修改,则更新失败.
+		3) 乐观锁的实现为什么需要选择version字段,因为如果使用其他字段,比如业务字段,那么可能出现ABA的问题,就是在第一个事务开始时值为A,
+			在第一个事务执行过程中,有另一个事务将该字段改为B然后结束的时候又改为A,然后第一个事务才结束,此时实际上,在事务一执行过程中,字段值
+			已经发生了变化
+			
+	67、MyBatis的缓存机制 : 
+		缓存,主要作用就是提高查询性能,减少了跟数据库交互的次数,从而也减轻了数据库承受的压力
+		适用于读多写少的场景,如果数据变化频率非常高,则不适用
+		MyBatis的缓存分为一级缓存和二级缓存
+		一级缓存 : 
+			1) 一级缓存默认开启状态
+			2) 一级缓存作用域在SqlSession中
+			3) 如果中间有对数据的更新操作,则将清空一级缓存
+		二级缓存(重点) : 
+			要开启二级缓存,需要经历两个步骤
+			1) 开启二级缓存(默认处于开启状态)
+				<setting name="cacheEnabled" value="true"/>
+			2) 在Mapper.xml文件配置二级缓存(也支持在接口配置)
+				在<mapper>标签对下面添加<cache/>标签即可
+			默认的二级缓存配置有如下特点 : 
+				1) 所有的select语句将会被缓存
+				2) 所有的更新语句(insert、update、delete)将会刷新缓存
+				3) 缓存将采用LRU(Least Recently Used最近最少使用)算法来回收
+				4) 缓存会存储1024个对象的引用
+				回收算法建议采用LRU,当然,还提供了FIFO(先进先出)、SOFT(软引用)、WEAK(弱引用)等其他算法
+			3) 当关闭了SqlSession之后,才会将查询出的数据保存在二级缓存中(SqlSessionFactory)中,MyBatis的二级缓存默认采取Map实现
+			4) 在开发中可以集成第三方的缓存来保存MyBatis的二级缓存.比如 : EhCache、Redis
+			
+	68、MyBatis的分页方式 : 
+		逻辑分页 : 
+			MyBatis自带的RowBounds进行分页,他会一次性查出多条数据,然后再检索分页中的数据,具体一次性查询多少条数据,受分装jdbc配置的fetch-size决定
+		物理分页 : 
+			从数据库中查询指定条数的数据,而我们用的分页插件PageHelper实现的就是物理分页
+			
+	69、从浏览器输入URL到页面加载完毕的过程 : 
+		首先,需要经过DNS(域名解析服务)将URL转换为对应的ip地址,实际上域名只是方便我们记忆,在网络上,每台主机交互都是通过ip地址
+		其次,我们需要通过这个ip地址根服务器建立TCP网络连接,随后向我们的服务器发出HTTP请求,注意,HTTP协议是TCP的上层协议
+		最后,服务器接受到我们的请求,处理完毕之后,将响应数据放入HTTP的响应信息中,然后返回给客户端
+		客户端浏览器完成对服务器响应信息的渲染,将信息展现在用户面前
+		
+	70、synchronized : 
+		synchronized是由一对monitorenter和monitorexit指令来实现的,再JDK6之前,monitor的实现是依靠操作系统内部的互斥锁来实现的,所以需要进行用户态和
+		内核态来实现的,所以此时的同步锁是一个重量级的操作,性能很低
+		但是JDK6带来了新的变化,提供了三种monitor的实现方式,分别是偏向锁,轻量级锁和重量级锁,即锁会先从偏向锁再根据情况逐渐升级到轻量级锁和重量级锁
+		这就是锁升级.
+		在锁对象的对象头里面有一个threadid字段,默认情况下为空,当第一次有线程访问的时候,则将该threadid设置为当前线程的id,我们称其为偏向锁,当线程执行
+		结束后,重新将threadid设置为空
+		如果在未结束之前,有其他线程进入,此时会判断threadid和该线程的id,如果不一样,那么发生锁的升级,从偏向锁到轻量级锁
+		轻量级锁的工作模式就是通过自旋循环的方式来获取锁,不停查看对方线程是否已经释放了锁,如果执行一定次数后,对方还是没有释放锁,那么就会再次发生
+		锁的升级,从轻量级锁升级到重量级锁
+		使用锁升级的方式主要是为了性能的提高
+		synchronized的可见性 : 
+			两个线程保证变量信息的共享可见性 : 
+				线程A-->本地内存A(共享变量副本)-->主内存(共享变量)
+				如果需要变更,那么需要将本地内存的变量写入到主内存,对方才可以获取更新
+				synchronized在每次获取到锁的时候,每次读取数据都是从主内存中读取,当释放锁的时候,都会将本地内存的信息,写入到主内存中,从而其他线程可见
+		
+	71、synchronized和volatile的区别 : 
+		1) 作用的位置不同 : 
+			synchronized是修饰方法,代码块
+			volatile是修饰变量
+		2) 作用不同 : 
+			synchronized,可以保证变量操作的可见性以及原子性,可能会造成线程的阻塞
+			volatile,仅能实现变量修改的可见性,但无法保证原子性,不会造成线程的阻塞
+		3) Java的关键字 volatile 用于将变量标记为“存储于主内存中”。更确切地说，对 volatile 变量的每次读操作都会直接从计算机的主存中读取，
+			而不是从 cpu 缓存中读取；同样，每次对 volatile 变量的写操作都会直接写入到主存中，而不仅仅写入到 cpu 缓存里。
+
+	72、volatile : 
+		1) volatile是一个轻量级的线程同步机制,它的特性之一就是保证了变量在线程之间的可见性
+			所谓的可见性就是在一个线程修改了变量的值之后,其他的线程可以感知到该变化
+		2) 可见性问题 :
+			是由于硬件速度的不同,CPU速度明显要快于主内存.
+			为了解决硬件速度不匹配的问题,在CPU到主内存之间就会有多级缓存.
+			因此,当一个线程修改了数据,数据还没有及时刷到主内存中,其他线程就有可能读取该数据,此时的数据显然是不正确的
+		3) 通过给变量设置volatile关键字修饰,可以保证变量在线程修改完之后,会刷新到共享内存,这样其他线程就可以读取到最新的内容
+		4) 当变量被volatile修饰时,线程每次都会从主内存中读取,而不是从缓存中读取,这样就可以实现线程之间变量的可见性
+		
+	73、微服务 :
+		高并发系统架构的目标 : 高可用,高性能,高可扩展性
+		单体架构 : 
+			特点 : 适合小成本快速试错,模块之间的调用,是进程内的通信
+		微服务架构 : 
+			特点 : 适合负责业务的拆分场景,更灵活做子系统升级等等,系统间的通信,变为进程间的通信
+		服务拆分的原则 :
+			一般我们根据业务的边界来拆分+共性的基础服务(短信、邮件、日志)
+	
+	74、服务注册中心 : 
+		1) zookeeper : 
+			文件系统 + 监听机制
+			所谓的服务注册,就是在zookeeper的服务器上创建一个节点,而且是临时节点,保存着服务的地址信息
+			所谓的服务发现,就是去获取zookeeper上面的节点信息,获取到提供该服务的地址列表信息
+			这样当消费者去调用服务提供者,就可以采用负载均衡策略,去访问其中一个提供者
+			
+	75、服务拆分 : 
+		1) 抽取公共的基础服务 : 短信、邮件、文件管理
+		2) 以业务为边界拆分服务
+		3) 要管理一堆服务,注册中心 : zookeeper、Eureka
+			zookeeper : 
+				Leader： ZooKeeper 集群工作的核心 事务请求（写操作）的唯一调度和处理者，保证集群事务处理的顺序性；集群内部各个服务的调度者。 
+						对于 create，setData，delete 等有写操作的请求，则需要统一转发给 leader 处理，leader 需要决定编号、执行操作，
+						这个过程称为一个事务。
+				Follower： 处理客户端非事务（读操作）请求 转发事务请求给 Leader 参与集群 leader 选举投票2n-1台可以做集群投票 此外，
+						针对访问量比较大的 zookeeper 集群，还可以新增观察者角色
+				Observer： 观察者角色，观察ZooKeeper集群的最新状态变化并将这些状态同步过来，其对于非事务请求可以进行独立处理，
+						对于事务请求，则会转发给Leader服务器处理 不会参与任何形式的投票只提供服务，
+						通常用于在不影响集群事务处理能力的前提下提升集群的非事务处理能力 扯淡：说白了就是增加并发的请求
+			Eureka : 
+				1、Eureka Server 启动成功，等待服务端注册。在启动过程中如果配置了集群，集群之间定时通过 Replicate 同步注册表，
+					每个 Eureka Server 都存在独立完整的服务注册表信息
+				2、Eureka Client 启动时根据配置的 Eureka Server 地址去注册中心注册服务
+				3、Eureka Client 会每 30s 向 Eureka Server 发送一次心跳请求，证明客户端服务正常
+				4、当 Eureka Server 90s 内没有收到 Eureka Client 的心跳，注册中心则认为该节点失效，会注销该实例
+				5、单位时间内 Eureka Server 统计到有大量的 Eureka Client 没有上送心跳，则认为可能为网络异常，进入自我保护机制，
+					不再剔除没有上送心跳的客户端
+				6、当 Eureka Client 心跳请求恢复正常之后，Eureka Server 自动退出自我保护模式
+				7、Eureka Client 定时全量或者增量从注册中心获取服务注册表，并且将获取到的信息缓存到本地
+				8、服务调用时，Eureka Client 会先从本地缓存找寻调取的服务。如果获取不到，先从注册中心刷新注册表，再同步到本地缓存
+				9、Eureka Client 获取到目标服务器信息，发起服务调用
+				10、Eureka Client 程序关闭时向 Eureka Server 发送取消请求，Eureka Server 将实例从注册表中删除
+		4) 服务之间需要通信 : 
+			a、同步调用 : 
+				Dubbo、RPC的方式,底层采用Netty来实现,建立的是长连接,基于TCP
+				注意 : BIO、NIO只是一种网络通信模式
+				BIO : 为每个连接创建一个线程
+				NIO : 一个线程服务多个连接
+				Netty : 封装了NIO,在它的基础上,添加主从处理组,BossGroup,WorkerGroup
+				编程模型 : Reactor(反应堆)思想,NIO、Netty是一种实现
+				SpringCloud、RESTFul http的方式,基于Http协议,是一种短连接
+				性能 : Dubbo > SpringCloud
+				调用方需要等待执行方的处理结果
+			b、异步通知 : 
+				MQ、
+				调用放无需等待执行方的结果
+				
+	76、RESTFul : 
+		REST是英文representational state transfer(表象性状态转变)或者表述性状态转移;Rest是web服务的一种架构风格;
+		使用HTTP,URI,XML,JSON,HTML等广泛流行的标准和协议;轻量级,跨平台,跨语言的架构设计;它是一种设计风格,不是一种标准,是一种思想
+		REST的主要原则 :
+			1.网络上的所有事物都被抽象为资源
+			2.每个资源都有一个唯一的资源标识符
+			3.同一个资源具有多种表现形式(xml,json等)
+			4.对资源的各种操作不会改变资源标识符
+			5.所有的操作都是无状态的
+		RESTFul : 
+			对应的中文是rest式的;Restful web service是一种常见的rest的应用,是遵守了rest风格的web服务;
+			rest式的web服务是一种ROA(The Resource-Oriented Architecture)(面向资源的架构).
+
+	77、服务之间的共享资源,数据的安全性 : 
+		单体架构 : 
+			JDK提供的synchronized就可以保证数据的安全性,在同一个JVM中
+		分布式架构 : 
+			多机部署,涉及到多个JVM,synchronized不能保证多个JVM的同步
+			分布式锁 : 需要保证锁是共享的第三方资源
+				1) 数据库的方式
+					t_lock表 : 
+						id	lock(0)
+					上锁 : 将lock字段修改为1
+					解锁 : 将lock字段修改为0
+				2) Redis : 
+					setnx : 
+						不存在就设置成功,否则失败
+						上锁 : 成功设置setnx key value
+						解锁 : delete key
+						避免死锁,需要设置过期时间 : expire key timeout
+						避免无锁,释放这把锁的时候,检查这把锁是不是我的
+				3) zookeeper :
+					zookeeper采用树状节点的方式来保存我们的服务的注册信息(znode)
+					以节点为锁,创建成功,表示获取锁成功
+					死锁 : 设置为临时节点,客户端如果挂掉,那么服务端自动删除节点
+						设置过期时间
+						setnx lock uuid
+						expire lock 1000
+						lua脚本---原子性操作,将上诉两个指令合并为一个指令,变为原子性操作
+						注意版本问题
+					解锁 : 
+						del lock 
+						
+	78、服务之间的session共享问题 : 
+		 单服务器web应用中，session信息只需存在该服务器中，这是我们前几年最常接触的方式，但是近几年随着分布式系统的流行，
+		 单系统已经不能满足日益增长的百万级用户的需求，集群方式部署服务器已在很多公司运用起来，
+		 当高并发量的请求到达服务端的时候通过负载均衡的方式分发到集群中的某个服务器，这样就有可能导致同一个用户的多次请求被
+		 分发到集群的不同服务器上，就会出现取不到session数据的情况，于是session的共享就成了一个问题。
+		 解决方案 : 
+			1) session复制（同步）Tomcat自带该功能
+				思路：多个web-server 之间相互同步session，这样每个web-server之间都包含全部的session
+				优点：web-server 支持的功能，应用程序不需要修改代码
+				不足：
+					session 的同步需要数据传输，占内网带宽，有时延
+					所有web-server 都包含所有session数据，数据量受内存限制，无法水平扩展
+					有更多web-server 时要歇菜
+			2) 客户端存储法
+				思路：服务端存储所有用户的session，内存占用较大，可以将session存储到浏览器cookie中，每个端只要存储一个用户的数据了
+				优点：服务端不需要存储
+				缺点：
+					每次http请求都携带session，占外网带宽
+					数据存储在端上，并在网络传输，存在泄漏、篡改、窃取等安全隐患
+					session存储的数据大小受cookie限制
+			3) 反向代理hash一致性
+				思路：web-server为了保证高可用，有多台冗余，反向代理层能不能做一些事情，让同一个用户的请求保证落在一台web-server 上呢？
+				使用Nginx的负载均衡算法其中的hash_ip算法将ip固定到某一台服务器上，这样就不会出现session共享问题，因为同一个ip访问下，
+				永远是同一个服务器。
+				缺点：
+					失去了Nginx负载均衡的初心。
+				优点：
+					只需要改nginx配置，不需要修改应用代码
+					负载均衡，只要hash 属性是均匀的，多台web-server的负载是均衡的
+					可以支持web-server水平扩展（session 同步法是不行的，受内存限制）
+				不足：
+					如果web-server重启，一部分session会丢失，产生业务影响，例如部分用户重新登录
+					如果web-server水平扩展，rehash后session重新分布，也会有一部分用户路由不到正确的session。
+			4) 后端统一集中存储
+				思路：将session存储在web-server后端的存储层，数据库或者缓存
+				优点：
+				没有安全隐患
+				可以水平扩展，数据库/缓存水平切分即可
+				web-server重启或者扩容都不会有session丢失
+				不足：
+					增加了一次网络调用，并且需要修改应用代码
+					对于db存储还是cache，个人推荐后者：session读取的频率会很高，数据库压力会比较大。如果有session高可用需求，cache可以做高可用，
+					但大部分情况下session可以丢失，一般也不需要考虑高可用。
+				方案：使用Spring Session框架，相当于将Session之缓存到Redis中。
+				问：在项目发布的时候，Session如何控制不会失效的?
+				答：使用缓存框架，缓存Session的值（这里可以使用Redis加上EhCache实现一级和危机缓存）
+			5) 使用Token的方式代替Session功能
+				​在移动端，是没有Session这个概念的，都是使用Token的方式来实现的。
+				token最终会存放到Redis中，redis-cluster分片集群中是默认支持分布式共享的。完美的解决的共享问题。
+				特点 : 无状态 
+					服务器不需要保存用户的状态信息,但是需要耗费一定的CPU资源来计算,是一种基于算法的方式
+					JWT的方式 : JSON WEB token
+						token(用户本身的信息 + 时效信息)
+					依赖于解析的结果,如果已经发生异常,说明凭证以及失效,如果没有异常,那么状态正常
+					
+	79、CAP原则 : 
+		C(Consistency) : 一致性
+			每一次的请求得到的数据是一样的,每个节点保存的数据是一致的
+		A(Availability) : 可用性
+			每一次的请求都可以得到正确的响应,但是数据不一定是最新的
+		P(Partition tolerance) : 分区容错性
+			分区 + 容错
+			分区 : 是一种现象,由于网络的不稳定,造成部分节点之间的通信出现了问题,于是就产生了分区
+			容错 : 是一种目标,就是发生在分区之后,服务的节点是否还可以对外提供服务
+		矛盾 : 
+			如果节点数增加,那么可以提高可用性,但是由于节点数量过多,数据之间的同步速度会变慢,就影响了一致性,所以我们一般在AP或者CP之间选择
+			
+	80、QPS,TPS响应时间,吞吐量,并发量,PV,UV,日活
+		QPS : Query Per Seconds 每秒可以处理的请求数量
+		TPS : Transaction Per Seconds 每秒可以处理的事务请求数量
+		响应时间 : 处理一次请求消耗的时间
+		吞吐量 : 单位时间可以处理的请求数量
+		并发量 : 同一时刻有多少请求访问服务器
+		PV : Page View当前页面被访问的次数
+		UV : User View当前被多少用户访问,以用户为单位
+		日活 : 一天内活跃的用户
+		
+	81、应对高并发 : 
+		1) 垂直升级
+			单机硬件,CPU,内存
+			摩尔定律
+		2) 水平扩展升级
+			单机硬件速度跟不上业务的发展速度
+			添加服务器
+		3) 整体的技术架构图
+			应对高并发的三大法宝 : 
+				限流、缓存、熔断
+		
+	82、线上服务器容量估算 : 
+		1) 在多长时间,会引来多大流量
+			12:00-13:00
+			1000000,日活20%-30%,80%
+		2) 估算平均QPS
+			总的访问量 / 总的时间,精确到秒
+		3) 结合活动的业务场景
+			双11,高峰期12:00-12:01
+			估算峰值QPS = 平均QPS * 数倍(10倍)
+		4) 先想好兜底方案
+			降级处理
+			限流
+			MQ限流
+			丢弃部分用户的请求,保证系统可以正常提供服务,只是响应时间有些变慢
+		5) 估算上线服务器容量,参照峰值QPS
+		6) 每台服务器可以抗住多少并发,经验值(参照)以压力测试为准
+			服务器硬件不同
+		7) 10000并发
+			10台就够了,但需要进行压力测试
+		总结 : 
+			1) 通过计算的方式来估算
+			2) 一定要进行压力测试
+			
+	83、分布式系统的数据一致性(分布式事务) :
+		分布式事务 : 
+			1) 刚性事务 : 要么都成功,要么都失败,2PC,TCC
+			2) 柔性事务 : 追求的是数据的最终一致性,允许出现中间状态,基于MQ的方式来实现.
+			
+	84、分布式系统的BASE理论 : 
+		1) 基本可用(Basiclly Available) : 
+			分布式系统出现故障时,允许损失一部分功能的可用性.比如在电商大促的时候,允许对一些非核心的链路功能进行降级处理,
+			比如商品的评论信息此时就可以先关闭
+		2) 柔性状态(Soft State) : 
+			在柔性事务中,允许系统存在中间状态,且这个中间状态不会影响系统整体可用性
+			比如读写分离,写库同步到读库会有一定的延迟,其实就是一种柔性状态
+		3) 最终一致性(Eventual Consistency) : 
+			在最终状态中,数据都是一致的
+			比如采用MQ实现最终一致性,作为一种柔性事务的实现方案,从而应对更大的并发流量
+			
+	85、Dubbo :
+		服务流程 :
+			0. 服务容器负责启动，加载，运行服务提供者。
+			1. 服务提供者在启动时，向注册中心注册自己提供的服务。
+			2. 服务消费者在启动时，向注册中心订阅自己所需的服务。
+			3. 注册中心返回服务提供者地址列表给消费者，如果有变更，注册中心将基于长连接推送变更数据给消费者。
+			4. 服务消费者，从提供者地址列表中，基于软负载均衡算法，选一台提供者进行调用，如果调用失败，再选另一台调用。
+			5. 服务消费者和提供者，在内存中累计调用次数和调用时间，定时每分钟发送一次统计数据到监控中心。
+			6. 注册中心，服务提供者，服务消费者三者之间均为长连接，监控中心除外
+			7. 注册中心通过长连接感知服务提供者的存在，服务提供者宕机，注册中心将立即推送事件通知消费者
+			8. 注册中心和监控中心全部宕机，不影响已运行的提供者和消费者，消费者在本地缓存了提供者列表
+		Dubbo的底层网络通信 ：	
+			网络通信底层是基于Netty网络框架，而Netty是对NIO(Nonblocking I/O 非阻塞I/O)的封装.多路复用
+			BIO(Blocking I/O 阻塞I/O)
+	
+	86、SpringCloud : 
+		SpringCloud是一系列主流框架的集合
+		Spring并没有重复造轮子,只是将目前各个成熟的、经得起考验的服务框架组合起来,经过封装之后,让用户以SpringBoot的风格进行开发,
+		屏蔽了复杂的配置和实现原理,给用户提供了一套简单易懂,易部署,易维护的分布式系统开发工具集.
+		SpringCloud采用SpringBoot的开发便利性,实现了分布式系统基础设施的开发 :
+			比如 : 服务注册中心与发现中心(注册中心),负载均衡,熔断,配置中心,网关,消息总线,链路监控等等.做到独立部署,
+			可方便进行水平扩展,独立访问等特点
+		SpringCloud的常用组件 : 
+			1) Eureka(尤里卡) : 基于REST服务的分布式中间件,主要用于服务的注册和实现
+			2) Feign : 一个REST客户端,简化WebService客户端开发
+			3) Ribbon : 负载均衡框架,在微服务集群中为各个客户端的通信提供支持,主要是实现中间层应用程序的负载均衡
+			3) Hystrix : 容错框架,通过添加延迟阈值及容错的逻辑,帮助我们控制分布式系统间组件的交互
+			4) Zuul、SpringCloud Gateway : 服务网关,为微服务集群提供代理,过滤,路由等功能
+			5) SpringCloud Config : 管理集群中的配置文件,统一配置中心
+			6) SpringCloud Sleuth : 服务跟踪框架,可以跟ZipKin,Apache HTrace和ELK等数据分析,服务跟踪系统进行整合
+			
+	87、SpringCloud和Dubbo : 
+		1) Dubbo,RPC(Remote Procedure Call)的性能比HTTP的性能更好,并发能力更强,经过深度优化的RPC服务框架,性能和并发能力更好
+		2) SpringCloud走HTTP协议,性能比Dubbo的RPC性能差一些
+		3) SpringCloud主打的是微服务架构全家桶,组件齐全,功能齐全,Dubbo最初定位的是一个RPC框架,很多的组件需要自己再做整合
+		4) 融合SpringCloud Alibaba,阿里技术将会融入到SpringCloud中
+		
+	88、缓存 :
+		什么样的数据适合放入缓存 :
+			1) 高频访问的数据
+			2) 数据变化的频率不高
+			3) 非敏感数据
+		Redis的基本数据类型 : 	
+			1) String : 	
+				用户凭证信息,分布式锁,验证码,点赞,点踩
+			2) hash :
+				可以快速定位,需要存储信息,且这个信息需要频繁被修改时,就可以采用这个结构,比如购物车
+			3) list : 
+				队列和栈,双向链表,比如秒杀,保存待抢购的商品列表
+			4) set : 
+				无序唯一,(唯一,秒杀,保存抢购到商品的用户,保证每个用户只能抢购一件)
+			5) zset :
+				可排序特性,分数(数值),可以基于分数排序,定点提醒,排行榜
+		内存管理策略 : 
+			key--value
+			设置有效期 :	
+				到期后可以自动回收,释放内存空间,提高内存的利用率
+			回收 :	
+				1) 采用定时的方式回收 10 / S
+				2) 回收的算法 : 
+					TTL(ALL,random),根据时过期时间
+					LRU,根据是缓存的命中率 : 
+						精确度和性能的权衡,采用采样的方式来筛选
+					不回收(默认行为),满了就只能读,不能写
+				3) 惰性回收 : 
+					执行get指令,刚好这个key过期了,那么这个时候就会删除这个key
+		Redis的持久化策略 : 
+			1) RDB(Redis Database),产出二进制文件,默认开启
+				触发型持久化,适合做全量文件的备份
+			2) AOF,产出日志文件,默认不开启
+				触发时机 : 	
+					每秒,每次操作
+		缓存的高可用 : 
+			Redis的作用如此重要,如果在系统中属于单点的情况,那么一旦发生故障,将会对系统造成很大的影响,于是,我们需要保证Redis的高可用性
+			1) 一主多从的模式,同时可以配置哨兵来监控主从节点的健康状态
+			2) 当主机宕机后 : 	
+				a、哨兵会选择一台从机作为新的主机,这里面的一个关键性指标就是偏移量,这个是来看从机跟主机的数据同步状态
+				b、其他的从机需要建立与新主机的关系
+				c、客户端是连接哨兵服务的,所以哨兵服务会给客户端返回新的主机地址
+		RedisCluster : 
+			redis3.0之后提供的新特性
+			1) 没有中间层,客户端直接跟redisCluster的节点进行连接
+			2) 每个主节点都支持读写操作,分担了写的压力,后期我们继续增加新的主机,然后做hash迁移,新主机就可以分担压力
+			3) 因为每个节点负责的区域是不同的,所以往里面存放数据的时候,要根据key来做crc16算法,得到一个新数值,数值 % 16384=(0 - 18383),从而确定到
+				那个节点
+			4) 为了保证每个节点的高可用性.每个节点都可以做主从机
+			5) 后期还支持新增主节点和从节点,需要做数据的迁移,从之前的主节点迁移部分数据到新节点
+			
+	89、消息中间件 :
+		适用场景 : 不需要时实性
+			1) 解耦	
+				耦合状态的系统不符合OCP原则(开闭原则) : 对修改关闭,对扩展开放
+			2) 异步化
+			3) 削峰
+				前后两个交互的系统处理的速度不匹配,为了保护处理慢的系统,从而引入消息中间件,来实现削峰限流处理
+				再比如秒杀系统,会产生很多的订单消息,这是也可以通过MQ来保护订单系统,节省服务器
+				
+	90、保证消息的可达和不丢失 : 	
+		确认机制 + 补偿发送
+		
+	91、面向过程更注重事情的每一个步骤及顺序,面向对象更注重事情有哪些参与者,以及参与者需要完成的事情
+		面向过程比较直接高效,而面向对象更易于复用、扩展和维护
+		面向对象 : 
+			封装 : 
+				封装的意义在于明确标识出允许外部使用的所有成员函数和数据
+				外部调用无需关心内部的实现
+				1) javabean的属性私有,但是对外提供get和set方法
+				2) orm框架,mybatis框架,无需担心链接是如何建立,sql是如何执行的,只需要引入mybatis,然后调用方法即可
+			继承 : 
+				继承基类的方法,并做出自己的改变和扩展
+				子类共性的方法或者属性直接使用父类的,而不需要自己重新定义,只需要扩展自己个性化的内容
+			多态 : 
+				基于对象所属类的不同,外部对于同一个方法的调用,实际执行的逻辑不同
+				条件 : 继承,方法重写,父类引用指向子类对象
+				无法调用子类特有的功能
+				
+	92、程序计数器 : 
+		每个线程都独有一个程序计数器,用来存放当前或者即将指向的代码的行数
+		主要是用在线程之间的切换
+	
+	93、JVM : 	
+		运行时数据区(内存模型) :
+			堆 : 用来存放对象
+			栈 : 存放局部变量的值(对象的地址)
+				每个方法在执行时都会生成一个栈帧 : 	
+					局部变量表 : 存放局部变量
+					操作数栈 : 存放操作数
+					动态链接 : c + c++,连接方法区内的字节码文件
+					方法出口 : 存放程序计数器
+			本地方法栈 : native方法在这里执行
+			方法区(元空间) : 常量 + 静态变量 + 类信息 + 字节码文件
+			程序计数器 : 存放线程当前或者正要执行的代码的行数
+		类装载子系统 : 加载字节码文件
+		字节码执行引擎 : 执行字节码文件,修改程序计数器
+		1) 堆内内存 = 年轻代 + 老年代 + 持久代
+			年轻代 (Young Generation)
+				存放的是新生成的对象
+				年轻代的目标是尽可能快速的收集掉那些生命周期短的对象
+				Eden
+					大部分对象在Eden区中生成
+					当Eden区满时, 依然存活的对象将被复制到Survivor区, 当一个Survivor 区满时, 此区的存活对象将被复制到另外一个Survivor区
+				Survivor（通常2个)
+					当两个 Survivor 区 都满时, 从第一个Survivor 区 被复制过来 且 依旧存活的 对象会被复制到 老年区(Tenured)
+					Survivor 的两个区是对称的, 没有先后关系, 所有同一个区中可能同时存在从Eden复制过来的对象 和 从前一个 Survivor 复制过来的对象。
+					Survivor 区可以根据需要配置多个, 从而增加对象在年轻代的存在时间, 减少被放到老年代的可能。
+			老年代 (Old Generation)
+				存放了在年轻代中经历了N次垃圾回收后仍存活的对象, 是一些生命周期较长的对象
+			持久代 (Permanent Generation)
+				存放静态文件, 如静态类和方法等。持久代对垃圾回收没有显著影响, 但是有些应用可能动态生成或者调用一些class, 比如Hibernate, Mybatis 等, 
+				此时需要设置一个较大的持久代空间来存放这些运行过程中新增的类。
+				设置持久代大小参数: -XX:MaxPermSize= Perm => Permanent
+				-- Java堆（Java Heap）是java虚拟机所管理的内存中最大的一块
+				-- java堆被所有线程共享的一块内存区域
+				-- 虚拟机启动时创建java堆
+				-- java堆的唯一目的就是存放对象实例。
+				-- java堆是垃圾收集器管理的主要区域。
+				-- 从内存回收的角度来看， 由于现在收集器基本都采用分代收集算法， 所以Java堆可以细分为：新生代（Young）和老年代（Old）。 新生代又被划分为三个区域Eden、From Survivor， To Survivor等。无论怎么划分，最终存储的都是实例对象， 进一步划分的目的是为了更好的回收内存， 或者更快的分配内存。
+				-- java堆的大小是可扩展的， 通过-Xmx和-Xms控制。
+				-- 如果堆内存不够分配实例对象， 并且对也	无法在扩展时， 将会抛出outOfMemoryError异常。
+		2) 垃圾回收(GC)
+			Scavenge GC
+				一般当新对象生成并且在Eden申请空间失败时就会触发Scavenger GC, 对Eden区域进行GC, 清除非存活对象, 并且把尚存或的对象移动到Survivor区, 
+				然后整理两个Survivor区。
+				该方式的GC是对年轻代的Eden区进行，不会影响到年老代。
+				由于大部分对象是从Eden区开始的, 同时Eden区分配的内存不会很大, 所以Eden区的GC会很频繁。
+			Full GC
+				对整个堆进行整理, 包括Young, Tenured 和Permanent。
+				所消耗的时间较长, 所以要尽量减少 Full GC 的次数
+			导致 Full GC 的可能原因 :
+				老年代(Tenured) 被写满
+				持久代(Permanent) 被写满
+				System.gc() 被显示调用
+				上一次GC之后Heap的各域分配策略动态变化
+			常用垃圾回收算法 : 
+				Reference Counting (引用计数算法)
+				Mark-Sweep (标记清除法)
+				Coping (复制法)
+				Mark-Compact (标记压缩法)
+				Generational Collecting (分代收集法)
+				Region (分区法)
+				GC Roots Tracing (可达性算法)
+			JVM堆内存被分为两部分：年轻代（Young Generation）和老年代（Old Generation）。
+		3) 垃圾回收器 :
+			1.年轻代
+				年轻代是所有新对象产生的地方。当年轻代内存空间被用完时，就会触发垃圾回收。这个垃圾回收叫做Minor GC。年轻代被分为3个部分——Enden区和两个Survivor区。
+				年轻代空间的要点：
+				大多数新建的对象都位于Eden区。
+				当Eden区被对象填满时，就会执行Minor GC。并把所有存活下来的对象转移到其中一个survivor区。
+				Minor GC同样会检查存活下来的对象，并把它们转移到另一个survivor区。这样在一段时间内，总会有一个空的survivor区。
+				经过多次GC周期后，仍然存活下来的对象会被转移到年老代内存空间。通常这是在年轻代有资格提升到年老代前通过设定年龄阈值来完成的。
+			2.年老代
+				年老代内存里包含了长期存活的对象和经过多次Minor GC后依然存活下来的对象。通常会在老年代内存被占满时进行垃圾回收。
+				Major GC
+					老年代的垃圾收集叫做Major GC，Major GC通常是跟full GC是等价的，收集整个GC堆。
+				Minor GC和Major GC其实就是年轻代GC和年老年GC的俗称。而在Hotspot VM具体实现的收集器：Serial GC, Parallel GC, CMS, G1 GC中，大致可以对应到某个Young GC和Old GC算法组合。
+				分代GC
+				针对HotSpot VM的实现，其实GC的准确分类可以分为：
+					分代GC
+					Full GC
+					以及后续的G1的分区收集本质其实还是一个分代收集器，但是和之前的各类回收器不同，它同时兼顾年轻代和老年代。
+				分代GC并不收集整个GC堆的模式，而是只专注分代收集
+					Young GC：只收集年轻代的GC
+					Old GC：只收集年老代的GC(只有CMS的concurrent collection是这个模式)
+					Mixed GC：收集整个young gen以及部分old gen的GC(只有G1有这个模式)
+				Full GC
+					Full GC定义是相对明确的，就是针对整个新生代、老生代、元空间（metaspace，java8以上版本取代perm gen）的全局范围的GC。
+	
+	94、STW : Stop The Work : 
+		JVM在执行full gc时,会暂停用户线程,因此,JVM调优就要减少full gc的出现
+		STW机制是为了避免用户线程影响垃圾回收器的判断
+		
+	95、final : 
+		修饰类 : 表示不可被继承
+		修饰方法 : 表示方法不可以被子类覆盖,但是可以被重载
+		修饰变量 : 表示变量一旦被赋值,就不可以再被修改
+		1) 修饰成员变量 : 
+			--如果final修饰的是类变量(static),只能在静态初始化中指定初始值或者声明该类变量时指定初始值
+			--如果final修饰的是成员变量,可以在非静态初始化块,声明该变量或者构造器中执行初始值
+		2) 修饰局部变量 : 
+			系统不会为局部变量进行初始化,局部变量必须由程序员执行初始化.因此使用final修饰局部变量时,在声明的位置初始化(后面的代码不能进行赋值),
+			或者在后面的代码中赋值(只能赋值一次)
+		3) 修饰基本数据类型和引用数据类型
+			--如果修饰基本数据类型,则其数值一旦初始化完成之后便不能再被修改
+			--如果修饰的是引用数据类型的变量,则其完成初始化之后便不能再指向另一个对象.但是引用的属性值是可变的
+		4) 局部内部类和匿名内部类只能访问局部final变量 : 
+			内部类和外部类其实是处于同一级别的,内部类不会因为定义在方法中就会随着方法的执行完毕就被销毁
+			当外部类被销毁后,内部类可能还没有被销毁,但是由于外部类被销毁了,局部变量也已经被销毁.当内部类需要访问这些局部变量时,就会出错,
+			为了解决这个问题,将局部变量复制一份作为了内部类的成员变量,这样当外部类销毁后,还能访问到他的成员变量.
+			为了保证外部类的成员变量和内部类的复制后的变量一致,将外部类中的局部变量用final修饰.
+			
+	96、List 和 Set : 
+		--List : 有序,按对象进入的顺序保存对象,可以重复,允许多个null对象,可以使用iterator取出所有元素,再逐一遍历,还可以使用get(int index)获取指定
+			下标的元素
+		--Set : 无序,不可重复,最多允许有一个null对象,取元素时只能用iterator取出所有元素,再逐一遍历
+		
+	97、hashCode与equals : 
+		hashCode() : 获取散列码,它实际上是返回一个int整数.这个哈希码的作用是确定该对象在哈希表中索引的位置.hashCode()定义在Object.java中.
+		当将一个对象存入HashSet时,HashSet首先会计算对象的hashCode值,来判断对象存入HashSet的位置.如果该位置有值,这时会调用equals()方法来检查两个
+		值是否相同,如果两个值相同,那么HashSet不会让其添加成功.如果不同,就会重新散列到其他位置,不需要调用equals()方法,相应地提高了执行速度
+		-- 如果两个对象相同,则hashCode值一定相同
+		-- 两个对象相等,对两个对象调用equals()方法,返回true
+		-- 两个对象有相同的hashCode值,他们不一定相等
+		-- equals()方法被重写,hashCode()方法也要被重写
+		-- hashCode()的默认行为是对堆上的对象产生独特值.如果没有重写hashCode()方法,那么该类的对象无论如何都不会相等(即使这两个对象指向相同的数据)
+	
+	98、IOC容器 : 
+		1) 配置文件配置包扫描路径
+		2) 递归扫描包,获取.class文件
+		3) 反射、确定需要交给IOC管理的类
+		4) 对需要注入的类进行依赖管理
+			-- 配置文件中指定需要扫描的包路径
+			-- 定义一些注解,分别表示访问控制层、业务服务层、数据持久层、依赖注入注解、获取配置文件注解
+			-- 从配置文件中获取需要扫描的包路径,获取到当前路径下的文件信息及文件夹信息,我们将当前路径下的所有以.class结尾的文件添加到一个Set集合
+				进行储存
+			-- 遍历这个Set集合,获取在类上有注解的类,将其交给Spring的IOC容器,定义一个安全的Map用来存储这些对象
+			-- 遍历IOC容器,获取到每一个类的实例,判断里面是否有依赖与其他类的实例,然后递归完成依赖注入
+			
+	99、字节码 : 
+		Java的编译器和解释器 : 
+			Java中引入了虚拟机的概念,即在机器和编译程序之间加上了一层抽象的虚拟的机器.这台虚拟的机器在任何平台上都提供给编译程序一个共同的接口
+			编译程序只需要面向虚拟机,生成虚拟机能够理解的代码,然后由解释器来将虚拟机代码转换为特定系统的机器码执行.在Java中,这种供虚拟机理解的
+			代码叫做字节码(.class文件),他不面向任何特定的处理器,只面向虚拟机.
+			每一种平台的解释器是不同的,但是实现的虚拟机是相同的.Java源程序经过编译器编译后变成字节码,字节码由虚拟机解释执行,虚拟机将每一条需要
+			执行的字节码发送给解释器,解释器将其翻译为特定机器上的机器码,然后再特定的机器上运行.
+			Java源代码---->编译器---->JVM可执行的Java字节码(即虚拟指令)---->JVM---->JVM中的解释器---->机器可以执行的机器码---->程序运行
+		采用字节码的好处 : 
+			Java通过字节码的方式,在一定程度上解决了传统解释型语言执行效率低的问题,同时又保留了解释型语言可以移植的特点,所以Java程序运行时比较高效,
+			而且,由于字节码并不专对一种特定的机器,因此,Java程序无需重新编译便可以在多种不同的计算机上运行.
+			
+	100、双亲委派机制 : 
+		双亲委派：如果一个类加载器收到了加载某个类的请求,则该类加载器并不会去加载该类,而是把这个请求委派给父类加载器,
+		每一个层次的类加载器都是如此,因此所有的类加载请求最终都会传送到顶端的启动类加载器;
+		只有当父类加载器在其搜索范围内无法找到所需的类,并将该结果反馈给子类加载器,子类加载器会尝试去自己加载。
+		jvm提供了三种系统加载器：
+			启动类加载器（Bootstrap ClassLoader）：C++实现，在java里无法获取，负责加载<JAVA_HOME>/lib下的类。
+			扩展类加载器（Extension ClassLoader）： Java实现，可以在java里获取，负责加载<JAVA_HOME>/lib/ext下的类。
+			系统类加载器/应用程序类加载器（Application ClassLoader）：是与我们接触对多的类加载器，我们写的代码默认就是由它来加载，
+																			ClassLoader.getSystemClassLoader返回的就是它。
+		双亲委派机制的优点 : 
+			1) 主要是为了安全性,避免用户自己编写的类动态替换Java中的核心类,比如String
+			2) 同时也避免了类的重复加载,因为JVM中区分不同类,不仅仅是根据类名,相同的class文件被不同的ClassLoader加载就是两个不同的类.
+			
+	101、Java中的异常体系 : 
+		Java中所有的异常都来自顶级父类Throwable
+		Throwable下有两个子类Exception和Error
+		Error是程序无法处理的错误,一旦出现这个错误,则程序将被迫停止运行
+		Exception不会导致程序停止运行,他又分为RunTimeException和CheckedException
+		RunTimeException常常发生在程序运行过程中,会导致程序当前线程执行失败.
+		CheckedException常常发生在程序编译过程中,会导致程序编译不通过.
+		
+	102、GC如何判断对象可以被回收 : 
+		--引用计数法 : 每个对象有一个引用计数属性,新增一个引用时,计数就会加一,引用释放时计数减一,计时为零时会被GC回收.
+		--可达性分析法 : 从GC ROOTS开始向下搜索,搜索所走过的邻居成为引用链.当一个对象到GC ROOTS没有任何引用链相连,则证明此对象是不可用的,
+							那么虚拟机就将其判断为可回收对象
+		引用计数法,可能出现死锁现象,A引用B,B引用A,这事就算他们都不在使用了,但是因为相互引用计数器 = 1,会导致永远无法回收
+		
+		GC ROOTS的对象有 : 
+			--虚拟机栈(栈帧中的本地变量表)中引用的对象
+			--方法区中类静态属性引用的对象
+			--方法区中常量引用的对象
+			--本地方法栈JNI(Java Native Interface)(即一般说的本地方法栈)引用的对象
+		可达性算法中的不可达对象并不是立即死亡的,对象会拥有一次自我拯救的机会.对象被系统宣告死亡至少经历两次标记过程 : 
+			第一次是经过可达性算法分析后发现没有与GC ROOTS相连接的引用链,第二次是在由虚拟机自动建立的Finalizer队列中判断是否需要执行finalize()方法.
+			当对象变为GC ROOTS不可达时,GC会首先判断该对象是否覆盖了finalize()方法,若未覆盖,则直接将其回收.否则,若对象未执行过finalize()方法,将其放入
+			F-Queue队列,由一低优先级线程执行该队列中对象的finalize()方法.执行finalize()方法完毕后,GC会再次判断该对象是否可达,若不可达,则进行回收,否则,
+			对象"复活"。
+			每个对象只能触发一次finalize()方法
+			由于finalize()方法运行代价高昂,不确定性大,无法保证各个对象的调用顺序,不推荐使用
+	
+	103、线程的生命周期 ： 
+		1) 线程通常有5种状态，创建、就绪、运行、阻塞和死亡
+		2) 阻塞状态又分为三种 : 
+			a、等待阻塞 : 
+				当前运行的线程执行wait()方法，该线程会释放占用的所有资源，JVM会把该线程放入"等待池"中。进入这个状态后，是不可以自动唤醒的，必须依靠
+				其他的线程调用notify()或者notifyAll()方法才能被唤醒。wait()是Object类的方法。
+			b、同步阻塞 :
+				当前运行的线程获取对象锁的时候，若该同步锁被其他线程占用，JVM会把当前的线程放入"锁池"中
+			c、其他阻塞 :
+				运行的线程执行sleep()方法或者join()方法，或者发出了I/O请求时，JVM会把该线程置为阻塞状态。当sleep状态超时，join()等待线程终止或者超时
+				或者I/O处理完毕时，线程重新进入就绪状态。sleep()是Thread类的方法。
+		3) 详情 :
+			创建状态(New) : 新创建了一个线程对象。
+			就绪状态(Runnable) : 线程对象创建后，其他线程调用了该对象的start方法。该状态的线程处于可运行线程池中，变得可运行，等待获取CPU的时间片。
+			运行状态(Running) : 就绪状态的线程获取到了CPU时间片，执行程序代码。
+			阻塞状态(Blocked) : 阻塞状态是线程因为某种原因放弃了CPU使用权，暂时停止运行。直到线程进入就绪状态，才有机会再次进入运行状态。
+			死亡状态(Dead) : 线程执行完之后或者因为异常推出了run方法，该线程结束生命周期。
+		
+	104、sleep()、wait()、join()、yield() :
+		1) 锁池 :
+			所有需要竞争同步锁的线程都会放在锁池中，比如当前对象的锁已经被其中一个线程得到，则其他需要这个锁的线程都会进入锁池中等待。只有前面
+			的线程释放了同步锁后，这个锁池中的线程开始竞争锁资源，某个线程才有机会进入就绪队列等待CPU分配资源。
+		2) 等待池 : 	
+			当我们调用了wait()方法之后，线程会放到等待池中，等待池的线程是不会去竞争同步锁的。只有调用notify()方法或者notifyAll()方法后才会去竞争
+			锁资源。notify()是随机从等待池中选出一个线程放入锁池，notifyAll()是将等待池中的所有线程放入锁池中。
+		3) sleep是Thread类的静态方法，wait()则是Object()类的本地方法。
+		4) sleep方法不会释放锁资源，但是wait()会释放，而且会加入到等待队列中。
+		5) sleep就是把CPU的执行资格和执行权释放出去，不在运行此线程，当定时时间结束后再取回CPU资源，参与CPU的调度，获取到CPU的资源后继续运行。
+			而如果sleep时该线程有锁，那么调用sleep方法不会释放该锁，而是把这个锁带着进入到冻结状态，也就是说其他需要这个锁的线程根本不可能获取到这个锁，
+			如果在睡眠期间其他线程调用了这个线程的interrupt()方法，那么这个线程也会抛出interruptException异常，这点和wait()方法是一样的。
+		6) sleep()方法不依赖于同步器synchronized，但是wait()方法需要依赖关键字synchronized关键字。
+		7) sleep()方法不需要被唤醒(休眠之后退出阻塞)，但是wait()方法需要(不指定时间需要被别人中断)，
+		8) sleep()方法一般用于当前线程休眠，或者轮询暂停操作，wait()则多用于多线程之间的通信。
+		9) sleep()方法会让出CPU执行时间且强制上下文转换，而wait()则不一定，wait()后还有可能重新竞争到锁然后继续执行。
+		10) yield()执行后线程直接进入就绪状态，马上释放了CPU的执行权，但是依然保留了CPU的执行资格，所以有可能CPU下次进行线程调度还会让这个线程
+			获取到执行权继续执行。
+		11) join()执行后线程会进入阻塞状态，例如在线程B中调用线程A的join()，那么线程B就会进入到阻塞队列，直到线程A结束或者中断线程。
+		
+	105、线程安全 :
+		当多个线程同时访问一个对象，如果不需要进行额外的同步控制或者其他的协调操作，调用这个对象的行为都可以获得正确的结果，那么我们就说这个对象
+			是线程安全的。
+		线程安全就是指内存安全，堆是共享内存，可以被所有的线程同时访问。
+		堆是进程和线程共有的空间，分全局堆和局部堆。全局堆就是所有没有分配的空间，局部堆就是用户分配的空间。堆在操作系统对进程初始化的时候分配，
+			运行过程中也可以像系统索要额外的堆内存，但是用完之后需要还给操作系统，要不然会导致内存泄漏。
+		在Java中堆是虚拟机所管理的内存中最大的一块，是所有线程共享的一块内存区域，在虚拟机启动时创建。堆所存在的内存区域的唯一性目的就是存放对象
+			实例，几乎所有的对象实例以及数组都在这里分配内存。
+		栈是每个线程独有的，保存其运行状态和局部自动变量的。栈在线程开始的时候初始化，每个线程的栈互相独立，因此，栈是是线程安全的。操作系统在
+			切换线程时会自动切换栈。栈空间不需要在高级语言里面显示的分配和释放。
+		目前主流的操作系统都是多任务的，及多个线程同时进行。为了保证线程安全，每个进程只能访问分配给自己的内存空间，而不能访问别的进程的，这是由
+			操作系统来保障的。
+		在每个进程的内存空间都有一个特殊的公共区域，通常成为堆。进程内所有的线程都可以访问到该区域，这是造成问题的潜在原因。
+	
+	106、守护线程 : 
+		守护线程 : 为所有的非守护线程(用户线程)，任何一个守护线程都是整个JVM中所有非守护线程的保姆
+			守护线程就像一个默默无闻的保姆，他的生死无关重要，他却依赖整个进程而运行，如果其他的线程都终止了，那么守护线程也会被终止。
+			守护线程的终止是自身无法控制的，所以不要把IO、File等重要的操作逻辑分给他。
+			守护线程的作用 : 
+				GC垃圾回收线程 : 就是一个经典的守护线程，当我们的程序中不再有任何运行的Thread，程序就不会再产生垃圾，垃圾回收器也就无事可做，所以当
+					垃圾回收线程是JVM中仅剩的线程时，垃圾回收线程就会自动离开。他始终处于低级别的状态中运行，用于实时监控和管理系统中的可回收资源。
+			守护线程应用场景 : 
+				1) 为其他线程提供服务支持的情况
+				2) 或者在任何情况下，程序结束时这个线程必须要关闭，那么就可以作为守护线程来使用
+				3) thread.setDaemon(true)必须在thread.start()之前设置，否则会出现一个IllegalThreadStateException异常，即不能把一个正在运行的线程设为
+					守护线程。
+				4) 在Daemon线程中产生的新线程也是Daemon线程。
+				5) 守护线程不能被用于去访问固有资源，比如读写操作或者计算逻辑。因为他会在任何一个时候或者任何一个操作中间发生中断。
+				6) Java自带的多线程框架，比如 : ExecutorService，会将守护线程自动转换为用户线程，所以如果需要使用守护线程，那么就不可以使用Java的
+					线程池。
+					
+	107、ThreadLocal : 
+		每一个Thread对象均含有一个ThreadLocalMap类型的成员变量threadLocals，它存储本线程中所有ThreadLocal对象及其对应的值。
+		ThreadLocalMap由一个个的Entry对象构成。
+		Entry继承自WeakReference<ThreadLocal<?>>，一个Entry由ThreadLocal对象和Obejct构成。由此可见，Entry的key是ThreadLocal对象，并且是一个弱引用。
+		当没指向key的强引用后，该key就会被垃圾回收器回收。
+		当执行set方法时，ThreadLocal首先会获取当前线程对象，然后获取当前线程的ThreadLocalMap对象。再以当前ThreadLocal对象为key，将值存储进ThreadLocalMap
+		对象中。
+		get方法执行过程类似。ThreadLocal首先会获取当前的线程对象，然后获取到当前线程的ThreadLocalMap对象，再以当前线程的ThreadLocal对象为key获取对应
+		的value。
+		由于每一个线程均含有各自的私有的ThreadLocalMap容器，这些容器相互独立不影响，因此不会存在线程安全性问题，从而也就无需使用同步机制来保证多
+		个线程访问容器的互斥性。
+		使用场景 : 
+			1) 在进行对象跨层传递的时候，使用ThreadLocal可以避免多次传递，打破层次之间的约束。
+			2) 线程间数据隔离
+			3) 进行事务操作，用于存储线程事务信息
+			4) 数据库连接，Session会话管理
+			Spring框架在事务开始的时候会给当前线程绑定一个JDBC Connection，在整个事务的过程中，都是使用该绑定的Connection来执行数据库操作，从而实现
+			了事务的隔离性。
+			Spring框架是利用ThreadLocal来实现这种隔离的。
+			
+	108、ThreadLocal内存泄漏 : 
+		内存泄漏 : 程序在申请内存后，无法释放已经申请的内存空间，一次内存泄露的危害可以忽略，但内存泄漏不断堆积，迟早会沾满内存。
+		不再被使用的对象或者变量的内存不能被回收，这就是内存泄漏。
+		强引用 : 使用最普遍的引用(new)，一个对象具有强引用，就不会被垃圾回收器回收，当内存空间不足时，Java虚拟机宁可抛出OutOfMemoryError错误，
+			也不会回收这种对象。
+		当需要取消引用和某个对象之间的关联，可以显式地将引用赋值为null，这样可以使JVM在合适的时机回收该对象。
+		弱引用 : JVM进行垃圾回收时，无论内存是否充足，都会回收弱引用的对象。在Java中，用java.lang.ref.WeakReference类来表示。可以在缓存中使用
+			弱引用。
+		ThreadLocal的实现原理 : 每一个Thread维护一个ThreadLocalMap，key为使用弱引用的ThreadLocal实例，value为线程变量副本。
+			ThreadLocalMap使用ThreadLocal的弱引用作为key，如果一个ThreadLocal不存在外部强引用，key(ThreadLocal)势必会被GC回收，这样会导致ThreadLocalMap
+			的key为null，而这些key对应的value值就无法再次获取，无法在被垃圾回收器回收。
+		ThreadLocal的正确使用方式 : 
+			-- 每次使用完ThreadLocal都调用他的remove()方法清除数据
+			-- 将ThreadLcoal变量定义为private static，这样就一直存在ThreadLcoal的强引用，也就能保证任何时候都能通过ThreadLocal的弱引用访问到Entry的
+				value值。
+				
+	109、并发的特性 : 
+		1) 原子性 : 
+			原子性是指在一个操作中CPU不可以在中途暂停然后再调度，即不被中断操作，要不全部执行完成，要不都不执行。
+		2) 可见性 : 
+			当多个线程访问同一个变量时，一个程序修改了这个变量的值，其他线程能够立刻看到这个修改的值。
+		3) 有序性 :
+			虚拟机在进行代码的编译时，对于那些改变顺序之后不会对最终结果造成影响的代码，虚拟机不一定会按照我们写的代码的执行顺序来执行，有可能将
+			他们重新排序。实际上，对于有些代码进行重排序后，虽然不会对变量的终值造成影响，但是有可能出现线程安全问题。
+			
+	110、线程池 : 
+		1) 降低资源消耗，提高线程利用率，降低创建和销毁线程的消耗。
+		2) 提高响应速度，任务来了，直接有线程可用可执行，而不是先创建线程然会在执行。
+		3) 提高线程的可管理性，线程是稀缺资源，使用线程池可以统一分配调优监控。
+			-- corePoolSize : 核心线程数，也就是正常情况下创建的线程数量，这些线程在创建后不会消失，而是一种常驻线程
+			-- maximumPoolSize : 最大线程数，他与核心线程数相对应，表示最大允许被创建的线程数。比如当前线程任务较多，将核心线程数都用完了，还无法满足
+				需求时，此时会创建新的线程，但是线程池内的线程总数不会超过最大线程数。
+			-- keepAliveTime(unit) : 表示超出核心线程数的线程的存活时间，即核心线程不会被消除，但是非核心线程如果空闲一段时间则会被消除。
+			-- workQueue : 用来存放待执行的任务，假设我们现在的核心线程都被占用，此时新任务进来后就会被放入队列中，当队列也被占满之后，就会开始创建
+				新的线程。
+			-- ThreadFactory : 实际是是一个线程工厂，用来生产线程执行任务。我们可以使用默认的线程工厂创建线程。这样产生的线程都在同一个组内，拥有
+				相同的优先级，且都不是守护线程
+			-- Handler : 任务拒绝策略。有两种情况，一是当我们调用shutdown()方法关闭线程池后，这时侯即使线程池内还有未执行完毕的任务正在执行，但是由于
+				线程池已经关闭，我们继续向线程池提交任务也会遭到拒绝，因为线程池已经关闭；另一种情况就是达到最大线程数，线程池已经没有能力继续处理
+				新的任务时，这时就会拒绝。
+	
+	111、线程池执行任务 ---> 核心线程数是否已满 ---> 未满，创建核心线程执行任务
+													---> 已满，任务队列是否已满 ---> 未满，将任务放入任务队列中
+																				  ---> 已满，最大线程数是否达到 ---> 未达到，创建临时线程执行任务
+																											   ---> 已达到，根据拒绝策略处理
+
+	112、线程池中的阻塞队列 : 
+		1) 一般的队列只能保证作为一个有限长度的缓冲区，如果超出了缓冲长度，就无法保留当前的任务了，阻塞队列通过阻塞可以保留当前想要继续入队的任务。
+			阻塞队列可以保证任务队列中没有任务时阻塞获取任务的线程，使得线程进入wait状态，释放CPU资源。
+			阻塞队列自带阻塞和唤醒的功能，不需要额外的处理，无任务执行时，线程池利用阻塞队列的take方法挂起，从而维持核心线程的存活、不至于一直占用
+			CPU资源。
+		2) 在创建新线程的时候，是要获取全局锁的，这个时候其他的就得阻塞，影响了整体效率。
+		
+	113、线程池中线程的复用原理 : 
+		线程池将线程和任务进行解耦，线程是线程，任务是任务，摆脱了之前通过Thread创建线程时一个线程必须对应一个任务的限制。
+		在线程池中，同一个线程可以不断从阻塞队列中获取新任务，其核心原理在于线程池对Thread进行了封装，并不是每次执行任务都会调用Thread.start()方法
+		来创建新的线程，而是让每个线程去执行一个(循环任务)，在这个循环任务中会不停地检查是否有任务需要被执行，如果有则直接执行，也就是调用任务中
+		的run()方法，将run()方法当成一个普通的方法执行，通过这种方式只使用固定的线程就可以将所有的任务的run()方法串联起来。
+		
+	114、Spring : 
+		轻量级的开源的J2EE(Java 2 Platform Enterprise Edition)框架。他是一个容器框架，用来装javabean(java对象)，中间层框架(万能胶)可以起一个连接作用，
+		比如说把Struts和Hibernate粘合在一起可以是我们的企业开发更加快捷
+		Spring是一个轻量级的控制反转(IOC)和面向切面(AOP)的容器框架。
+			-- 从大小和开销两个方面都是轻量级的
+			-- 通过控制反转(IOC)的技术达到松耦合的目的
+			-- 提供了面向切面编程的丰富支持。允许通过分离应用的业务逻辑与系统级服务进行内聚性的开发
+			-- 包含并管理应用对象(Bean)的配置和生命周期，这个意义上是一个容器
+			-- 将简单的组件配置、组合成为复杂的应用，这个意义上是一个框架
+			
+	115、AOP(Aspect Oriented Programming) :
+		系统是由许多不同的组件所组成的，每一个组件各自负责一个特定的功能。除了实现自身的核心功能外，这些组件还经常承担着额外的职责。例如日志、事务管理
+		和安全这样的核心服务经常融入到自身具有核心业务逻辑的组件中去。这些系统经常被称为横切关注点，因为它们会跨越系统的多个组件。
+		日志代码往往水平分布在所有对象层次中，而与它所散布到的对象的核心功能毫无关系。
+		在OOP设计原则中，导致了大量的代码重复，不利于各个模块的重用。
+		AOP : 将程序中的交叉业务逻辑(比如安全、日志、事务等)，封装成一个切面，然后注入到目标对象(具体业务逻辑)中去。AOP可以对某个对象或者某些对象的功能
+		进行增强，比如对象中的方法进行增强，可以在执行某个方法之前额外的做一些事情，在某个方法执行之后做一些事情。
+	
+	116、IOC(Inversion Of Control) : 
+		容器、控制反转、依赖注入
+		IOC容器 : 实际上就是一个map(key,value)，里面存放着各种对象(在XML里配置的bean节点，@repository、@service、@controller、@component)，在项目启动
+		的时候会读取配置文件里面的bean节点，根据全限定类名使用反射机制创建对象存放到map里。
+		接下来在代码中需要使用到这些对象的时候，再通过DI注入(@autowired、@resource)，xml文件中的bean节点内的ref属性
+		控制反转 :
+			没有引入IOC容器之前，对象A依赖于对象B，那么对象A在初始化或者运行到某一点的时候，自己必须去创建对象B或者使用已经创建的对象B。无论是创建
+			B还是使用B，控制权都在自己手上。
+			引入IOC容器之后，对象A域对象B之间失去了直接联系，当对象A需要使用对象B的时候，IOC容器会主动创建一个对象B并引入到对象A需要的地方。
+		全部对象的控制权全部上缴给"第三方容器"IOC，所以IOC容器成了整个系统的核心，他起到了一种类似"粘合剂"的作用，把系统中所有的对象粘合在一起
+		发挥作用。
+		
+	117、BeanFactory和ApplicationContext :
+		ApplicationContext是BeanFactory的子接口
+		ApplicationContext提供了更加完善的功能 : 
+			1) 继承MessageSource，因此支持国际化
+			2) 统一的资源访问方式
+			3) 提供在监听器中注册bean的事件
+			4) 可以同时加载多个配置文件
+			5) 载入多个(有继承关系)上下文，使得每个上下文都专注于一个特定的层次，比如应用的Web层
+		-- BeanFactory采用的使延迟加载的方式来注入Bean的，即只有在使用到某个Bean时才对该对象进行加载实例化。
+		-- ApplicationContext是在容器启动的时候，一次性创建所有的对象。这样在容器启动时就可以发现Spring中的配置错误，又利于检查所依赖的属性是否成功注入。
+		-- ApplicationContext的缺点就是占用大量内存空间，当应用程序的bean较多时，程序启动较慢。
+	
+	118、Spring Bean的生命周期 : 
+		1) 解析类得到BeanDefinition
+		2) 如果有多个构造方法，则要推断构造方法
+		3) 确定构造方法之后，进行实例化得到一个对象
+		4) 对对象中的加入了@Autowired注解的属性进行属性填充
+		5) 回调Aware方法，比如BeanNameAware，BeanFactoryAware
+		6) 调用BeanPostProcessor的初始化前的方法
+		7) 调用初始化方法
+		8) 调用BeanPostProcessor的初始化后的方法，在这里会进行AOP
+		9) 如果这里创建的bean是单例的则会把bean放入单例池中
+		10) 使用bean
+		11) Spring容器关闭的时候调用DisposableBean中的destory()方法
+		
+	119、Spring Bean的作用域 : 
+		-- singleton : 默认，每个容器中只有一个bean的实例，单例的模式由BeanFactory自身来维护。该对象的生命周期是与Spring IOC容器一致的
+		-- prototype : 为每一个bean请求提供一个实例。在每次注入的时候都会创建一个新的对象
+		-- request : bean被定义为在每个HTTP请求中创建一个单例对象，也就是说在一个HTTP请求中会复用这个单例对象
+		-- session : 与request相类似，确保每个session中有一个bean的实例，在session过期之后，bean会随之消失
+		-- application : bean被定义为在ServletContext的生命周期中的一个复用的单例对象
+		-- websocket : bean被定义在websocket的生命周期中复用的一个单例对象
+		
+	120、Spring中的Bean默认是单例模式的，框架并没有对bean进行多线程的封装处理。
+		如果Bean是有状态的，那就需要开发人员自己来进行线程安全的保证，最简单的方法是改变Bean的作用域，把"singleton"改为"prototype"，这样每次
+		请求bean就相当于是new Bean()这样就可以保证线程的安全了。
+		-- 有状态就是指有数据存储的功能
+		-- 无状态就是指不会保存数据 controller、service和dao层本身并不是线程安全的，只是如果只是调用里面的方法，而且多线程调用一个实例的方法，
+			会在自己线程的工作内存中复制一个变量副本，所以是安全的。
+		Dao会操作数据库Connection，Connection是带有状态的，比如说数据库事务，Spring的事务管理器使用ThreadLocal为不同的线程维护了一套独立的connection
+		副本，保证线程之间不会相互影响(Spring保证事务获取同一个Connection)
+		尽量不要再bean中声明任何有关状态的实例变量或者类变量，如果必须如此，那么就使用ThreadLocal把变量变为线程私有的，如果bean的实例变量或者
+		类变量需要在多个线程之间共享，那么就只能使用synchronized、lock、CAS等这些实现线程同步的方法了。
+		
+	121、Spring框架中的设计模式 : 
+		简单工厂 : 由一个工厂类根据传入的参数，动态决定应该创建哪个产品类
+			Spring中的BeanFactory就是简单工厂模式的体现，根据传入一个唯一的标识来获得Bean对象，但是是在传入参数后创建还是在传入参数前创建，需要通过
+			参数来确定
+		工厂方法 : 实现了FactoryBean接口的类是一类叫做factory的bean。其特点是，Spring会在使用getBean()调用获得该bean时，会自动调用该bean的getObject()
+			方法，所以返回的不是factory这个bean，而是这个bean.getObject()方法的返回值。
+		单例模式 : 保证一个类仅有一个实例对象，并提供一个访问它的全局访问点
+			Spring对单例的实现 : Spring中的单例模式完成了后半句话，即提供了全局的访问点BeanFactory。但没有从构造器级别去控制实现单例模式。这是因为
+			Spring管理的是任意的java对象。
+		适配器模式 : 
+			Spring定义了一个适配接口，使得每一种Controller有一种对应的适配器实现类，让适配器代替controller执行相应的方法。这样在扩展Controller的时
+			候，只需要增加一个适配器类就完成了SpringMVC的扩展。
+		装饰器模式 : 动态地给一个对象添加一些额外的职责。就增加功能来说，Decorator模式相比生成子类更为灵活
+			Spring中用到的包装器模式在类名上有两种表现，一种是类名中含有Wrapper，另一种是类名中含有Decorator
+		动态代理 : 
+			切面在应用运行的时刻被织入。一般情况下，在织入切面时，AOP容器会为目标对象创建一个动态代理对象。
+			SpringAOP就是以这种方式织入切面的。
+			织入 : 把切面应用到目标对象并创建新的代理对象的过程
+		观察者模式 : 	
+			Spring的事件驱动模型使用的是观察者模型，例如Listener的实现
+		策略模式 :
+			Spring框架的资源访问Resource接口。该接口提供了更强的资源访问能力，Spring框架本身大量使用了Resource接口来访问底层资源。
+			
+	122、Spring事务的实现方式和原理以及隔离级别 : 
+		在使用Spring框架的时候，可以有两种使用事物的方式，一种是编程式的，一种是申明式的。@Transactional注解就是申明式的。
+		首先，事务这个概念是数据库层面的，Spring只是基于数据库中的事务进行了扩展，以及提供了一些能让程序员更加方便操作事务的方式。
+		比如我们可以通过在某个方法上增加@Transactional注解，就可以开启事务，这个方法中所有的SQL都会在一个事务中执行，统一失败或者成功。
+		在一个方法上添加@Transactional注解后，Spring会基于这个类生成一个代理对象，并且把这个对象作为一个bean，当在使用这个代理对象的方法时，如果
+		这个方法上存在@Transactional注解，那么代理逻辑会先把事务的自动提交设置为false，然后再去执行原本的业务逻辑方法，如果方法执行完毕没有出现
+		异常，那么代理逻辑会提交这个事务，否则会回滚这次事务
+		针对哪些异常回滚事务也是可以设置的，利用@Transactional注解中的rollbackFor属性进行配置，默认情况下会对RuntimeException和Error进行回滚。
+		Spring事务隔离级别就是数据库的隔离级别 : 外加一个默认级别
+			-- read uncommitted (读未提交)
+			-- read committed (读提交，不可重复读)
+			-- repeatable read (可重复读)
+			-- serializable (可串行化)
+			数据库的配置隔离级别是Read Committed，而Spring配置的隔离级别是Repeatable Read，那么这时会以Spring的配置为准；当Spring设置的隔离级别数据库
+			不支持时，效果会取决于数据库。
+			
+	123、Spring中的事务传播机制 : 
+		多个事务方法相互调用时，事务如何在这些方法之间传播。
+		REQUIRED(Spring中默认的事务传播机制) : 如果当前没有事务，则自己新建一个事务，如果当前存在事务，则加入这个事务
+		SUPPROTS : 当前存在事务，则加入当前事务；当前没有事务，则以非事务的方式执行
+		MANDATORY : 当前存在事务，则加入当前事务，如果当前没有事务，就抛出异常
+		REQUIRES_NEW : 创建一个新事务，如果当前存在事务，则挂起当前事务
+		NOT_SUPPORTED : 以非事务的方式执行，如果当前事务存在，则挂起当前事务
+		NEVER : 不使用事务，如果当前事务存在，则抛出异常
+		NESTED : 如果当前存在事务，则在嵌套事务中执行，否则新建一个事务
+			和REQUIRES_NEW的区别 : 
+				REQUIRES_NEW是新建一个事务并且新开启的这个事务与原有事务无关，而NESTED则是当前存在事务时(我们把当前事务称之为父事务)
+				会开启一个嵌套事务(称之为子事务)。在NESTED情况下父事务回滚时，子事务也会回滚，而在REQUIRES_NEW情况下，原有事务回滚，不会影响新
+				开启的事务。
+			和REQUIRED的区别 :
+				REQUIRED情况下，调用方存在事务时，则被调用方和调用方使用同一事务，那么被调用方出现异常时，由于共用一个事务，所以无论调用方是
+				否catch其异常，事务都会回滚；而在NESTED情况下，被调用方发生异常时，调用方可以catch异常，这样只有子事务回滚，父事务不需要回滚。	
+	
+	124、Spring事务的原理是AOP，进行了切面增强，因此事务失效的原因就是这个AOP不起作用了。
+		1) 发生了自调用，类里面使用this调用本类的方法(this通常省略)，此时this对象不是代理类，而是当前类对象。
+		2) 方法不是public的
+			@Transactional注解只能用于public的方法上，否则事务会失效，如果要用在非public方法上，需要开启AspectJ代理模式。
+		3) 数据库不支持事务
+		4) 没有被Spring管理
+		5) 异常被吃掉，事务不会被回滚(或者抛出的异常没有被定义，默认为RuntimeException)
+		
+	125、Spring Bean的自动装配 : 
+		开启自动装配，只需要在xml文件配置<bean>的"autowired"属性
+		autowired属性有5种装配的方式 :	
+			-- no(默认)，自动装配是通过"ref"属性手动设定
+				手动装配 : 以value或ref的方式明确指定属性值都是手动装配的
+				需要通过ref属性来连接bean
+			-- byName，根据bean的属性名称进行自动装配
+			-- byType，根据bean的属性类型进行自动装配
+			-- constructor，类似byType，不过是应用于构造器的参数。如果一个bean与构造器参数的类型相同，则进行自动装配，否则导致异常
+			-- autodetect，如果有默认的构造器，则通过constructor方式进行自动装配，否则使用byType方式进行自动装配。
+		
+	126、SpringBoot、SpringMVC和Spring的区别 :
+		Spring是一个IOC容器，用来管理Bean，使用依赖注入的方式来实现控制反转，可以很方便的整合各种框架，提供AOP机制弥补了OOP的代码重复的缺陷，
+		将不同类的不同方法中的共同点处理成切面，自动注入给方法执行，比如日志、异常等
+		SpringMVC是Spring对Web框架的一个解决方案，提供了一个总的前端控制器Servlet，用来接收请求，然后定义了一套路由策略(url到handler的映射)及
+		适配执行handler，将handler结果使用视图解析计数生成视图展现给前端。
+		SpringBoot是Spring提供的一个快速开发工具包，让程序员能够快速地开发Spring + SpringMVC应用，简化了配置(约定了默认配置)，整合了一系列的解决
+		方案(starter机制)、redis、mongodb、es，可以开箱即用。
+		
+	127、SpringMVC工作流程 :
+		1) 用户发送请求至前端控制器DispatcherServlet
+		2) DispatcherServlet收到请求调用HandlerMapping处理映射器
+		3) 处理器映射器找到具体的处理器(可以根据xml配置、注解进行查找)，生成处理器以及处理器拦截器(如果有则生成)并一并返回给DispatcherServlet
+		4) DispatcherServlet调用HandlerAdapter处理器适配器
+		5) HandlerAdapter经过适配器调用具体的处理器(Controller，也叫后端控制器)
+		6) Controller执行完毕后返回ModelAndView
+		7) HandlerAdapter将Controller执行结果ModelAndView返回给DispatcherServlet
+		8) DispatcherServlet将ModelAndView传给ViewReslover视图解析器
+		9) ViewReslover解析后返回具体的View
+		10) DispatcherServlet根据View进行渲染视图(即将模型数据填充到视图中)
+		11) DispatherServlet响应用户
+		
+	128、SpringMVC的主要组件 : 
+		handler : 也就是处理器。他直接对应MVC中的C，即Controller。它的具体表现方式有很多种，可以是类，也可以是方法。在Controller层中@RequestMapping
+		注解标注的所有方法都可以看作是一个Handler，只要实际上可以处理请求的就是Handler
+		1) HandlerMapping : 
+			initHandlerMappings(context)，处理器映射器，根据用户请求的资源uri来查找Handler。在SpringMVC中会有很多请求，每个请求都需要一个Handler处理，
+			具体接受到一个请求后使用哪个Handler进行，这就是HandlerMapping需要做的事情
+		2) HandlerAdapter :
+			initHandlerAdapter(context)，处理器适配器。因为SpringMVC中的Handler可以是任意一种形式，只要能具体处理请求就行。但是Servlet需要的处理方法
+			却是固定的，都是以request，response为参数的方法。这就是Handler需要做的事情，选择合适的请求处理方式和响应结果
+		3) HandlerExceptionResolver : 
+			initHandlerExceptionResolvers(context)，其他组件都是用来干活的。在干活的过程中难免会出现问题，出问题后就由HandlerExceptionResolver根据
+			异常信息设置ModelAndView，之后交给render()方法进行渲染。
+		4) ViewResolver :
+			initViewResolvers(context)，ViewResolver用来将String类型的视图名和Locale解析为View类型的视图。View是用来渲染页面的，也就是将程序返回的参数
+			填入模板里，生成html(也可能是其他类型)文件。ViewResolver需要找到渲染所用的模板和技术(也就是视图的类型)进行渲染，具体的渲染过程交由不同的
+			视图自己完成
+		5) RequestToViewNameTranslator :
+			initRequestToViewNameTranslator(context)，ViewResolver是根据ViewName查找View，但有的Handler处理完成后并没有设置View也没有ViewName，这时
+			就需要从request中获取ViewName。RequestToViewNameTranslator在Spring MVC容器中只可以配置一个，所以所有的request到ViewName的转换规则到要在一个
+			Translator中实现
+		6) LocaleResolver : 	
+			initLocaleResolver(context)，解析视图需要两个参数，一是视图名，另一个是Locale。视图名由处理器返回。LocaleResolver用于从request解析出Locale，
+			Locale就是zh-cn之类，表示一个区域，有了这个就可以对不同区域的用户显示不同的结果。SpringMVC主要有两个地方用到了Locale，一是ViewResolver视图
+			解析的时候，另一个就是用到国际化资源或者主题的时候
+		7) ThemeResolver : 
+			initThemeResolver(context)，用于解析主题。SpringMVC中一个主题对应一个properties文件，里面存放着跟当前主题相关的所有资源。SpringMVC中跟主题相
+			关的类有ThemeResolver、ThemeSource和Theme，主题是通过一系列资源具体实现的，要得到一个主题的资源，首先需要得到资源的名称，这就是ThemeResolver
+			的工作。
+		8) MultipartResolver :
+			initMultipartResolver(context)，用于处理上传请求。处理方法是将普通的request包装成MultipartHttpServletRequest，后者可以直接调用getFile()方法获取
+			file，如果上传多个文件，还可以调用getFileMap()方法得到FileName : File结构的Map。此组件一共有三个方法，作用分别是判断是不是上传请求、将request
+			包装成MultipartHttpServletRequest、处理完后清理上传过程中产生的临时资源
+		9) FlashMapManager : 
+			initFlashMapManager(context)，用来管理FlashMap,FlashMap主要用在redirect中传递参数
+			
+	129、Spring Boot自动装配原理 :
+		@import + @Configuration + Spring spi
+		自动配置类由各个starter提供，使用@Configuration + @Bean定义配置类，放到META-INF/spring.factories下使用spring spi扫描META-INF/spring.factories下
+		的配置类
+		使用@import导入自动配置类
+		
+	130、Spring Boot的Starter :
+		使用spring + springMVC时，如果需要使用MyBatis等框架，需要到xml中定义MyBatis需要的bean
+		starter就是定义一个starter的jar包，写一个@Configuration配置类，将这些bean定义在里面，然后在starter包的META-INF/spring.factories中写入该配置类，
+		Spring Boot会按照约定来加载该配置类
+		开发人员只需要将相应的starter包以依赖的形式添加到应用中，然后进行相应的属性配置，就可以直接进行代码开发，使用相应的功能了。
+		
+	131、嵌入式服务器 :
+		Spring Boot内置Tomcat，节省了下载安装Tomcat，应用也不再需要打包成war包，放在webapp目录下才可以运行了
+		只需要安装一个java虚拟机，就可以直接在上面部署应用程序了
+		Spring Boot内置Tomcat.jar，运行main方法时，就会启动Tomcat，并利用Tomcat的spi机制加载SpringMVC
+		
+	132、MyBatis :
+		优点 : 
+			1) 基于SQL语句编程，相当灵活，不会对应用程序或者数据库的现有设计造成任何影响，SQL写在XML文件中，解除了SQL语句和程序代码的耦合，方便
+				统一管理；提供了大量XML标签，支持编写动态SQL语句，并可以重用
+			2) 与JDBC相比，减少了50%以上的代码量，消除了JDBC大量冗余的代码，不需要手动开关链接
+			3) 很好地与各种数据库兼容(因为MyBatis使用JDBC来连接数据库，所以只要是JDBC支持的数据库，MyBatis都支持)
+			4) 能够与Spring很好的集成
+			5) 提供映射标签，支持对象与数据库的ORM字段关系映射；提供对象关系映射标签，支持对象关系组件维护
+		缺点 : 
+			1) SQL语句的编写工作量大，尤其是当字段比较多、关联表多的时候，对开发人员编写SQL语句的功底有一定要求
+			2) SQL语句依赖于数据库，导致数据库的可移植性差，不能随意更换数据库
+			
+	133、MyBatis与Hibernate :
+		1) 开发速度 :
+			当一个项目中用到的复杂的查询语句基本没有，而是大量的简单增删改查，这样选择Hibernate效率就很快，因为基本的sql语句已经被封装好了。
+			但是对于大型的项目，复杂的语句比较多，这样再去选择Hibernate就不是一个很好的选择，MyBatis就会加快许多，而且语句的管理也比较方便
+		2) 开发工作量 :
+			Hibernate与MyBatis都有相应的代码生成工具。可以生成简单基本的DAO层方法。针对高级查询，MyBatis需要手动编写SQL语句，以及ResultMap。
+			而Hibernate有良好的映射机制，开发者无需关心SQL语句的生成与结果映射，可以更加专注于业务
+		3) SQL优化 :
+			Hibernate的查询会将表中的所有字段查询出来，这一点会有性能消耗。Hibernate也可以自己写SQL来指定需要查询的字段，但这样就破坏了Hibernate
+			开发的简洁性。而MyBatis的SQL语句是手动编写的，所以可以按照需求指定查询的字段
+			Hibernate SQL语句的调优需要将SQL打印出来，而MyBatis的SQL是自己手动写的，所以调整方便。但Hibernate有自己的日志统计，MyBatis本身不带有日志
+			统计，需要继承Log4j进行日志记录
+		4) 对象管理 :
+			Hibernate是完整的对象/关系映射解决方案，它提供了对象状态管理(state management)的功能，使开发者不再需要理会底层数据库系统的细节。也就是
+			说，相对于常见的JDBC/SQL持久层方案中需要管理SQL语句，Hibernate采用更加自然的面向对象的视角来持久化java应用中的数据
+		5) 缓存机制 :
+			相同点 : 都可以使用自己的缓存或者第三方缓存方案，创建适配器来完全覆盖缓存行为
+			不同点 : Hibernate的二级缓存配置在SessionFactory生成的配置文件中详细配置，然后再具体的表-对象映射中配置是哪种缓存。
+					MyBatis的二级缓存配置是在每个具体的表-对象映射中进行详细配置，这样针对不同的表可以自定义不同的缓存机制。并且MyBatis可以在命名空间中
+					共享相同的缓存配置和实例，通过Cache-ref来实现
+					Hibernate对查询对象有着良好的管理机制，用户无需关心SQL。所以在使用二级缓存时如果出现脏数据，系统会报出错误并提示
+					MyBatis在这一方面，使用二级缓存时必须小心，如果不能确定数据的更新操作的波及范围，那么就需要避免Cache的盲目使用。否则，脏数据
+					的出现给系统正常运行带来很大的隐患
+					
+	134、MyBatis插件(拦截器) :
+		MyBatis只支持针对ParameterHandler、ResultSetHandler、StatementHandler、Executor这四种接口的插件。MyBatis使用JDK的动态代理，为需要拦截的接口
+		生成代理对象以实现接口方法拦截功能，每当执行这四种接口对象的方法时，就会进入拦截方法，具体就是InvocationHandler的invoke()方法，拦截那些
+		指定的需要拦截的方法
+		编写插件 :
+			实现MyBatis的interceptor接口并复写intercept()方法，然后在给插件编写注解，指定要拦截哪一个接口的哪些方法即可，在配置文件中配置编写的插件
+			
+	135、索引的基本原理 :
+		索引是用来快速的寻找那些具有特定值的记录。如果没有索引，一般来说执行查询时遍历整张表。
+		索引的原理 : 把无序的数据变成有序的查询
+			1) 把创建了索引的列的内容进行排序
+			2) 把排序结果生成倒排表
+			3) 在倒排表内容上拼上数据地址链
+			4) 在查询的时候，先拿到倒排表内容，再取出数据地址链，从而拿到具体数据
+			
+	136、MySQL聚簇和非聚簇索引的区别 :
+		1) 都是B+数的数据结构
+		2) 聚簇索引 : 将数据存储与索引放到一块，并且是按照一定的顺序组织的，找到索引也就找到了数据，数据的物理存放顺序与索引顺序是一致的，即
+				只要索引是相邻的，那么对应的数据也一定是相邻地存放在磁盘上的
+		3) 非聚簇索引 : 叶子节点不存储数据，存储的是数据行地址，也就是说根据索引查找到数据行的位置再取磁盘查找数据，这个就有点类似一本书的目录
+		4) 聚簇索引的优势 :
+			a、通过聚簇索引查询可以直接获取数据，不需要二次查询
+			b、聚簇索引对于范围查询效率更高，因为其数据是按照大小排序的
+			c、聚簇索引适合用在排序的场合，而非聚簇索引不适合
+		5) 聚簇索引的劣势 :
+			a、维护索引很昂贵，特别是插入新行或者主键被更新导致需要分页(page split)的时候。建议在大量插入新行后，选在负载较低的时间段，通过
+				OPTIMIZE TABLE优化表，因为必须被移动的行数据可能造成碎片，使用独享表空间可以弱化碎片
+			b、表因为使用UUID(随机ID)作为主键，使数据存储稀疏，这样就有可能出现聚簇索引比全表扫描更慢，所以建议使用int的auto_increment作为主键
+			c、如果主键比较大的话，那辅助索引会变得更大，因为辅助索引的叶子存储的是主键值，过长的主键值会导致非叶子节点占用更多的物理空间
+			d、innoDB中一定有主键，主键一定是聚簇索引，不手动设置，则会使用unique索引，没有unique索引，则会使用数据库内部的一个行的隐藏id来当作
+				主键索引。在聚簇索引之上创建的索引称为辅助索引，辅助索引访问数据总是需要二次查找，非聚簇索引都是辅助索引，像复合索引、前缀索引、
+				唯一索引，辅助索引叶子节点存储的不再是行的物理位置，而是主键值
+			e、MyISAM使用的是非聚簇索引，没有聚簇索引，非聚簇索引的两颗B+树分别存储了主键和辅助键，表数据单独存放在独立的地方，这两颗B+树的叶子
+				节点都是用一个地址指向真正的表数据，对于别数据来说，这两个键没有任何差别。由于索引树是独立的，通过辅助键可以直接获取表数据，无需
+				访问主键的索引树
+			f、如果涉及到大量排序、全表扫描、count之类的操作，还是MyISAM占优势些，因为索引所占空间小，而这些操作是需要在内存完成的
+			
+	137、MySQL索引的数据结构 :
+		索引的数据结构和具体存储引擎的实现有关，在MySQL中使用较多的索引有Hash索引，B+树索引等。InnoDB存储引擎的默认索引为B+树索引。对于
+		Hash索引来讲，底层的数据结构就是哈希表，因此在绝大多数的单条查询时，可以选择哈希索引，查询性能最快，其余大部分场景，建议选择B+树
+		B+树 :
+			B+树是一个平衡的多叉树，从根节点到每个叶子节点的高度差不超过1，而且同层级的节点间有指针相互连接。在B+树上的常规检索，从根节点到
+			叶子结点的搜索效率基本相当，不会出现大幅波动，而且基于索引的顺序扫描时，也可以利用双向指针快速左右移动，效率非常高。因此B+树索引
+			被广泛应用于数据库、文件系统等场景
+		哈希索引 :
+			哈希索引就是利用一定的哈希算法，把键值换算成新的哈希值，检索时不需要类似B+树那样从根节点到叶子节点逐级查找，只需要一次哈希算法即可定位
+		如果是等值查询，那么哈希索引有绝对的优势，因为只需要一次哈希算法就能定位到相关位置，若该值不是唯一的，那么需要遍历链表，然后找到需要的数据
+		如果是范围查询，这时候哈希索引就毫无用处，因为原先有序的键值，经过哈希算法后，有可能变成不连续的了，就没有办法再利用索引完成范围查询
+		
+	138、索引设计的原则 : 查询更快，占用空间更小
+		1) 适合索引的列是出现在where子句中的列，或者链接子句中指定的列
+		2) 基数较小的类，索引效果较差，没有必要在此建立索引
+		3) 使用短索引，如果对长字符串列进行索引，应该指定一个前缀长度，这样能够节省大量索引空间，如果搜索词超过索引前缀长度，则使用索引排除不
+			匹配的行，然后检查其余行是否可能匹配
+		4) 不要过度索引。索引需要额外的磁盘空间，并降低写操作的性能。在修改表内容的时候，索引会更新甚至重构。索引列越多，这个时间就会越长。所以
+			只需要保持需要的索引列，有利于查询即可
+		5) 定义在外键的数据列一定要建立索引
+		6) 更新频繁的字段不适合建立索引
+		7) 若是不能有效地区分数据的列不适合做索引列(例如性别，只有男、女、其他三种可能性)，区分度太低
+		8) 尽量的扩展索引，不要新建索引。
+		9) 对于那些查询极少的列和重复值较多的列不要建立索引
+		10) 对于定义为text、image和bit的数据类型的列不要建立索引
+		
+	139、MySQL中锁的类型 :
+		1) 基于锁的属性分类 : 共享锁、排他锁
+		2) 基于锁的粒度分类 : 行级锁(INNODB)、表级锁(INNODB、MYISAM)、页级锁(BDB引擎)、记录锁、间隙锁、临建锁
+		3) 基于锁的状态分类 : 意向共享锁、意向排他锁
+		-- 共享锁(Share Lock) : 
+			共享锁又称为读锁，简称S锁。当一个事务为数据加上读锁后，其他事务只能对该数据加读锁，而不能加写锁，直到所有的读锁释放之后其他事务才能
+			对其加写锁。共享锁的特性主要是为了支持并发的读取数据，读取数据的时候不支持修改，避免出现重复读的现象
+		-- 排他锁(Exclusive Lock) :
+			排他锁又称为写锁，简称X锁。当一个事务为数据加上写锁后，其他的请求不能为数据添加任何锁，直到写锁释放。排他锁的目的是在数据修改的时候，
+			不允许其他人读取，避免了出现脏数据和脏读的问题。
+		-- 表锁
+			表锁是指上锁的时候锁住的是整个表，当下一个事务访问该表的时候，必须等前一个事务释放了锁才能进行对表的进行访问。
+			特点 : 
+				粒度大、加锁简单、容易冲突
+		-- 行锁
+			行锁是指上锁的时候锁住的是表的某一行或者多行记录，其他事务访问同一张表时，只有被锁住的记录不能访问，其他的记录可以正常访问。
+			特点 :
+				粒度小、加锁比表锁麻烦，不容易冲突，相比表锁支持的并发要高
+		-- 记录锁
+			记录锁也属于行锁的一种，只不过记录锁的范围只是表中的某一条记录，记录锁是说事务在加锁后锁住的只是表的某一条记录。
+			精确条件命中，并且命中的条件字段是唯一索引
+			加了记录锁之后的数据可以避免数据在查询的时候被修改的重复读问题，也避免了再修改的事务未提交之前被其他事务读取的脏读问题
+		-- 页锁
+			页级锁是MySQL中锁定粒度介于行级锁和表锁中间的一种锁。表级锁速度快，但冲突多，行级锁冲突小但速度慢。
+			特点　:
+				开锁和加锁的时间介于表锁和行锁之间，可能出现死锁；锁定粒度介于表锁和行锁之间，并发度一般
+		-- 间隙锁(Gap Lock)
+			属于行级锁的一种，间隙锁是在事务加锁后锁住表记录的某一个区间。
+			范围查询并且查询未命中记录，查询条件必须命中索引、间隙锁只会出现在REPEATABLE_READ(重复读)的事务级别中。
+			触发条件 : 
+				防止幻读问题，事务并发的时候，如果没有间隙锁，就会发生 : 在同一个事务中，A事务的两次查询结果不同
+		-- 临建锁(Next-Key Lock)
+			也属于行锁的一种，并且他是INNODB的行锁默认算法，总结来说他就是记录锁和间隙锁的组合，临建锁会把查询出来的记录锁住，同时也会把该范围
+			内的所有间隙空间也锁住，再之他会把相邻地下一个区域也锁住
+			触发条件 :
+				范围查询并命中，查询命中了索引。
+			特点 :
+				结合记录锁和间隙锁的特性，临建锁避免了在范围查询时出现脏读、重复读、幻读问题，加入了临建锁之后，在范围区间内不允许数据修改插入
+		如果当事务A加锁成功之后就设置一个状态告诉后面的人，已经有人对表里的行加了一个锁了。这个状态就是意向锁。
+		-- 意向共享锁
+			当一个事务视图对整个表进行加共享锁之前，需要获取这个表的意向共享锁
+		-- 意向排他锁
+			当一个事务视图对这个表加排他锁之前，需要获取这个表的意向排他锁
+		
+	140、MySQL执行计划 :
+		MySQL的执行计划就是SQL语句执行查询的顺序，以及如何使用索引查询，返回结果集的行数
+		EXPIAIN SELECT * FROM TBL_A WHERE ID=? AND NAME=?
+		1) id : 是一个有顺序的编号，是查询的顺序号，有几个SELECT就显示几行。id的顺序是按照SELECT出现的顺序增长的。id列的值越大表示执行优先级越高，
+			id列的值相同则从上往下执行，id列的值为NULL则最后执行
+		2) selectType : 表示查询中每个select子句的类型
+			-- SIMPLE : 表示此查询不包含UNION查询或者子查询
+			-- PRIMARY : 表示此查询是最外层的查询(包含子查询)
+			-- SUBQUERY : 子查询中的第一个SELECT
+			-- UNION : 表示此查询是UNION的第二或者随后的查询
+			-- DEPENDENT UNION : UNION中的第二个或者后面的查询语句，取决于外面的查询
+			-- UNION RESULT : UNION的结果
+			-- DEPENDENT SUBQUERY : 子查询中的第一个SELECT，取决于外边的查询，即子查询依赖于外层查询的结果
+			-- DERIVED : 衍生，表示导出表的SELECT(FROM子句的子查询)
+		3) table :
+			表示该语句查询的表
+		4) type :
+			优化SQL的重要字段，也是我们判断SQL性能和优化程度重要的指标。它的取值范围 :
+				-- const : 通过索引一次命中，匹配一行数据
+				-- system : 表中只有一条记录，相当于系统表
+				-- eq_ref : 唯一性索引扫描，对于每个索引键，表中只有一条记录与之匹配
+				-- ref : 非唯一性索引扫描，返回匹配某个值的所有结果
+				-- range : 之检索给定范围的行，使用一个索引来选择行，一般用于between、<、>
+				-- index : 只遍历索引树
+				-- ALL : 表示全表扫描，这个类型的查询是性能最差的查询之一，表的数量越多，执行效率越低
+				执行效率 :
+					ALL < index < range < ref < eq_ref < const < system，最好是避免ALL和index
+		5) possible_keys :
+			它表示MySQL在执行该语句的时候，可能用到的索引信息，仅仅是可能，实际不一定会用到
+		6) key :
+			此字段是MySQL在当前查询中所真正用到的索引，是possible_keys的子集
+			
+	141、事务的基本特性和隔离级别 :
+		事务的基本特性 : ACID
+			原子性 : 一个事务中的操作要么全部成功，要么全部失败
+			一致性 : 数据库总是从一个一致性状态转换到另一个一致性的状态。
+			隔离性 : 一个事务的修改在最终提交前对其他事务是不可见的
+			持久性 : 事务一旦提交，他所做的修改会永久保存到数据库中
+		隔离级别 :
+			-- read uncommit : 读未提交，可能会读到其他事务未提交的数据，也叫做脏读
+				用户本来应该读取到id=1的用户age应该是10，结果读取到了其他事务还没有提交的事务，结果读取到了age=20，这就是脏读。
+			-- read commit : 读已提交，存在不可重复读的现象，但是避免了脏读。因为这个级别只会读取已经提交的事务。
+			-- repeatable read : 可重复读，这是MySQL的默认级别，就是每次读取的结果都一样(一个事务中)，但是有可能产生幻读。
+			-- serializable : 串行化，一般不会使用，他会给每一行读取的数据加锁，会导致大量的超时和锁竞争的问题。
+		脏读(Dirty Read) : 某个事务已更新了一份数据，另一个事务在此次是读取了同一份数据，由于某些原因，前一个事务Rollback了操作，那么此时后一个事务
+				读取到的数据就是不正确的
+		不可重复读(Non-repeatable read) : 在一个事务的两次查询得到的数据不一致，这可能是两次查询过程中一个新事务更新了数据库
+		幻读(Phantom Read) : 在一个事务的两次查询出的数据条数不一致，这可能是两次查询过程中一个新的事务插入了几条新的数据
+		
+	142、业务系统中的SQL耗时，慢查询以及慢查询的优化 :
+		1) 首先分析SQL语句，看看是否load了额外的数据，可能是查询了多余的行并且抛弃掉了，可能是加载了许多结果中没有用到的列，此时可以对语句进行分析
+			和修改
+		2) 分析语句的执行计划，然后获得其使用索引的情况，之后修改语句或者索引，使得语句可以尽可能的命中索引
+		3) 如果对语句的优化已经无法进行，此时可以考虑表中的数据量是否太大，如果是的话可以考虑进行横向或者纵向的分表
+		
+	143、ACID的基础 :
+		A原子性由 undo log 日志来保证，它记录了需要回滚的日志信息，事务回滚时撤销已经成功执行的SQL语句
+		C一致性由其他三大特性保证，程序代码需要保证业务上的一致性。
+		I隔离性由MVCC来保证
+		D持久性由内存 + redo log来保证，MySQL修改数据的同时会在redo log日志中记录这次操作，宕机的时候可以从redo log恢复
+			INNODB redo log写盘，INNODB事务进入prepare状态
+			如果前面prepare成功，binlog写盘，再继续将事务日志持久化到binlog，如果持久化成功，那么INNODB事务会进入commit状态(redo log里面写一个commit记录)
+		redo log的刷盘会在系统空闲时进行
+		
+	144、MVCC : 
+		多版本并发控制，读取数据时通过一种类似快照的方式将数据存储下来，这样读锁和写锁不冲突了，不同的事务session会看到自己特定版本的数据，
+		MVCC只在READ COMMITTED和REPEATABLE READ两个隔离级别下工作，其他两个隔离级别和MVCC不兼容，因为READ UNCOMMITTED总是读取最新的数据行，而SERIALIZABLE
+		则会对读取的数据行加锁
+		聚簇索引记录中有两个必要的隐藏列 :
+			trx_id : 用来存储每次对某条聚簇索引记录修改的时候的事务id
+			roll_pointer : 每次对某条聚簇索引记录修改的时候，都会把老版本写入undo日志中。这个roll_pointer就是存了一个指针，它指向这条聚簇索引记录
+						的上一个版本的位置，通过它来获得上一个版本的记录信息。(注意插入操作的undo日志没有这个属性，因为他没有老版本)
+		读已提交和可重复读的区别就在于他们生成的ReadView的策略不同
+		开始事务的时候创建readview，readview维护当前活动的事务id，即未提交的事务id，排序生成一个数组访问数据，获取数据中的事务id(获取的是事务id
+		最大的记录)，对比readview，如果在readview的左边(比readview都小)，可以访问(在左边意味着该事务已提交)，如果在readview的右边(比readview都大)
+		或者就在readview中，不可以访问，此时获取roll_pointer，读取上一个版本，重新对比事务id(在右边意味着该事务在readveiw生成后实现，在此时的readview
+		中该事务还未提交)
+		读已提交隔离级别的事务在每次查询的开始都会生成一个独立的ReadView，而可重复读隔离级别在第一次读的时候就会生成一个ReadView，之后的查询都会
+		复用这一次的ReadView。
+		这就是MySQL的MVCC，通过版本链，实现多版本，可并发读-写，写-读。通过ReadView生成策略的不同实现不同的隔离级别。
+		
+	145、MySQL的主从同步 :
+		MySQL的主从复制中主要有三个线程 :	
+			master(binlog dump thread)、slave(I/O thread、SQL thead)，Master一条线程和Slave中的两条线程。
+			-- 主节点binlog，主从复制的基础就是主库记录数据库的所有变更记录到binlog。binlog是数据库服务器启动的那一刻起，保存所有修改
+				数据库结构和内容的一个文件
+			-- 主节点log dump线程，当binlog有变动时，log dump线程读取到其内容并发送给从节点
+			-- 从节点I/O线程接收binlog内容，并将其写入到relay log文件中
+			-- 从节点的SQL线程读取relay log文件内容，对数据更新进行重放，最终保证主从数据库的一致性
+			注 : 主从节点使用bin log文件 + position偏移量来定位主从同步的位置，从节点会保存其已接受到的偏移量，如果从节点发生宕机重启，则会自动从
+				position的位置发起同步。
+			由于MySQL默认的复制方式是异步的，主库把日志发送给从库后不关心从库是否已经处理。这时候就会产生一个问题，那就是在从机处理前主库挂掉了，
+			此时从库升级为主库，这样日志就会丢失。
+			全同步复制 :
+				主库写入bin log后强制同步日志到从库，所有的从库都执行完成后再返回给客户端，但是很显然这个方式性能会受到严重影响。
+			半同步复制 :
+				和全同步不同的是，从库写入日志成功后返回ACK给主库，主库收到至少一个从库的确认就认为写操作成功
+				
+	146、MyISAM和InnoDB的区别 :
+		MyISAM :
+			不支持事务，但是每次查询都是原子性的，
+			支持表级锁，即每次操作是对整个表加锁
+			存储表的总行数；
+			一个MyISAM表有三个文件 : 索引文件、表结构文件、数据文件；
+			采用非聚簇索引，索引文件的数据存储指向数据文件的指针。辅助索引与主索引基本一致，但是辅助索引不用保证唯一性。
+		InnoDB :
+			支持ACID的事务，支持事务的四种隔离级别
+			支持行级锁及外键约束，因此可以支持写并发
+			不存储总行数
+			一个InnoDB引擎存储在一个文件空间(共享表空间，表大小不受操作系统控制，一个表文件可以分布在多个文件中)，也可能为多个(设置为独立表，
+			表大小受操作系统文件大小限制，一般为2G)，受系统文件大小的限制
+			主键索引采用聚簇索引(索引的数据域存储数据文件本身)，辅助索引的数据域存储主键的值；因此从辅助索引中查找数据，需要先通过辅助索引
+			找到主键值，在访问主索引；最好使用自增主键，放置插入数据时，为维持B+树结构，文件的大调整
+			
+	147、MySQL中的索引 :
+		普通索引 : 允许被索引的数据列包含重复的值
+		唯一索引 : 可以保证数据记录的唯一性
+		主键 : 是一种特殊的唯一索引，在一张表中只能定义一个主键索引，主键用于唯一标识一条记录，使用关键字PRIMARY KEY来创建
+		联合索引 : 索引可以通过覆盖多个数据列，如像INDEX(column A,column B)索引
+		全文索引 : 通过建立倒排索引，可以极大地提升检索效率，解决判断字段是否包含的问题，是目前搜索引擎使用的一种关键技术。可以通过
+			ALTER TABLE table_name ADD FULLTEXT(column)；创建全文索引
+		索引可以极大的提高数据的查询速度
+		通过使用索引，可以在查询的过程中，使用优化隐藏器，提高系统的性能
+		但是会降低插入、删除、更新表的速度，因为在执行这些写操作时，还要操作索引文件
+		索引需要占用物理空间，除了数据表占用数据空间外，每一个索引还要占用一定的物理空间，如果需要建立聚簇索引，那么需要的空间会更大，如果非聚簇索引
+		很多，一旦聚簇索引发生改变，那么所有的非聚簇索引都会跟着改变
+		
+	148、RDB和AOF :
+		RDB : Redis DataBase
+		在指定的时间间隔内将内存中的快照写入磁盘，实际操作过程是fork一个子进程，现将数据集写入临时文件中，写入成功后，再替换之前的文件，用二进制
+		压缩存储。
+		优点 :
+			1) 整个Redis数据库将只包含一个文件dump.rdb，方便持久化。
+			2) 容灾性好，方便备份
+			3) 性能最大化，fork子进程来完成写操作，让主进程来继续处理命令，所以是IO最大化。使用单独子进程来进行持久化。主进程不会进行任何IO操作，
+				保证了redis的高性能
+			4) 相对于数据集大时，比AOF的启动效率高
+		缺点 :
+			1) 数据安全性较低，RDB是间隔一段时间进行持久化，如果持久化之间redis发生故障，会发生数据丢失。所以这种方式更适合数据要求不严谨的场合
+			2) 由于RDB是通过fork子进程来协助完成数据持久化工作的，所以当数据集较大的时候，可能会导致整个服务器停止服务几百毫秒，甚至是1秒
+		AOF : Append Only File
+		以日志的形式记录服务器所处理的每一个写、删除操作，查询操作不需要记录，以文本的形式记录，可以打开文件看到详细的记录
+		优点 :
+			1) 数据安全，Redis中提供了3种同步策略，即每秒同步，没修改同步和不同步。事实上，每秒同步也是一种异步同步，效率是非常高的，所差的是一旦
+				系统出现宕机现象，那么这一秒钟内修改的数据将会丢失。而每次修改同步，我们可以将其视为同步持久化，及每次发生修改的数据变化都会被记录
+				到磁盘中
+			2) 通过Append模式写文件，即使中途服务器宕机也不会破坏已经存在的内容，可以通过redis-check-aof工具解决数据一致性问题
+			3) AOF机制的rewrite模式，定期对AOF文件进行重写，以达到压缩的目的。
+		缺点 :
+			1) AOF文件比RDB文件大，且恢复速度慢
+			2) 数据集大的时候，启动比RDB慢
+			3) 允许效率没有RDB高
+		AOF文件比RDB更新频率高，优先使用AOF还原数据
+		
+	149、Redis的过期键 :
+		Redis是key-value数据库，我们可以设置Redis中缓存的key的过期时间。Redis的过期策略就是指当Redis中缓存的key过期了，Redis如何处理。
+		惰性过期 :
+			只有当访问一个key时，才会判断该key是否已经过期，过期则清除。该策略可以最大化的节省CPU资源，但是对于内存资源不太友好。极端情况下可能出现
+			大量的过期key没有被再次访问，从而不会被清除，占据大量的内存
+		定期过期 :
+			每隔一段时间，会扫描一定数量的数据库的expires字典中的一定数量的key，并清除其中已经过期的key。该策略通过调整定时扫描的时间间隔和每次扫
+			描的限定耗时，可以在不同情况下使得CPU和内存资源达到最优的平衡效果
+		(expires字典会保存所有设置了过期时间的key的过期时间数据，其中，key是指向键空间中的某个键的指针，value是该键的毫秒精度的UNIX时间戳表示的
+		过期时间。键空间是指向该Redis集群中保存的所有键)
+		Redis中同时使用了两种过期策略。
+		
+	150、Redis线程模型 :
+		Redis基于Reactor模式开发了网络事件处理器，这个处理器叫做文件事件处理器file event handler。这个文件事件处理器，他是单线程的，所以Redis才叫做
+		单线程的模型。它采用了IO多路复用机制来同时监听多个Socket，根据Socket上的事件类型来选择对应的事件处理器来处理这个事件。可以实现高性能的网络
+		通信模型，又可以跟内部其他单线程的模块进行对接，保证了Redis内部的线程模型的简单性。
+		文件事件处理器的结构包含4个部分 : 多个Socket、IO多路复用程序、文件事件分派器以及事件处理器(命令请求处理器、命令回复处理器、连接应答处理器)
+		多个Socket可能并发产生不同的操作，每个操作对应不同的文件事件，但是IO多路复用程序会监听多个Socket，会将Socket放入一个队列中排队，每次从
+		队列中取出一个Socket给事件分派器，事件分派器把Socket给对应的事件处理器，然后一个Socket的事件处理完成之后，IO多路复用程序才会将队列中
+		的下一个Socket给事件分派器。文件事件分派器会根据每个Socket当前产生的事件，来选择相应的事件处理器来处理事件。
+		单线程快的原因 :
+			1) 纯内存操作
+			2) 核心是基于非阻塞的IO多路复用机制
+			3) 单线程反而避免了多线程的频繁的上下文切换带来的性能问题
+			
+	151、缓存雪崩、缓存穿透、缓存击穿 :
+		缓存雪崩是指缓存同一时间内大面积的失效，所以，后面的请求都会落在数据库上，造成数据库短时间内承受大量请求而崩掉
+		解决方案 :
+			1) 缓存数据的过期时间设置随机，防止同一时间大量数据过期现象发生
+			2) 给每一个缓存数据增加相应的缓存标记，记录缓存是否失效，如果缓存标记失效，则更新数据缓存
+			3) 缓存预热(事先添加缓存)
+			4) 互斥锁
+		缓存穿透是指缓存和数据库中都没有的数据，导致所有的请求都落在数据库上，造成数据库短时间内承受大量的请求而崩掉
+		解决方案 :
+			1) 接口层增加校验，如用户权限校验，id做基础校验，id <= 0的直接拦截
+			2) 从缓存取不到数据，在数据库中也没有取到，这时也可以将key-value对写为key-null，缓存有效时间可以设置短一点，如30秒(设置太长会导致正常
+				情况也没法使用)。这样可以防止攻击用户反复用同一个id暴力攻击。
+			3) 采用布隆过滤器，将所有可能存在的数据哈希到一个足够大的bitmap中，一定不存在的数据会被这个bitmap拦截掉，从而避免对底层存储系统的查询
+				压力
+		缓存击穿是指缓存中没有但数据库中有的数据(一般是缓存时间到期)，这是由于并发用户特别多，同时读取缓存没有读到数据，又同时去读取数据库，引起
+		数据库压力瞬间增大。和缓存雪崩不同的是，缓存击穿指的是并发查询同一条数据，缓存雪崩指的是不同的数据都过期了，很多数据在缓存中查不到。
+		解决方案 :
+			1) 设置热点数据永不过期
+			2) 加互斥锁
+			
+	152、Redis中的事务 :
+		1) 事务开始
+			MULTI命令的执行，标识着一个事务的开始。MULTI命令会将客户端状态的flags属性中打开REDIS_MULTI标识。
+		2) 命令入队
+			当一个客户端切换到事务状态之后，服务器会根据这个客户端发送来的命令来执行不同的操作。如果客户端发送的命令为MULTI、EXEC、WATCH、DISCARD中
+			的一个，立即执行这个命令，否则将命令放入一个事务队列中，然后向客户端返回QUEUED
+			-- 如果客户端发送的命令为EXEC、DISCARD、WATCH、MULTI四个命令中的一个，那么服务器立即执行这个命令
+			-- 如果客户端发送的命令是这四个命令以外的命令，那么服务器并不会立即执行这个命令，而是会首先检查此命令的格式是否正确，如果不正确，服务器
+				会在客户端状态(redisClient)的flags属性关闭REDIS_MULTI标识，并返回错误信息给客户端
+			事务队列是按照FIFO的方式保存入队的命令
+		3) 事务执行
+			客户端发送EXEC命令，服务器执行EXEC逻辑命令
+			-- 如果客户端状态的flags属性不包含REDIS_MULTI标识，或者包含REDIS_DIRTY_CAS或者REDIS_DIRTY_EXEC标识，那么就直接取消事务的执行
+			-- 客户端处于事务状态(flags有REDIS_MULTI标识)，服务器会遍历客户端的事务队列，然后执行事务队列中所有的命令，最后将返回结果全部返回给
+				客户端
+			redis不支持事务的回滚机制，但是他会检查每一个事务中的命令是否有语法错误
+			Redis事务不支持检查程序的那些逻辑错误(程序员犯的错)，例如对String类型的数据库执行对HashMap类型的操作
+		4) 常见命令 :
+			-- WATCH : WATCH是一个乐观锁，可以为Redis事务提供check-and-set(CAS)行为。可以监控一个或者多个键，一旦其中有一个键被修改(或删除)，之后的
+				事务不会被执行，监控会一直持续到EXEC命令
+			-- MULTI : MULTI命令用于开启一个事务，他总是返回OK。MULTI执行完毕之后，客户端可以继续向服务器发送任意多条命令，这些命令不会立即被执行，
+				而是放入一个队列中，当EXEC被调用时，所有队列中的命令才会被执行
+			-- EXEC : 执行所有的事务块内的命令。返回事务块内所有命令的返回值，按命令执行的先后顺序排列。当操作被打断时，返回值为NULL
+			-- DISCARD : 客户端会清空事务队列，并发起执行所有事务，并且客户端会从事务状态退出
+			-- UNWATCH : 取消watch对所有key的监控
+			
+	153、Redis的集群方案 :
+		1) 主从模式
+		2) 哨兵模式 :
+			sentinel，哨兵是redis集群中非常重要的一个组件，主要有以下功能 :
+				-- 集群监控 : 负责监控redis master和slave进程是否正常工作
+				-- 消息通知 : 如果某个redis实例有故障，那么哨兵负责发送消息作为报警通知给管理员
+				-- 故障转移 : 如果master node挂掉了，会自动转移到slave node上
+				-- 配置中心 : 如果故障转移发生了，通知client客户端新的master的地址
+			哨兵模式用于实现redis集群的高可用性，本身也是分布式的，作为一个哨兵集群去运行，互相协同工作
+				-- 故障转移时，判断一个master node是否宕机了，需要大部分的哨兵都同意才行，这涉及到了分布式选举
+				-- 即使部分哨兵节点挂掉了，哨兵集群还是能够正常工作
+				-- 哨兵通常需要三个实例，来保证自己的健壮性
+				-- 哨兵 + redis主从的部署结构，不可以保证数据零丢失，只能保证redis集群的高可用性
+				-- 对于哨兵 + redis主从这种复杂的部署架构，尽量在测试环境和生产环境，都进行充足的测试和演练
+		3) Redis Cluster :
+			Redis Cluster是一种服务端的Sharding技术，3.0版本后开始提供。采用slot(槽)的概念，一共分为16384个槽。将请求发送到任意节点，接受到请求的
+			节点会将查询请求发送到正确的节点上执行
+			方案说明 :
+				-- 通过哈希的方式，将数据分片，每个节点均分存储一定哈希槽(值)区间的数据，默认分配了16384个槽位
+				-- 每份数据分片会存储在多个互为主从的多节点上
+				-- 数据写入先写主节点，再同步到从节点(支持配置为阻塞同步)
+				-- 同一分片多个节点间的数据不保持强一致性
+				-- 读取数据时，当客户端操作的key没有分配在该节点上时，redis会返回转向指令，指向正确的节点
+				-- 扩容时需要把旧节点的数据迁移一部分到新节点上
+			在redis cluster架构下，每个redis要开放两个端口号，比如一个是6379，另外一个就是6379 + 10000的端口号
+			这个加一万之后的端口号用来进行节点间通信，也就是cluster bus的通信，用来进行故障检测、配置更新、故障转移授权。cluster bus用了另外一种
+			二进制的协议，gossip协议，用于节点间进行高效的数据交换，占用更少的网络带宽和处理时间。
+			优点 :
+				-- 无中心架构，支持动态扩容，对业务透明
+				-- 具备Sentinel的监控和自动Failover(故障转移)能力
+				-- 客户端不需要链接集群的所有节点，链接集群的任意可用节点即可
+				-- 高性能，客户端直连redis服务，免去了proxy代理的损耗
+			缺点 :
+				-- 运维很复杂，数据迁移需要人工干预
+				-- 只能使用0号数据库，redis默认11个数据库
+				-- 不支持批量操作(pipeline管道操作)
+				-- 分布式逻辑和存储块耦合等
+		4) Redis Sharding :
+			Redis Sharding是Redis Cluster出来之前，业界普遍使用的多Redis实例集群方法。其主要思想是采用哈希算法将Redis数据的key进行散列，通过hash函
+			数，特定的key会映射到特定的redis节点上。java redis客户端驱动jedis，支持Redis Sharding功能，即Sharded jedis以及结合缓存池的Sharded jedis pool
+			优点 :
+				优势在于非常简单，服务端的redis实例彼此独立，相互无关联，每个Redis实例就像单服务器一样运行，非常容易线性扩展，系统的灵活性强
+			缺点 :
+				由于Sharding处理放到客户端，规模进一步扩大会给运维代理挑战
+				客户端Sharding不支持动态增删节点。服务端Redis实例集群拓扑结构有变化时，每个客户端都需要更新调整。连接不能共享，当应用规模扩大时，
+				资源浪费制约优化
+	
+	154、Redis的主从复制 :
+		通过执行slaveof命令或者设置slaveof选项，让一个服务器去复制另一个服务器的数据。主数据库可以进行读写操作，当写操作导致数据变化时，会自动将
+		数据同步给从数据库。而从数据库一般是只读的，并接受主数据库同步过来的数据。一个主数据库可以有多个从数据库，而一个从数据库只能有一个主数据
+		库。
+		全量复制 :
+			1) 主节点通过bgsave命令fork子进程进行RDB持久化，该过程是一个非常消耗CPU、内存(页表复制)、硬盘IO的
+			2) 主节点通过网络将RDB文件发送给从节点，对主从节点的带宽都会带来很大的消耗
+			3) 从节点清空老数据，载入新RDB文件的过程是阻塞的，无法响应客户端的命令；如果从节点执行bgrewriteof，也会带来额外的消耗
+		部分复制(增量复制) :
+			1) 复制偏移量 : 执行复制的双方，主从节点，分别会维护一个复制偏移量offset
+			2) 复制积压缓冲区 : 主节点内部维护了一个固定长度的、先进先出(FIFO)队列作为复制积压缓冲区，当主从节点offset的差距过大超过缓冲区长度时，
+				将无法执行部分复制，只能执行全量复制
+			3) 服务器运行ID(runid) : 每个Redis节点，都有其运行ID，运行ID由节点在启动时自动生成，主节点将自己的运行ID发送给从节点，从节点会将主节点的
+				运行ID保存起来。从节点Redis断开重连时，就是根据运行ID来判断同步的进度
+				-- 如果从节点保存的runid与主节点现在的runid相同。说明主节点之前同步过，主节点会继续尝试使用部分复制(到底能不能部分复制还要看offset
+					和复制积压缓冲区的情况)
+				-- 如果从节点保存的runid与主节点现在的runid不同，说明主节点在断线前同步的Redis节点并不是当前的主节点，只能进行全量复制。
+				
+	155、CAP理论、BASE理论 :
+		Consistency(一致性) :
+			更新操作成功并返回客户端后，所有节点在同一时间的数据完全一致
+			对于客户端来说，一致性指的是并发访问时更新过的数据如何获取
+			从服务端来看，则是更新如何复制分布到整个系统，以保证数据最终一致
+		Availability(可用性) :
+			即服务一直可用，而且是正常响应时间。系统能够很好的为用户服务，不出现用户操作失败或者访问超时等用户体验不好的情况
+		Partition Tolerance(分区容错性) :
+			即分布式系统在遇到某节点或网络分区故障时，仍然能够对外提供满足一致性和可用性的服务。分区容错性要求能够使应用虽然是一个分布式系统，
+			而看上去却好像是在一个可以运转正常的整体。比如现在的分布式系统中有一个或者几个机器宕掉了，其他剩下的及其还能够正常运行满足系统的
+			需求，对于用户而言没有什么体验上的影响。
+		CP和AP : 分区容错是必须保证的，当发生网络分区的时候，如果需要继续服务，那么强一致性和可用性只能2选1
+		BASE是Basically Available(基本可用)、Soft state(软状态)和Eventually consistent(最终一致性)
+		BASE理论是对CAP中一致性和可用性权衡的结果，其来源对大规模的互联网分布式实践的总结，是基于CAP定理逐步演化来的。BASE理论的核心思想是 :
+			即使无法做到强一致性，但每个应用都可以根据自身的业务特点，采用适当的方式来使系统达到最终一致性
+			基本可用 :
+				-- 响应时间上的损失 : 正常情况下，处理用户请求需要0.5秒返回结果，但是由于系统出现故障，处理用户请求的时间便为3秒
+				-- 系统功能上的损失 : 正常情况下，用户可以使用系统的全部功能，但是由于系统访问量突然剧增，系统的部分非核心功能无法使用
+			软状态 : 数据同步允许一定的延迟
+			最终一致性 : 系统中所有的数据副本，在经过一定时间的同步后，最终能够达到一个一致的状态，不要求实时
+			
+	156、负载均衡 :
+		1) 轮询法 :
+			将请求按顺序轮流地分配到后端服务器上，它均衡地对待后端的每一台服务器，而不关心服务器实际的连接数和当前的系统负载
+		2) 随机法 :
+			通过系统的随机算法，根据后端服务器的列表大小值来随机选取其中的一台服务器来进行访问。由概率统计理论可以得知，随着客户端调用服务端
+			的次数增多，其实际效果也会越来越接近于平均分配调用量到后端的每一台服务器，也就是轮询的结果
+		3) 源地址哈希法 :
+			源地址哈希的思想是根据客户端的IP地址，通过哈希函数计算得到的一个数值，用该数值对服务器列表的大小进行取模运算，得到的结果便是客户端
+			要访问服务器的序号。采用源地址哈希法进行负载均衡，同一IP地址的客户端，当后端服务器列表不变时，他每次都会映射到同一台后端服务器进行
+			访问。
+		4) 加权轮询法 :
+			不同的后端服务器可能机器的配置和当前系统的负载并不相同，因此他们的抗压能力也不相同。给配置高、负载低的机器配置更高的权重，让其处理
+			更多的请求；而配置低、负载高的机器，给其分配较低的权重，降低其系统的负载，加权轮询能很好地处理这一问题，并将请求顺序按照权重分配给
+			后端
+		5) 加权随机法 :
+			与加权轮询法一样，加权随机法也根据后端机器的配置、系统的负载不同分配不同的权重，不同的是，他按照权重随机请求后端服务器，而非顺序。
+		6) 最小连接数法 :
+			最小连接数算法比较灵活和智能，由于后端服务器配置不尽相同，对于请求的处理有快有慢，它是根据后端服务器当前的连接情况，动态地选取其中
+			当前积压最少的一台服务器来处理当前的请求，尽可能地提高后端服务器的利用效率，将负责地分流到每一台服务器
+		类型 :
+			-- DNS方式实现负载均衡
+			-- 硬件负载均衡 : F5和A10
+			-- 软件负载均衡 :
+				Ngnix、HAproxy、LVS :
+					Ngnix : 七层负载均衡，支持HTTP、E-mail协议，同时也支持4层负载均衡
+					HAproxy : 支持七层规则的，性能好。OpenStack默认使用的负载均衡软件就是HAproxy
+					LVS : 运行在内核态，性能是软件负载均衡中最高的，严格来说工作在三层，所以更加通用，适合各种应用服务。
+			
+	157、分布式架构实现Session共享 :
+		1) 采用无状态服务，抛弃Session
+		2) 存入cookie(有安全风险)
+		3) 服务器之间进行Session同步，这样可以保证每个服务器上都有全部的Session信息，不过当服务器数量比较多的时候，同步是会有延迟甚至同步失败
+		4) IP绑定策略 :
+			使用Ngnix(或其他负载均衡软硬件)中的IP绑定策略，同一个IP只能在指定的同一个机器访问，但是这样做失去了负载均衡的意义。当一台服务器挂
+			掉后，会影响一批用户的使用，风险很大
+		5) 使用Redis存储 :
+			把Session放到Redis中存储，虽然架构上变得复杂，并且需要多访问一次Redis，但是这种方案带来的好处也是巨大的 :
+				-- 实现了Session共享
+				-- 可以水平扩展(增加Redis服务器)
+				-- 服务器重启Session不会丢失(不过也需要注意Session在Redis中的刷新/失效机制)
+				-- 不仅可以跨服务器Session共享，甚至可以跨平台(例如网页端和APP端)
+				
+	158、RPC、RMI :
+		RPC :
+			在本地调用远程的函数，远程调用过程中，可以跨语言实现
+		RMI :
+			远程方法调用，java中用于实现RPC的一种机制，RPC的Java版本，是J2EE的网络调用机制，跨JVM调用对象的方法，面向对象的思维方式
+			直接或间接实现接口 java.rmi.Remote 成为存在于服务器端的远程对象，供客户端访问并提供一定的服务
+			远程对象必须实现java.rmi.server.UniCastRemoteObject类，这样才能保证客户端在访问获得远程对象时，该远程对象可以将自身的一个拷贝以Socket的
+			形式传输给客户端。此时客户端获得的这个拷贝叫做"存根"，而服务器端本身已经存在的远程对象则称为"骨架"。其实此时的存根就是客户端的一个
+			代理，用于与服务器端的通信，而骨架也可以认为是服务器端的一个代理，用于接收客户端的请求之后调用远程方法来响应客户端的请求。
+			
+	160、分布式id生成方案 :
+		UUID :
+			1) 当前日期和时间 ---> 时间戳
+			2) 时钟序列 ---> 计数器
+			3) 全局唯一的IEEE机器识别号，如果有网卡，从网卡MAC地址获得
+			优点 :
+				代码简单，性能好(本地生成，没有网络消耗)，保证唯一(相对而言，重复概率极低可以忽略)
+			缺点 :
+				-- 每次生成的ID都是无序的，而且还不是全数字，且无法保证趋势递增
+				-- UUID生成的是字符串，字符串存储性能差，查询效率慢，写的时候由于不能产生顺序的append操作，需要进行insert操作，导致频繁的页分裂，这种
+					操作在记录占用空间比较大的情况下，性能下降比较厉害，还会增加磁盘读取的次数
+				-- UUID长度过长，不适合用于存储，耗费数据库性能
+				-- ID无一定业务含义，可读性差
+				-- 有信息安全问题，可能泄露mac地址
+		数据库自增序列 :
+			单机模式
+				优点 :
+					-- 实现简单，依靠数据库即可，成本小
+					-- ID数字化，单调递增，满足数据库存储和查询性能
+					-- 具有一定的业务可读性(结合业务code)
+				缺点 :
+					-- 强依赖DB，存在单点问题，如果数据库宕机，则业务不可用
+					-- DB生成ID性能有限，单点数据库压力大，无法扛起高并发场景
+					-- 信息安全问题，比如暴漏订单量
+			数据库高可用 :
+				多主模式做负载，基于序列的起始值和步长设置，不同的初始值，相同的步长，步长大于节点数
+				优点 : 
+					解决了ID生成的单点问题，同时平衡了负载
+				缺点 :
+					系统扩容困难，系统定义好步长之后，新增机器时调整步长困难
+					
+	161、分布式锁的解决方案 :
+		需要这个锁独立于每一个服务之外，而不是在服务里面
+		1) 数据库 :
+			利用主键冲突控制一次只有一个线程才能获取锁，非阻塞、不可重入、单点、失效时间
+		2) Zookeeper分布式锁 :
+			zk通过临时节点，解决死锁的问题，一旦客户端获取到锁后突然挂掉(Session连接断开)，那么这个临时节点就会自动删除掉，其他客户端自动获取锁。
+			临时顺序节点解决了惊群效应。
+		3) Redis分布式锁 :
+			setnx，单线程处理网络请求，不需要考虑安全并发性
+			所有服务节点设置相同的key，返回为0，则锁获取失败
+			setnx :
+				问题 :
+					1) 早期的版本没有超时参数，需要单独设置，存在死锁问题(中途宕机)
+					2) 后期版本提供了加锁与设置超时时间的原子性操作，但是存在任务超时，锁自动释放，导致并发问题，加锁与释放锁不是同一个线程的问题
+			删除锁 : 判断线程唯一标志，再删除
+			可重入性及锁续期没有实现，通过redisson解决(类似AQS的实现，看门狗监听机制)
+		4) redlock : 
+			所有的机制都只操作单节点，即使redis通过sentinel保证高可用，如果这个master节点由于某些原因发生了主从切换，那么就会出现锁丢失的情况(redis
+			同步设置可能数据丢失)。redlock从多个节点申请锁，当一半以上的节点获取成功，这个锁才算获取成功，redission有相应的实现
+				
+	162、HashSet和TreeSet :
+			HashSet实现Set接口，由哈希表(实际是一个HashMap实例)支持，他不保证set的迭代顺序，此类允许null元素。
+			在HashSet中，元素都存放在HashMap键值对的key上面，而Value有一个统一的值private static final Object PRESENT = new Object();
+			(定义一个虚拟的Object对象作为HashMap的Value值，将此对象定义为static final)
+			TreeSet : TreeSet中存放元素的是有序的(不是插入时的顺序，而是按关键字的大小排序)，且元素不可以重复。
+						TreeSet的构造函数是通过新建一个TreeMap作为实际存储Set元素的容器。
+
+	163、红黑树 :
+		红黑树就是在普通二叉树的基础上，对每个节点添加一个颜色属性得到的，他有五条性质 :
+			1) 节点不是红色就是黑色
+			2) 根节点是黑色
+			3) 每个叶子节点(NIL或空节点)都是黑色
+			4) 每个红节点的子节点都是黑色的，也就是说不存在两个连续的红节点
+			5) 从任一节结点其每个叶子节点(DIL)的所有路径都包含相同数目的黑色结点
+	
+	
+	
+	
+	
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

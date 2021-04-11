@@ -1,0 +1,40 @@
+	1、三层架构：
+		a、界面层：
+			和用户打交道，接收用户的请求参数，显示处理结果（jsp、html、servlet）
+		b、业务逻辑层：
+			接收界面层传递的数据，计算逻辑，调用数据库，获取数据
+		c、数据访问层：
+			访问数据库，执行对数据的查询、修改、删除等等
+	2、三层架构对应的包：
+		a、界面层：controller包（servlet）
+		b、业务逻辑层：service包（XXXSerivce类）
+		c、数据访问层：dao包（XXXDao类）
+	3、三层类的交互
+		a、用户使用的是界面层---->界面层访问的是业务逻辑层------>界面层访问数据访问层（持久层）---->数据库（mysql）
+	4、三层架构对应的处理框架：
+		a、界面层-------servlet--------SpringMVC（框架）
+		b、业务逻辑层-------service类--------Spring（框架）
+		c、数据访问层-------Dao类------MyBatis（框架）
+	5、框架（Framework）
+		a、框架是整个或部分系统的可重用设计，表现为一组抽象构件及构件实例间交互的方法；另一种说法，框架是可被应用的开发者定制的应用骨架、模板
+		b、简单的说：框架其实就是半成品软件，就是一组组件，供你使用来完成你自己的系统，从另一个角度来说，框架是一个舞台，你在台上表演。
+		c、框架是安全的、可复用的、可以不断升级的软件
+		d、框架不是全能的，框架是针对某一方面起作用的
+	6、使用JDBC的缺陷：
+		1）代码比较多，开发效率低
+		2）需要关注Connection、Statement、ResultSet对象的创建和销毁
+		3）对ResultSet结果集的处理麻烦
+		4）重复的代码比较多
+		5）业务代码和数据库的操作混合在一起
+	7、MyBatis 本是apache的一个开源项目iBatis, 2010年这个项目由apache software foundation 迁移到了google code，并且改名为MyBatis 。2013年11月迁移到Github。
+	iBATIS一词来源于“internet”和“abatis”的组合，是一个基于Java的持久层框架。iBATIS提供的持久层框架包括SQL Maps和Data Access Objects（DAOs）
+	来自 <https://baike.baidu.com/item/MyBatis> 
+	8、MyBatis框架
+		a、MyBatis是一个框架，早期叫做iBatis
+		b、MyBatis提供的功能有：
+			1）创建Connection、Statement、ResultSet的能力
+			2）提供了执行sql语句的能力
+			3）提供了将sql语句查询结果集转换为List集合的能力
+			4）提供了关闭资源的能力
+		c、开发人员需要做的就是提供sql语句，MyBatis就可以自动处理并得到一个List结果集
+		d、MyBatis就是一个sql的映射框架，提供了数据库的操作能力，是一个增强的JDBC

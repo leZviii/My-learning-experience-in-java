@@ -1,0 +1,128 @@
+	1、@Around：环绕通知
+		a、方法的定义格式：
+			1）public
+			2）必须有一个返回值，推荐使用Object
+			3）方法名称自定义
+			4）方法的参数是固定的：ProceedingJoinPoint
+		b、属性：
+			1）value：切入点表达式
+		c、位置：在方法的定义上面
+		d、特点：
+			1）是功能最强的通知
+			2）在方法前或者方法后都能增强功能
+			3）可以控制目标方法是否被调用执行
+			4）可以修改原来的目标方法的执行结果，影响最后的调用结果
+		e、环绕通知就等同于JDK中的动态代理
+		f、参数ProceedingJoinPoint就等同于JDk动态代理中Method，作用都是执行目标方法
+		g、返回值：就是目标方法执行后的返回值，可以修改
+		h、在方法内使用ProceedingJoinPoint参数的proceed()方法来调用目标方法，也可以控制目标方法是否执行
+		i、ProceedingJoinPoint是一个接口，他继承了JoinPoint，所以也可以获取目标方法中的参数
+		j、环绕通知经常用来做事务，在目标方法之前开启事务，在目标方法执行之后提交事务
+		
+	2、@AfterThrowing：异常通知
+		a、方法的定义格式：
+			1）public
+			2）没有返回值
+			3）方法名称自定义
+			4）方法可以没有参数，如果有是JoinPoint，Exception
+		b、属性：		
+			1）value：切入点表达式
+			2）throwing：自定义的变量，表示目标方法抛出的异常对象，变量名必须和方法的参数名一样
+		c、位置：在方法的定义上面
+		d、特点：
+			1）在目标方法抛出异常时执行
+			2）可以做异常的监控程序，监控目标方法在执行的时候是否有异常
+			
+	3、@After：最终通知
+		a、方法的定义格式：
+			1）public
+			2）没有返回值
+			3）方法名称自定义
+			4）方法没有参数，如果有那就是JoinPoint
+		b、属性：value：切入点表达式
+		c、位置：在方法声明的上面
+		d、特点：
+			1）总是会执行
+			2）在目标方法之后执行
+		e、一般用来执行最终通知，类似于java中finally子句中的内容
+			
+	4、@Pointcut：定义和管理切入点
+		a、如果项目中有多个切入点表达式是复用的，那么就可以使用@Pointcut来进行定义
+		b、属性：value：切入点表达式
+		c、位置：在自定义的方法上面
+		d、特点：
+			1）当我们使用了@Pointcut在某个方法的上面，此时这个方法的名称就会成为value中切入点表达式的别名，在其他地方的通知，value属性可以直接使用这个别名
+			
+	5、目标类没有接口时，Spring框架会自动应用CGLIB框架，使用CGLIB动态代理。目标类有接口时，也可以让Spring框架使用CGLIB动态代理，只需要在配置文件中声明
+		<aop:aspectj-autoproxy proxy-target-class="true"/>
+		
+	6、Spring整合MyBatis(使用IOC技术)
+		a、IOC可以用来创建对象，可以将MyBatis框架中的对象交给Spring框架统一管理，开发人员可以直接使用Spring框架完成MyBatis框架的功能
+		b、MyBatis使用步骤：
+			1）定义dao接口
+			2）定义mapper文件（xml）、MyBatis的主配置文件（xml）
+			3）创建dao的代理对象 SqlSession.getMapper(xxxDao.class);
+				获取SqlSession对象------>SqlSessionFactory的openSession()方法
+				创建SqlSessionFactory---------->通过读取MyBatis的主配置文件来创建
+			4）调用方法操作数据库
+	
+	7、Spring整合MyBatis需要：
+		a、创建独立的连接池类的对象，使用阿里的druid连接池
+		b、创建SqlSessionFactory对象
+		c、创建Dao类对象
+		
+	8、Spring中使用MyBatis框架的具体步骤：
+		a、创建maven项目
+		b、加入maven的依赖：
+			1）Spring的依赖
+			2）MyBais的依赖
+			3）MySql驱动
+			4）Spring事务的依赖
+			5）MyBatis和Spring集成的依赖（MyBatis官方提供的，用来在Spring框架中创建MyBatis的SqlSessionFactory、dao对象
+		c、创建实体类
+		d、创建dao接口和Mapper文件
+		e、创建MyBatis主配置文件
+		f、创建service接口和实现类，属性是dao
+		g、创建Spring的配置文件（声明将MyBatis的对象交给Spring创建）
+			1）数据源
+			2）SqlSessionFactory
+			3）Dao对象
+			4）声明自定义的service
+		h、创建测试类，获取service对象，通过service调用dao完成数据库的访问
+	
+	9、Spring和MyBatis集成在一起时，事务是自动提交的
+		
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			

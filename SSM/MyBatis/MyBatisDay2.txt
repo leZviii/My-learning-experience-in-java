@@ -1,0 +1,86 @@
+	1、MyBatis在操作数据库时，默认是不提交事务的，所以需要手动提交事务
+	2、主要类的介绍：
+		a、Resources：MyBatis中的一个类，负责读取主配置文件
+			InputStream in = Resources.getResourceAsStream（“mybtis.xml”）；
+		b、SqlSessionFactoryBuilder：用来创建SqlSessionFactory对象
+			SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder（）；
+			SqlSessionFactory factory = builder.build（in）；
+		c、SqlSessionFactory（接口）：重量级对象（程序创建对象耗时较长、使用资源较多），在整个程序中有一个就够用了
+			1）其接口实现类：DefaultSqlSessionFactory
+			2）作用：获取SqlSession对象
+				SqlSession session = factory.openSession（）；
+			3）openSession（）方法说明：
+				a、无参数或者参数是（false）：获取的是非自动提交事务的SqlSession对象
+				b、参数是true：获取自动提交事务的SqlSession对象
+		d、SqlSession（接口）：定义了操作数据库的方法
+			1）selectOne（）、selectList（）、insert（）、update（）、delete（）、commit（）、rollback（）；
+			2）其接口实现类：DefaultSqlSession
+			3）SqlSession不是线程安全的，在执行sql语句之前，需要通过openSession（）方法获取对象；在执行完sql语句后，需要关闭对象。这样可以保证线程安全。
+	3、使用MyBatis的动态代理机制：
+		1）StudentDao dao = session.getMapper(StudentDao.class);
+			这样就可以获得一个接口的实现类对象
+		2）传入参数：从java代码中把数据传入mapper文件的sql语句中
+			a、parameterType：写在mapper文件中的一个属性，表示dao接口中方法的参数数据类型
+			它的值是java的数据类型的全限定名称或者是MyBatis的别名
+				例如：parameterType：“java.lang.Integer”（int）
+			b、多个参数，使用@Param来命名参数
+				自定义接口中的方法：public List<Student> selectMulitParam（@Param（“myname”）String name，@Param（“myage”）Integer age）
+				在mapper文件中使用这些别名：
+					<select>
+						select * from t_student where name = #{myname} or age = #{myage}
+					</select>
+			c、多个参数，使用java对象传递多个参数
+				语法：#{属性名，javaType = 类型名称，jabcType = 数据类型}
+					javaType：指java对象中的属性的数据类型
+					jdbcType：在数据库中的数据类型
+					例如：#{paramName，javaType = java.lang.String，jdbcType = VARCHAR}
+			d、多个参数，按位置传参
+				语法：#{arg0}，#{arg1}
+			e、多个参数，使用Map集合传参
+				语法：先把参数写入一个Map集合Map<String（key），Object（value）>
+				在mapper文件中：#{key（String）}，#{key（String）}
+	4、#和$
+		a、#：占位符，告诉mybatis使用实际的参数值代替，并使用PrepareStatement对象执行sql语句，#{…}代替sql语句中的“？”
+		b、$：字符串替换，告诉mybatis使用$包含的“字符串”替换所在位置。使用Statement把sql语句和${}的内容连接起来，主要用在替换列名、表名、不同列排序等操作
+		c、#和$的区别：
+			1）#使用“？”在sql语句中占位，配合PrepareStatement执行sql语句，效率较高
+			2）#能够避免sql注入的问题，更安全
+			3）$在sql语句中不使用占位符，配合Statement执行sql语句，效率低
+			4）$有sql注入的风险
+			5）$经常用在替换表名和列名的地方
+	5、MyBatis的输出结果：
+		a、MyBatis执行sql语句后，得到java对象
+		b、resultType：结果类型，指sql语句执行完毕之后得到的java对象的类型（这个类型是任意的）
+		c、处理方式：
+			1）MyBatis执行sql语句，然后MyBatis调用类的无参构造方法创建对象
+			2）MyBatis把ResultSet中的列值赋给同名的属性
+		d、resultType的值：
+			1）类型的全限定名称
+			2）类型的别名
+		e、resultMap：结果映射，指定列名和java对象的属性对应关系
+			1）可以自定义查询结果中的列值赋给java对象哪个属性
+			2）当列名和属性名不一样时，要使用resultMap
+				<mapper>
+					<!--这里的id用来在select标签指定-->
+					<resultMap id = "自定义（唯一的）" type = "返回值对象的类的全限定名称>
+						<id column = "id" property = "id"/>
+						<result column = "" property = ""/>
+					</resultMap>
+				</mapper>
+				id：注解列，使用id标签
+					column：列名
+					property：java类型中的属性名
+				非主键列，使用result标签
+	6、自定义java类型的别名：
+		a、需要在MyBatis的主配置文件中定义
+			1）使用<typeAlias>标签
+				<typeAliases>
+					<typeAlias type = "" alias = ""/>
+				</typeAlias>
+				type：自定义的java类的全限定名称
+				alias：别名
+			2）使用<package>标签
+				<typeAliases>
+					<package name = ""/>
+				</typeAliases>
+				name：是包名，这个包中的所有类的类名就会被当作本类的别名

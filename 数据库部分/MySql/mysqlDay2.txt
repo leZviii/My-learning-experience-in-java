@@ -1,0 +1,695 @@
+	1、is null 运算符，在数据库中，null不是一个值，代表什么也没有，为空。不是一个值，不能用等号衡量，只能用is 或is not
+		select ename ,sal,comm from emp where comm is not null;
+				+--------+---------+---------+
+				| ename  | sal     | comm    |
+				+--------+---------+---------+
+				| ALLEN  | 1600.00 |  300.00 |
+				| WARD   | 1250.00 |  500.00 |
+				| MARTIN | 1250.00 | 1400.00 |
+				| TURNER | 1500.00 |    0.00 |
+				+--------+---------+---------+
+	2、and运算符，逻辑与，or运算符，逻辑或
+		 and：翻译为并且，or：翻译为或者
+	mysql> select ename ,sal,deptno from emp where sal > 1000 and (deptno = 20 or deptno = 30);
+		 and运算符的优先级比较高，以后不确定运算符优先级时，直接加小括号。
+							+--------+---------+--------+
+							| ename  | sal     | deptno |
+							+--------+---------+--------+
+							| ALLEN  | 1600.00 |     30 |
+							| WARD   | 1250.00 |     30 |
+							| JONES  | 2975.00 |     20 |
+							| MARTIN | 1250.00 |     30 |
+							| BLAKE  | 2850.00 |     30 |
+							| SCOTT  | 3000.00 |     20 |
+							| TURNER | 1500.00 |     30 |
+							| ADAMS  | 1100.00 |     20 |
+							| FORD   | 3000.00 |     20 |
+							+--------+---------+--------+
+				 
+	   3、in运算符  ，not in（不在这个范围内）运算符
+	mysql> select ename,job from emp where job in ('SALESMAN','MANAGER');
+							+--------+----------+
+							| ename  | job      |
+							+--------+----------+
+							| ALLEN  | SALESMAN |
+							| WARD   | SALESMAN |
+							| JONES  | MANAGER  |
+							| MARTIN | SALESMAN |
+							| BLAKE  | MANAGER  |
+							| CLARK  | MANAGER  |
+							| TURNER | SALESMAN |
+							+--------+----------+
+	  in后边括号内的内容是具体的值，不是一个区间。
+	4、模糊查询like：
+		  在模糊查询中：
+							   %代表任意多个字符
+							   _代表任意一个字符
+	找出名字中带有O的员工姓名
+	mysql> select ename from emp where ename like '%O%';
+				+-------+
+				| ename |
+				+-------+
+				| JONES |
+				| SCOTT |
+				| FORD  |
+				+-------+
+	找出名字第二个字母是A的员工姓名
+	mysql> select ename from emp where ename like '_A%';
+					+--------+
+					| ename  |
+					+--------+
+					| WARD   |
+					| MARTIN |
+					| JAMES  |
+					+--------+
+	找出名字中有_的员工姓名，\具有转义作用，\_就代表一个普通的_
+	select name from 表名 where name like '%\_%';
+	5、排序（升序/降序）order by 列名1 （asc/desc）,列名2（asc/desc）…
+									  只有当列名1相等时才会比较列名2，依次往后推
+			 列名可以是数字，就代表是第几列。
+			 order by 语句和条件语句连用时，order by 语句最后执行
+	  按照工资升序排序，找出员工名和薪资
+	mysql> select
+		-> ename,sal
+		-> from
+		-> emp
+		-> order by sal;
+	+--------+---------+
+	| ename  | sal     |
+	+--------+---------+
+	| SMITH  |  800.00 |
+	| JAMES  |  950.00 |
+	| ADAMS  | 1100.00 |
+	| WARD   | 1250.00 |
+	| MARTIN | 1250.00 |
+	| MILLER | 1300.00 |
+	| TURNER | 1500.00 |
+	| ALLEN  | 1600.00 |
+	| CLARK  | 2450.00 |
+	| BLAKE  | 2850.00 |
+	| JONES  | 2975.00 |
+	| SCOTT  | 3000.00 |
+	| FORD   | 3000.00 |
+	| KING   | 5000.00 |
+	+--------+---------+
+	默认是以升序排序方式，asc是指定升序排序，desc是指定降序排序
+	mysql> select ename,sal
+		-> from emp
+		-> order by sal desc;
+	+--------+---------+
+	| ename  | sal     |
+	+--------+---------+
+	| KING   | 5000.00 |
+	| SCOTT  | 3000.00 |
+	| FORD   | 3000.00 |
+	| JONES  | 2975.00 |
+	| BLAKE  | 2850.00 |
+	| CLARK  | 2450.00 |
+	| ALLEN  | 1600.00 |
+	| TURNER | 1500.00 |
+	| MILLER | 1300.00 |
+	| WARD   | 1250.00 |
+	| MARTIN | 1250.00 |
+	| ADAMS  | 1100.00 |
+	| JAMES  |  950.00 |
+	| SMITH  |  800.00 |
+	+--------+---------+
+	按照工资的降序排列，当工资相同时再按照名字的升序排列
+	mysql> select ename,sal
+		-> from emp
+		-> order by sal desc ,ename asc;
+	+--------+---------+
+	| ename  | sal     |
+	+--------+---------+
+	| KING   | 5000.00 |
+	| FORD   | 3000.00 |
+	| SCOTT  | 3000.00 |
+	| JONES  | 2975.00 |
+	| BLAKE  | 2850.00 |
+	| CLARK  | 2450.00 |
+	| ALLEN  | 1600.00 |
+	| TURNER | 1500.00 |
+	| MILLER | 1300.00 |
+	| MARTIN | 1250.00 |
+	| WARD   | 1250.00 |
+	| ADAMS  | 1100.00 |
+	| JAMES  |  950.00 |
+	| SMITH  |  800.00 |
+	+--------+---------+
+	找出工作岗位是SALESMAN的员工，并且按照薪资的降序排列
+	mysql> select * from emp
+		-> where job = 'SALESMAN'
+		-> order by sal desc;
+	+-------+--------+----------+------+------------+---------+---------+--------+
+	| EMPNO | ENAME  | JOB      | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
+	+-------+--------+----------+------+------------+---------+---------+--------+
+	|  7499 | ALLEN  | SALESMAN | 7698 | 1981-02-20 | 1600.00 |  300.00 |     30 |
+	|  7844 | TURNER | SALESMAN | 7698 | 1981-09-08 | 1500.00 |    0.00 |     30 |
+	|  7521 | WARD   | SALESMAN | 7698 | 1981-02-22 | 1250.00 |  500.00 |     30 |
+	|  7654 | MARTIN | SALESMAN | 7698 | 1981-09-28 | 1250.00 | 1400.00 |     30 |
+	+-------+--------+----------+------+------------+---------+---------+--------+
+	6、分组函数，是对某一组数据操作的，分组函数自动忽略空值null。
+	分组函数一共5个，分组函数也叫做多行处理函数，指的就是输入多行，输出一行
+	  count  计数
+	  sum   求和
+	  avg     求平均数
+	  max    求最大值
+	  min     求最小值
+	 找出工资总和，最高工资，最低工资，平均工资，总人数
+	mysql> select sum(sal),max(sal),min(sal),avg(sal),count(*) from emp;
+	+----------+----------+----------+-------------+----------+
+	| sum(sal) | max(sal) | min(sal) | avg(sal)    | count(*) |
+	+----------+----------+----------+-------------+----------+
+	| 29025.00 |  5000.00 |   800.00 | 2073.214286 |       14 |
+	+----------+----------+----------+-------------+----------+
+	7、单行处理函数：输入一行，输出一行，这里的行数指的是数据的行数
+	所有的数据库都是这样规定的：只要有null参与的运算，他的运算结果一定是null
+	这里就证明了分组函数忽略了null
+	mysql> select sum(comm) from emp;
+	+-----------+
+	| sum(comm) |
+	+-----------+
+	|   2200.00 |
+	+-----------+
+	计算每个员工的年薪
+	mysql> select ename,(sal + comm) * 12 as yearsal from emp;
+	+--------+----------+
+	| ename  | yearsal  |
+	+--------+----------+
+	| SMITH  |     NULL |
+	| ALLEN  | 22800.00 |
+	| WARD   | 21000.00 |
+	| JONES  |     NULL |
+	| MARTIN | 31800.00 |
+	| BLAKE  |     NULL |
+	| CLARK  |     NULL |
+	| SCOTT  |     NULL |
+	| KING   |     NULL |
+	| TURNER | 18000.00 |
+	| ADAMS  |     NULL |
+	| JAMES  |     NULL |
+	| FORD   |     NULL |
+	| MILLER |     NULL |
+	+--------+----------+
+	8、ifnull(可能为null的数据,被当作什么处理)，可以对null进行处理
+	ifnull()是一个单行处理函数
+	mysql> select ename,(sal +ifnull( comm,0)) * 12 as yearsal from emp;
+	+--------+----------+
+	| ename  | yearsal  |
+	+--------+----------+
+	| SMITH  |  9600.00 |
+	| ALLEN  | 22800.00 |
+	| WARD   | 21000.00 |
+	| JONES  | 35700.00 |
+	| MARTIN | 31800.00 |
+	| BLAKE  | 34200.00 |
+	| CLARK  | 29400.00 |
+	| SCOTT  | 36000.00 |
+	| KING   | 60000.00 |
+	| TURNER | 18000.00 |
+	| ADAMS  | 13200.00 |
+	| JAMES  | 11400.00 |
+	| FORD   | 36000.00 |
+	| MILLER | 15600.00 |
+	+--------+----------+
+	9、分组函数不能直接使用在where字句当中
+	group by 是在where语句执行完之后才会执行，而分组函数在group by之后执行
+	找出高于平均工资的员工
+	select语句嵌套select语句，这种方式叫做子查询
+	mysql> select ename,sal from emp where sal > (select avg(sal) from emp);
+	+-------+---------+
+	| ename | sal     |
+	+-------+---------+
+	| JONES | 2975.00 |
+	| BLAKE | 2850.00 |
+	| CLARK | 2450.00 |
+	| SCOTT | 3000.00 |
+	| KING  | 5000.00 |
+	| FORD  | 3000.00 |
+	+-------+---------+
+	10、count(*)和count(具体的某个字段)有什么区别
+	count(*)统计的是总的记录条数
+	count(某个具体的字段）统计的是某个字段中非null的记录条数
+	11、group by 和having
+	group by 是按照某个字段或者某些字段进行分组
+	group by 通常回合分组函数连用，这也是分组函数的命名由来，分组函数和group by 连用时，分组函数一定在group by之后执行。当一条sql语句中没有group by的话，整张表就是一组数据
+	当一条语句有group by 的话，select语句后只允许出现参加分组的字段和分组函数，如果出现了未参加分组的字段，那么在mysql中可以执行，但是结果没有意义；而在oracle中会报错。
+	having是对分组后的数据进行再次过滤 
+	找出每个工作岗位的最高薪资
+	mysql> select max(sal),job from emp group by job;
+	+----------+-----------+
+	| max(sal) | job       |
+	+----------+-----------+
+	|  1300.00 | CLERK     |
+	|  1600.00 | SALESMAN  |
+	|  2975.00 | MANAGER   |
+	|  3000.00 | ANALYST   |
+	|  5000.00 | PRESIDENT |
+	+----------+-----------+
+	---多个字段联合起来分组
+	找出每个部门不同工作岗位的最高薪资
+	mysql> select max(sal),job,deptno from emp group by job,deptno order by deptno;
+	+----------+-----------+--------+
+	| max(sal) | job       | deptno |
+	+----------+-----------+--------+
+	|  2450.00 | MANAGER   |     10 |
+	|  5000.00 | PRESIDENT |     10 |
+	|  1300.00 | CLERK     |     10 |
+	|  1100.00 | CLERK     |     20 |
+	|  2975.00 | MANAGER   |     20 |
+	|  3000.00 | ANALYST   |     20 |
+	|  1600.00 | SALESMAN  |     30 |
+	|  2850.00 | MANAGER   |     30 |
+	|   950.00 | CLERK     |     30 |
+	+----------+-----------+--------+
+	找出每个部门的最高薪资，要求显示薪资大于2900的数据
+	这里要求显示的数据是原有数据，可以使用where判断
+	mysql> select max(sal),sal from emp where sal > 2900 group by deptno;
+	+----------+---------+
+	| max(sal) | sal     |
+	+----------+---------+
+	|  3000.00 | 2975.00 |
+	|  5000.00 | 5000.00 |
+	+----------+---------+
+	找出每个部门的平均薪资，要求显示大于2000的数据
+	这里要求现实的数据是使用分组函数计算出来的，不可以使用where判断，where后边不可以使用分组函数，这里就只能使用having语句，但是效率比较低，尽量不使用。having和group by一起出现
+	mysql> select avg(sal),deptno from emp group by deptno having avg(sal) > 2000;
+	+-------------+--------+
+	| avg(sal)    | deptno |
+	+-------------+--------+
+	| 2175.000000 |     20 |
+	| 2916.666667 |     10 |
+	+-------------+--------+
+	12、一个完整的DQL语句
+			select                          5
+				  …
+				from                           1
+				 …
+			   where                         2
+				 …
+			   group by                     3
+				… 
+			   having                         4
+				…
+				order by                    6
+				…
+	13、关于查询结果集的去重
+	使用distinct关键字
+	mysql> select distinct job from emp;
+	+-----------+
+	| job       |
+	+-----------+
+	| CLERK     |
+	| SALESMAN  |
+	| MANAGER   |
+	| ANALYST   |
+	| PRESIDENT |
+	+-----------+
+	distinct只能出现在所有字段的最前面，此时表示后边所有的字段联合起来去重
+	mysql> select distinct deptno,job from emp order by deptno desc;
+	+--------+-----------+
+	| deptno | job       |
+	+--------+-----------+
+	|     30 | CLERK     |
+	|     30 | MANAGER   |
+	|     30 | SALESMAN  |
+	|     20 | ANALYST   |
+	|     20 | CLERK     |
+	|     20 | MANAGER   |
+	|     10 | CLERK     |
+	|     10 | MANAGER   |
+	|     10 | PRESIDENT |
+	+--------+-----------+
+	统计岗位的数量
+	mysql> select count(distinct job) from emp;
+	+---------------------+
+	| count(distinct job) |
+	+---------------------+
+	|                   5 |
+	+---------------------+
+	14、连接查询
+	--什么是连接查询：在多数情况下，都不是从单表中查询数据，一般都是从多张表中查询数据。实际开发中，一般一个业务都对应多张表。多张表联合起来查询就叫做连接查询
+	--连接查询的分类
+	根据语法出现的年代来划分：
+	SQL92（一些老的DBA（Database Administrator ：数据库管理员）可能还在使用这种语法）
+	SQL99（比较新的语法）
+	根据表的连接方式来划分：
+	内连接：
+			   等值连接
+			   非等值连接
+			   自连接
+	外连接：
+			   左（外）连接
+			   右（外）连接
+	全连接（很少用）
+	15、在表的连接查询方面有一个现象被称为：笛卡尔积现象（笛卡尔乘积现象）
+	找出每一个员工的部门名称，要求显示出部门名和员工名
+	mysql> select ename,dname from emp,dept;
+	这句语句没有加任何限制就去同时查询两张表，那么最终的查询结果条数会是两张表记录数据条数的乘积。这个乘积就叫做笛卡尔乘积。
+	+--------+------------+
+	| ename  | dname      |
+	+--------+------------+
+	| SMITH  | ACCOUNTING |
+	| SMITH  | RESEARCH   |
+	| SMITH  | SALES      |
+	| SMITH  | OPERATIONS |
+	| ALLEN  | ACCOUNTING |
+	| ALLEN  | RESEARCH   |
+	| ALLEN  | SALES      |
+	| ALLEN  | OPERATIONS |
+	| WARD   | ACCOUNTING |
+	| WARD   | RESEARCH   |
+	| WARD   | SALES      |
+	…一共出现14 * 4条记录
+	加条件可以避免笛卡尔积现象，但是只是显示的记录条数减少了，实际上还是匹配了14 * 4 次。
+	mysql> select e.ename,d.dname from emp e ,dept d where e.deptno = d.deptno order by dname;
+	这句话是SQL92语法，现在不再使用。
+	+--------+------------+
+	| ename  | dname      |
+	+--------+------------+
+	| CLARK  | ACCOUNTING |
+	| KING   | ACCOUNTING |
+	| MILLER | ACCOUNTING |
+	| SMITH  | RESEARCH   |
+	| JONES  | RESEARCH   |
+	| SCOTT  | RESEARCH   |
+	| ADAMS  | RESEARCH   |
+	| FORD   | RESEARCH   |
+	| ALLEN  | SALES      |
+	| WARD   | SALES      |
+	| MARTIN | SALES      |
+	| BLAKE  | SALES      |
+	| TURNER | SALES      |
+	| JAMES  | SALES      |
+	+--------+------------+
+	16、表的别名
+	mysql> select e.ename,d.dname from emp e,dept d;
+	这里的e 和 d都是别名
+	17、内连接中的等值连接 ：表名1 (inner) join  表名2  on  连接条件 
+	带着inner可读性更好一些
+	最大的特点是条件是等量关系
+	查询每个员工的部门名称，要求显示员工名和部门名
+	这是一条SQL99语法，这种语法结构更清晰，并且和where分离了。
+	mysql> select e.ename,d.dname from emp e join dept d on e.deptno = d.deptno order by d.dname;
+	+--------+------------+
+	| ename  | dname      |
+	+--------+------------+
+	| CLARK  | ACCOUNTING |
+	| KING   | ACCOUNTING |
+	| MILLER | ACCOUNTING |
+	| SMITH  | RESEARCH   |
+	| JONES  | RESEARCH   |
+	| SCOTT  | RESEARCH   |
+	| ADAMS  | RESEARCH   |
+	| FORD   | RESEARCH   |
+	| ALLEN  | SALES      |
+	| WARD   | SALES      |
+	| MARTIN | SALES      |
+	| BLAKE  | SALES      |
+	| TURNER | SALES      |
+	| JAMES  | SALES      |
+	+--------+------------+
+	18、内连接中的费等值连接：特点是连接条件是非等量关系
+	找出每个员工的工资等级，要求显示员工名、工资、工资等级。
+	mysql> select e.ename,e.sal,s.grade from emp e inner join salgrade s on e.sal between s.losal and s.hisal order by e.sal;
+	+--------+---------+-------+
+	| ename  | sal     | grade |
+	+--------+---------+-------+
+	| SMITH  |  800.00 |     1 |
+	| JAMES  |  950.00 |     1 |
+	| ADAMS  | 1100.00 |     1 |
+	| WARD   | 1250.00 |     2 |
+	| MARTIN | 1250.00 |     2 |
+	| MILLER | 1300.00 |     2 |
+	| TURNER | 1500.00 |     3 |
+	| ALLEN  | 1600.00 |     3 |
+	| CLARK  | 2450.00 |     4 |
+	| BLAKE  | 2850.00 |     4 |
+	| JONES  | 2975.00 |     4 |
+	| SCOTT  | 3000.00 |     4 |
+	| FORD   | 3000.00 |     4 |
+	| KING   | 5000.00 |     5 |
+	+--------+---------+-------+
+	19、自连接：最大的特点是一张表看作两张表
+	找出每个员工的上级领导，要求显示员工名和对应的领导名
+	这里的自连接是一个等值连接，也可以是非等值连接
+	mysql> select a.ename,b.ename as mgrname from emp a inner join emp b on b.empno = a.mgr order by mgrname;
+	+--------+---------+
+	| ename  | mgrname |
+	+--------+---------+
+	| ALLEN  | BLAKE   |
+	| WARD   | BLAKE   |
+	| MARTIN | BLAKE   |
+	| TURNER | BLAKE   |
+	| JAMES  | BLAKE   |
+	| MILLER | CLARK   |
+	| SMITH  | FORD    |
+	| SCOTT  | JONES   |
+	| FORD   | JONES   |
+	| JONES  | KING    |
+	| BLAKE  | KING    |
+	| CLARK  | KING    |
+	| ADAMS  | SCOTT   |
+	+--------+---------+
+	20、外连接：表名1 left/right (outer) join 表名2 on 限制条件
+	--内连接和外连接的区别：假设A表和B表进行连接，使用内连接的话，凡是A表和B表能够匹配上的记录都会被查询出来，这就是内连接。AB两张表没有主副之分，两张表是平等的。假设使用外连接的话，AB表就会有主副之分，一张是主表，一张是副表，如果副表中的数据没有和主表中的数据匹配上，副表就会自动模拟出null与之匹配
+	--外连接的分类：
+						左（外）连接：左边的表是主表
+						右（外）连接：右边的表示主表
+	左连接有右连接的写法，右连接也有对应的左连接的写法。
+	找出所有员工的上级领导
+	mysql> select a.ename,b.ename as mgrname from emp a left join emp b on b.empno = a.mgr order by mgrname;
+	+--------+---------+
+	| ename  | mgrname |
+	+--------+---------+
+	| KING   | NULL    |
+	| ALLEN  | BLAKE   |
+	| WARD   | BLAKE   |
+	| MARTIN | BLAKE   |
+	| TURNER | BLAKE   |
+	| JAMES  | BLAKE   |
+	| MILLER | CLARK   |
+	| SMITH  | FORD    |
+	| SCOTT  | JONES   |
+	| FORD   | JONES   |
+	| JONES  | KING    |
+	| BLAKE  | KING    |
+	| CLARK  | KING    |
+	| ADAMS  | SCOTT   |
+	+--------+---------+
+	找出哪个部门没有员工
+	mysql> select d.dname from emp e right join dept d on e.deptno = d.deptno
+		-> where e.ename is null;
+	+------------+
+	| dname      |
+	+------------+
+	| OPERATIONS |
+	+------------+
+	21、全连接：既有左连接也有右连接。
+	22、三张表的连接查询
+	找出每个员工的部门名称以及工资等级
+	mysql> select e.ename,d.dname,s.grade from
+		-> emp e join dept d on e.deptno = d.deptno
+		-> join salgrade s on e.sal between s.losal and s.hisal order by grade;
+	+--------+------------+-------+
+	| ename  | dname      | grade |
+	+--------+------------+-------+
+	| SMITH  | RESEARCH   |     1 |
+	| ADAMS  | RESEARCH   |     1 |
+	| JAMES  | SALES      |     1 |
+	| WARD   | SALES      |     2 |
+	| MARTIN | SALES      |     2 |
+	| MILLER | ACCOUNTING |     2 |
+	| ALLEN  | SALES      |     3 |
+	| TURNER | SALES      |     3 |
+	| JONES  | RESEARCH   |     4 |
+	| BLAKE  | SALES      |     4 |
+	| CLARK  | ACCOUNTING |     4 |
+	| SCOTT  | RESEARCH   |     4 |
+	| FORD   | RESEARCH   |     4 |
+	| KING   | ACCOUNTING |     5 |
+	+--------+------------+-------+
+	找出每个员工的部门名称以及工资等级、上级领导
+	mysql> select e.ename,d.dname,s.grade,a.ename as mgrname from
+		-> emp e join dept d on e.deptno = d.deptno
+		-> join salgrade s on e.sal between s.losal and s.hisal
+		-> left join emp a on e.mgr = a.empno;
+	+--------+------------+-------+---------+
+	| ename  | dname      | grade | mgrname |
+	+--------+------------+-------+---------+
+	| SMITH  | RESEARCH   |     1 | FORD    |
+	| ALLEN  | SALES      |     3 | BLAKE   |
+	| WARD   | SALES      |     2 | BLAKE   |
+	| JONES  | RESEARCH   |     4 | KING    |
+	| MARTIN | SALES      |     2 | BLAKE   |
+	| BLAKE  | SALES      |     4 | KING    |
+	| CLARK  | ACCOUNTING |     4 | KING    |
+	| SCOTT  | RESEARCH   |     4 | JONES   |
+	| KING   | ACCOUNTING |     5 | NULL    |
+	| TURNER | SALES      |     3 | BLAKE   |
+	| ADAMS  | RESEARCH   |     1 | SCOTT   |
+	| JAMES  | SALES      |     1 | BLAKE   |
+	| FORD   | RESEARCH   |     4 | JONES   |
+	| MILLER | ACCOUNTING |     2 | CLARK   |
+	+--------+------------+-------+---------+
+	23、关于子查询：select嵌套select语句，被嵌套的select语句就是子查询
+	--where字句中使用子查询
+	找出高于平均工资的员工信息
+	mysql> select * from emp
+		-> where (select avg(sal) from emp) < sal;
+	+-------+-------+-----------+------+------------+---------+------+--------+
+	| EMPNO | ENAME | JOB       | MGR  | HIREDATE   | SAL     | COMM | DEPTNO |
+	+-------+-------+-----------+------+------------+---------+------+--------+
+	|  7566 | JONES | MANAGER   | 7839 | 1981-04-02 | 2975.00 | NULL |     20 |
+	|  7698 | BLAKE | MANAGER   | 7839 | 1981-05-01 | 2850.00 | NULL |     30 |
+	|  7782 | CLARK | MANAGER   | 7839 | 1981-06-09 | 2450.00 | NULL |     10 |
+	|  7788 | SCOTT | ANALYST   | 7566 | 1987-04-19 | 3000.00 | NULL |     20 |
+	|  7839 | KING  | PRESIDENT | NULL | 1981-11-17 | 5000.00 | NULL |     10 |
+	|  7902 | FORD  | ANALYST   | 7566 | 1981-12-03 | 3000.00 | NULL |     20 |
+	+-------+-------+-----------+------+------------+---------+------+--------+
+	--from后面使用子查询
+	找出每个部门平均薪水的薪资等级
+	mysql> select d.dname,s.grade,b.avg from (select avg(sal) as avg,deptno from emp group by deptno) (as) b
+		-> join dept d on d.deptno = b.deptno
+		-> join salgrade s on b.avg between s.losal and s.hisal;
+	+------------+-------+-------------+
+	| dname      | grade | avg         |
+	+------------+-------+-------------+
+	| SALES      |     3 | 1566.666667 |
+	| ACCOUNTING |     4 | 2916.666667 |
+	| RESEARCH   |     4 | 2175.000000 |
+	+------------+-------+-------------+
+	找出每个部门的平均薪资等级
+	mysql> select d.dname,avg(grade) from
+		-> emp e join dept d
+		-> on e.deptno = d.deptno
+		-> join salgrade s on e.sal between s.losal and hisal
+		-> group by d.dname;
+	+------------+------------+
+	| dname      | avg(grade) |
+	+------------+------------+
+	| RESEARCH   |     2.8000 |
+	| SALES      |     2.5000 |
+	| ACCOUNTING |     3.6667 |
+	+------------+------------+
+	--select语句后面嵌套子查询
+	找出每个员工所在的部门名称，要求显示员工名和部门名
+	24、union(可以将查询结果集相加)，union相加的结果输出的列数必须相同。
+	找出工作岗位是SALESMAN和MANAGER的员工
+	mysql> select e.ename,job from emp e where job = 'MANAGER'
+		-> union
+		-> select ename,job from emp where job = 'SALESMAN';
+	+--------+----------+
+	| ename  | job      |
+	+--------+----------+
+	| JONES  | MANAGER  |
+	| BLAKE  | MANAGER  |
+	| CLARK  | MANAGER  |
+	| ALLEN  | SALESMAN |
+	| WARD   | SALESMAN |
+	| MARTIN | SALESMAN |
+	| TURNER | SALESMAN |
+	+--------+----------+
+	两张不相干的表中的数据拼接在一起，可以使用union
+	mysql> select ename from emp
+		-> union
+		-> select dname from dept;
+	+------------+
+	| ename      |
+	+------------+
+	| SMITH      |
+	| ALLEN      |
+	| WARD       |
+	| JONES      |
+	| MARTIN     |
+	| BLAKE      |
+	| CLARK      |
+	| SCOTT      |
+	| KING       |
+	| TURNER     |
+	| ADAMS      |
+	| JAMES      |
+	| FORD       |
+	| MILLER     |
+	| ACCOUNTING |
+	| RESEARCH   |
+	| SALES      |
+	| OPERATIONS |
+	+------------+
+	25、limit分页查询全靠它，是mysql特有的，其他数据库不通用。
+		   oracle中有一个相同的机制，叫做rownum.
+	limit取结果集中的部分数据：limit startIndex,length
+														   startIndex 表示起始位置，从0开始，0表示第一条数据，如果省略startIndex，则表示startIndex默认为0。limit是sql语句中最后执行的一个环节。
+											  length表示取几个数据
+	取出工资前5名的员工（降序，取前5个）
+	mysql> select e.ename,e.sal from emp e order by e.sal desc
+		-> limit 0,5;
+	+-------+---------+
+	| ename | sal     |
+	+-------+---------+
+	| KING  | 5000.00 |
+	| SCOTT | 3000.00 |
+	| FORD  | 3000.00 |
+	| JONES | 2975.00 |
+	| BLAKE | 2850.00 |
+	+-------+---------+
+	找出工资排名在第四到第九名的员工
+	mysql> select e.ename,e.sal from emp e order by e.sal desc
+		-> limit 3,6;
+	+--------+---------+
+	| ename  | sal     |
+	+--------+---------+
+	| JONES  | 2975.00 |
+	| BLAKE  | 2850.00 |
+	| CLARK  | 2450.00 |
+	| ALLEN  | 1600.00 |
+	| TURNER | 1500.00 |
+	| MILLER | 1300.00 |
+	+--------+---------+
+	26、通用的标准分页sql
+	每页显示3条记录：
+	第1页：0，3
+	第2页：3，3
+	第3页：6，3
+	第4页：9，3
+	第5页：12，3
+	…
+	每页如果显示pageSize条记录，那么第pageNo页显示：(pageNo -1) * pageSize，pageSize
+	==========================================================================================
+	1、创建表
+	create table 表名(
+			字段名1 数据类型,
+			字段名2 数据类型,
+			字段名3 数据类型,
+			 ……
+	);
+	字段名要见名知义。
+	关于MySQL当中字段的常见数据类型
+	int                                 整数型（对应java中的int）
+	bigint                     长整型 （java中的long）
+	float                       浮点型（java中的float  double）
+	char                       定长字符串 （java中的String）
+	varchar                   不定长字符串/可变字符串（对应java中的StringBuffer/StringBuilder）
+	date                       日期类型（对应java中的java.sql.Date类型）
+	BLOB                      二进制大对象(存储图片，视频等流媒体信息) Binary Large Object（java中的Object）
+	CLOB                      字符大对象（存储较大文本，比如可以存储4G的字符串）Character Large OBject（java中的Object）
+	2、char和varchar的选择
+	在实际的开发中，当某个字段中的数据长度不发生改变的时候，是定长的，例如：性别、生日等，都采用char；当一个字段的数据长度不确定的时候，例如：姓名、简介等都是采用varchar。
+	3、BLOB和CLOB的使用
+	电影表：t_movie
+	id（int）            	name（varchar）	playtime（date/char）	poster（BLOB）	history（CLOB）
+	1				
+	2				
+	3	蜘蛛侠			
+	这里的id、name、playtime都可以使用insert…into插入
+	而poster（BLOB）和history（CLOB）只能使用java的IO流来插入到表中，
+	但是在实际的开发中，一般在表中存放的是图片或视频的索引，不会直接将图片和视频直接放到表中。
+	4、表名在数据库中一般建议以：t_或者tbl_开始。
+	5、创建一张学生表，
+		  学生信息包括：
+			学号、姓名、性别、班级编号、生日
+			学号：bigint
+			   姓名：varchar(255)
+			   性别：char(1)
+			   班级编号：varchar(255)
+			   生日：char(10)

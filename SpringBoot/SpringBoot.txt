@@ -1,0 +1,564 @@
+	1、SpringBoot是Spring家族中的一个全新的框架,它用来简化Spring应用程序的创建和开发过程,也可以说SpringBoot可以简化SSM开发过程.
+		SpringBoot抛弃了繁琐的XML配置过程,采用大量的默认配置简化我们的开发过程
+		
+	2、SpringBoot的特性 : 
+		a、能够快速创建基于Spring的应用程序
+		b、能够直接使用java main方法启动内嵌的Tomcat服务器运行SpringBoot程序,不需要部署war包文件
+		c、提供约定的starter.POM来简化Maven配置,让Maven的配置更加简单
+		d、自动化配置,根据项目的Maven依赖配置,SpringBoot自动配置Spring,SpringMVC,等
+		e、提供了程序的健康检查功能
+		f、基本可以完全不使用XML文件,采用注解配置
+		
+	3、SpringBoot四大核心 : 
+		a、自动配置
+		b、起步依赖
+		c、Actuator
+		d、命令行界面
+		
+	4、springboot的核心配置文件(一个项目只需要一个配置文件) : 
+		application.properties
+		这两种配置文件完全一样 : 
+		application.yaml
+		application.yml
+	
+	5、当一个springboot项目中同时出现两种类型的核心配置文件 : 优先使用applicaton.properties 
+	
+	6、多环境下核心配置文件的使用 : 
+		开发环境 : application-dev.properties
+		测试环境 : application-test.properties
+		准生产环境 : application-ready.properties
+		生产环境 : application-product.properties
+		再主核心配置文件中使用server.servlet.context-path=dev[test][ready][product]
+
+	7、springboot在核心配置文件application.properties自定义的配置 : key=value
+		在需要使用该value的地方使用@Value注解
+		
+	8、常用注解 : 
+		a、@Value : 取得配置文件中自定义的键值对
+		b、@Component : 将一个类交给Spring进行管理
+		c、@Autowired : 自动注入对象
+		d、@ConfigurationProperties(prefix = "") : 获取配置文件中的一组内容,prefix是组名(前缀名)
+		e、@Mapper : 在集成MyBatis时,添加在每一个Mapper类接口上面,作用是扫描dao接口
+		f、@MapperScan : 在集成MyBatis时,添加在SpringBoot的启动入口类上面,作用是扫描包中的文件
+		g、@EnableTransactionManagement : 添加在SpringBoot入口启动类的上面,表示开启事务(可以省略)
+		h、@Transactional : 添加在service层的方法上面,表示当前方法开启事务,如果有错误,那么自动回滚
+		i、@RestController : 在控制层类名上面添加,表示这个类中的所有方法返回值都是json格式,其效果等同于@Controller + @ResponseBody
+		j、@RequestMapping : 添加在控制层方法上面
+			value : 表示url
+			method : 表示请求方式,不指定值时默认都可以
+		k、@GetMapping : 添加在控制层方法的上面,默认只支持get方式的请求,通常使用在查询方法上面
+			value : 表示url
+		l、@PostMapping : 添加在控制层方法的上面,默认只支持post方式的请求,通常使用在新增数据的方法上面
+			value : 表示url
+		m、@DeleteMapping : 添加在控制层方法的上面,默认只支持post方式的请求,通常使用在删除数据的方法上面
+			value : 表示url
+		n、@PutMapping : 添加在控制层方法的上面,默认只支持put方式的请求,通常使用在修改数据的方法上面
+			value : 表示url
+		
+	9、中文乱码 : 
+		如果在springboot的核心配置文件中出现了中文,那么会出现乱码
+		一般在配置文件中,不建议出现中文
+		如果有中文,可以先转换为ASCII码
+	
+	10、SpringBoot中集成JSP文件 : 需要添加相应的依赖
+		SpringBoot项目默认推荐使用的前端引擎是thymeleaf
+		我们需要手动指定jsp最后编译的路径 : 
+			<resources>
+				<resource>src/main/webapp</resource>
+				<targetPath>META-INF/resources</targetPath>
+				<includes>
+					<include>*.*</include>
+				</includes>
+			</resources>
+		最后需要在核心配置文件中配置视图解析器
+		
+	11、SpringBoot集成MyBatis : 
+		a、添加MyBatis和MySQL的依赖
+		b、使用MyBatis提供的逆向工程生成实体bean,映射文件,
+		c、在pom.xml文件中添加逆向工程需要的插件依赖
+			<plugin>
+				<groupId>org.mybatis.generator</groupId>
+				<artifactId>mybatis-generator-maven-plugin</artifactId>
+				<version>1.3.6</version>
+				<configuration>
+					<configurationFile>GeneratorMapper.xml</configurationFile>
+					<verbose>true</verbose>
+					<overwrite>true</overwrite>
+				</configuration>
+			</plugin>
+		d、在springboot的核心配置文件中配置数据库的基本信息 :
+			spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+			spring.datasource.url=jdbc:mysql://192.168.115.128:3306/springboot?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
+			spring.datasource.username=root
+			spring.datasource.password=625008237
+		e、关于Mapper映射文件存放位置的写法 : 
+			1) 将Mapper接口和Mapper映射文件存放在src/main/java的同一目录下,然后在pom.xml文件中手动指定资源文件夹路径 : 
+				<resources>
+					<resource>
+						<directory>src/main/java</directory>
+						<includes>
+							<include>**/*.xml</include>
+						</includes>
+					</resource>
+				</resources>
+			2) 将Mapper接口和Mapper映射文件分开存放,Mapper接口存放在src/main/java目录下,Mapper映射文件存放在resources(类路径)下,
+				然后再SpringBoot的核心配置文件中配置Mapper映射文件的存放位置
+		
+	12、SpringBoot项目下使用事务 : 
+		事务是一个完整的功能
+		事务之和DML语句有关系
+	
+	13、RESTFul : 
+		REST(Representational State Transfer) ：
+			一种互联网软件架构设计的风格，并不是标准，他只是提供了一组客户端和服务器交互时的架构理念和设计原则
+			任何的技术都可以实现这种理念，如果一个架构符合REST原则，则称他为RESTFul架构
+			比如我们要访问一个http接口 : http://localhost:8080/boot/order?id=1021&status=1
+				采用RESTFul风格则http地址为 : http://localhost:8080/boot/order/1021/1
+		SpringBoot开发RESTFul,主要是几个注解 : 
+			1) @PathVariable : 获取url中的数据
+			2) @RequestMapping : 添加在控制层方法上面
+				value : 表示url,在路径中使用{}来声明参数名
+				method : 表示请求方式,不指定值时默认都可以
+			3) @GetMapping : 添加在控制层方法的上面,默认只支持get方式的请求,通常使用在查询方法上面
+				value : 表示url,在路径中使用{}来声明参数名
+			4) @PostMapping : 添加在控制层方法的上面,默认只支持post方式的请求,通常使用在新增数据的方法上面
+				value : 表示url,在路径中使用{}来声明参数名
+			5) @DeleteMapping : 添加在控制层方法的上面,默认只支持post方式的请求,通常使用在删除数据的方法上面
+				value : 表示url,在路径中使用{}来声明参数名
+			6) @PutMapping : 添加在控制层方法的上面,默认只支持put方式的请求,通常使用在修改数据的方法上面
+				value : 表示url,在路径中使用{}来声明参数名
+		RESTFul原则 : 
+			a、请求路径不要出现动词
+			b、分页、排序等操作,不需要使用斜杠传参数
+			c、增post请求,删delete请求,改put请求,查get请求
+	
+	14、SpringBoot集成Redis : 
+		a、添加操作redis数据类型的依赖
+		b、在SpringBoot核心配置文件中添加Redis的配置
+		
+	15、SpringBoot集成Dubbo分布式框架 : 
+		a、接口工程 : 存放实体bean和业务接口
+		b、服务提供者 : 业务接口的实现类,调用数据持久层
+			--添加依赖(dubbo,注册中心,接口工程)
+			--配置服务提供者核心配置文件
+		c、服务消费者 : 处理浏览器客户端发送的请求,调用服务提供者所提供的服务
+			--添加依赖(dubbo,注册中心,接口工程)
+			--配置消费者核心配置中心
+		d、SpringBoot使用Dubbo直连方式 : 
+			
+	
+	16、SpringBoot集成Dubbo、MyBatis、Redis、Spring、SpringMVC、JSP
+		a、接口工程 : 存放实体bean和业务接口
+		b、服务提供者 : 他是一个SpringBoot框架Web项目,集成MyBatis,Redis
+			--添加依赖 : MyBatis依赖,MySql依赖,Dubbo依赖,Zookeeper依赖,Redis依赖
+			--配置SpringBoot核心配置文件 : 
+				--配置连接数据库基本信息
+				--配置连接Redis的基本信息
+				--配置dubbo的基本信息
+		c、服务消费者 : 他是一个SpringBoot框架Web项目,集成JSP,dubbo
+			--添加依赖 ; Dubbo依赖,Zookeeper依赖,解析JSP页面的依赖,接口工程依赖
+			--配置SpringBoot核心配置文件
+				--配置视图解析器
+				--配置Dubbo
+				
+	17、SpringBoot程序启动后,SpringBoot的入口程序内会自动执行SpringApplication.run(Application.class,args)方法,
+		返回值是ConfigurableApplicationContext,它也是一个Spring容器(它相当于Spring容器中的启动容器ClasspathXmlApplicationContext)
+		利用这个容器可以获取交给Spring容器管理的对象
+		例如 : 
+		1)
+			ConfigurableApplicationContext run = SpringApplication.run(Application.class, args);
+			TestService testService = (TestService) run.getBean("testServiceImpl");
+		2) 让SpringBoot的入口类实现CommandLineRunner接口,重写其中的run方法,然后让SpringBoot的入口程序执行run方法
+			利用@Autowired注释获取对象,在重写的run方法内使用对象.在main方法内不能使用采用注解方式获取的对象(main是静态方法)
+	
+	18、关闭SpringBoot的启动logo : 
+		在SpringBoot的入口程序中 : 
+			SpringApplication springApplication = new SpringApplication(Application.class);
+			springApplication.setBannerMode(Banner.Mode.OFF);
+			springApplication.run(args);
+		需要启动时 : 
+			SpringApplication.run(Application.class, args);
+		利用网站可以修改SpringBoot的启动logo
+		
+	19、SpringBoot使用拦截器 : 
+		a、定义一个拦截器,实现HandlerInterceptor接口
+		b、创建一个配置类(即:SpringMVC配置文件),实现WebMvcConfigurer接口,重写addInterceptor方法 :
+			@Configuration
+			public class InterceptorConfig implements WebMvcConfigurer {
+
+				@Override
+				public void addInterceptors(InterceptorRegistry registry) {
+					String[] addPathPatterns = {
+							"/user/**"
+					};
+					String[] excludePathPatterns = {
+							"/user/login","/user/out","/user/error"
+					};
+					registry.addInterceptor(new UserInterceptor()).addPathPatterns(addPathPatterns).excludePathPatterns(excludePathPatterns);
+				}
+			}
+			
+	20、SpringBoot框架下使用Servlet : 
+		1) 创建一个Servlet,继承HttpServlet
+			--在这个类的上面使用@WebServlet注解,并表明其urlPatterns属性 : "/"(这个Servlet的请求路径)
+			--@WebServlet(urlPatterns = "/myServlet")
+			--然后在SpringBoot的入口类上方添加@ServletComponentScan(basePackages = "com.leviii.springboot.servlet")
+				注解,表明@WebServlet所在的包名
+		2) 创建一个Servlet,继承HttpServlet
+			--创建一个配置类 : 
+			@Configuration
+			public class ServletConfig {
+				/*
+					@Bean是一个方法级别上的注解,主要用在配置类里
+					相当于一个 : 
+						<beans>
+							<bean id="" class=""/>
+						</beans>
+				 */
+				@Bean
+				public ServletRegistrationBean myServletRegistrationBean(){
+					return new ServletRegistrationBean(new MyServlet(),"/myServlet");
+				}
+			}
+			
+	21、SpringBoot框架下使用过滤器 : Filter
+		a、注解方式 : 
+			创建一个类实现Filter接口
+				--在这个类的上面使用@WebFilter注解,并表明其属性urlPatterns : "/"(请求路径)
+				--然后在SpringBoot的入口类上面使用@ServletComponentScan(basePackages = "com.leviii.springboot.filter")
+		b、注册组件 : 
+			创建出一个配置类 : 
+				@Configuration
+				public class FilterConfig {
+					@Bean
+					public FilterRegistrationBean myFilterRegistrationBean(){
+						FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new MyFilter());
+						filterRegistrationBean.addUrlPatterns("/user/*");
+						return filterRegistrationBean;
+					}
+				}
+			
+	22、SpringBoot下设置字符编码 : 
+		1) 创建一个配置类
+			@Configuration
+			public class SystemConfig {
+				@Bean
+				public FilterRegistrationBean characterEncodingFilterRegistryBean(){
+					CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+					characterEncodingFilter.setForceEncoding(true);
+					characterEncodingFilter.setEncoding("utf-8");
+					FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+					filterRegistrationBean.setFilter(characterEncodingFilter);
+					filterRegistrationBean.addUrlPatterns("/*");
+					return filterRegistrationBean;
+				}		
+			}	
+			--在SpringBoot的核心配置文件中关闭Spring默认的字符设置 : 
+				server.servlet.encoding.enabled=false
+		2) 直接在SpringBoot的核心配置文件中配置 : 
+			server.servlet.encoding.enabled=true
+			server.servlet.encoding.force=true
+			server.servlet.encoding.charset=utf-8
+	
+	23、SpringBoot打包为war包 : 
+		在pom.xml文件中配置 : 
+			<packaging>wat</packaging>
+			--在<build></build>标签对内部使用 : 
+				<finalName>SpringBootWar</finalName>
+				指定包名
+		修改SpringBoot入口类 : 
+			@SpringBootApplication
+			public class Application extends SpringBootServletInitializer {
+
+				public static void main(String[] args) {
+					SpringApplication.run(Application.class, args);
+				}
+
+				@Override
+				protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+					//构造新资源
+					return builder.sources(Application.class);
+				}
+			}
+		SpringBoot打war包部署到Tomcat服务器上时,其配置文件中指定的端口号和上下文根就会失效,以Tomcat的设置为准.
+		SpringBoot打jar包,不需要部署到Tomcat服务器上,其端口号和上下文根就是配置文件中指定的值
+		
+	24、SpringBoot官方推荐优先使用带有-spring的文件名作为你的日志配置(如 : logback-spring.xml)
+		如果不想使用-spring,那么可以在SpringBoot的核心配置文件中使用logging.config属性自定义名字
+		
+	25、Thymeleaf : 
+		Thymeleaf是一个流行的模板引擎,改模板引擎采用java语言编写.
+		模板引擎是一个技术名词,是跨领域跨平台的概念,在Java语言体系下有模板引擎,在C#、PHP、JavaScript中都有模板引擎.
+		Java生态下的模板引擎有Thymeleaf、Freemaker、Velocity、Beetl(国产)等.
+		Thymeleaf对网络环境不存在严格的要求,既能用于Web环境下,又能用于非Web环境下.在非Web环境下,他能直接显示模板上的静态数据;在Web环境下,他能像Jsp一样从
+			后台接收数据并替换掉模板上的静态数据.它是基于HTML的,以HTML为载体,Thymeleaf需要寄托在HTML标签下实现
+		a、SpringBoot集成Thymeleaf : 
+			新建一个HTMl页面 : 
+				<!DOCTYPE html>
+				<html lang="en" xmlns:th="http://www.thymeleaf.org">
+				<head>
+					<meta charset="UTF-8">
+					<title>Title</title>
+				</head>
+				<body>
+					<h2 th:text="${data}">展示需要显示的内容</h2>
+				</body>
+				</html>
+			在<html>标签对中添加 xmlns:th="http://www.thymeleaf.org",然后就可以直接使用后台传回来的数据
+			同时在SpringBoot的核心配置文件中配置 : 
+				spring.thymeleaf.prefix=classpath:/templates/
+				spring.thymeleaf.suffix=.html
+			这个配置不是必须的,SpringBoot默认会自动配置
+			如果需要使用热部署,那么在SpringBoot的核心配置文件中配置缓存关闭 : 
+				spring.thymeleaf.cache=false
+		
+	26、Thymeleaf的变量表达式 :
+		1) 标准变量表达式(推荐使用) : 
+			${...} : 
+				标准变量表达式用于访问容器(tomcat)上下文环境中的变量,功能和EL中的${}相同.
+				Thymeleaf中的变量表达式使用${变量名}的方式获取Controller中的Model中的数据.
+		2) 选择变量表达式 : 
+			*{...} :
+				选择变量表达式用于选择一个对象使用th:object="${}的方式绑定对象
+				然后在标签对的内部使用*{属性名}的方式获取对象的属性
+		3) 路径表达式 : 
+			@{...}可以使绝对路径,也可以是相对路径.
+			当路径需要带参数时,可以手动拼接,也可以使用@{路径(key=value,key=value...)}
+			其中,value可以使用变量表达式,()就代表了路径中的?
+		
+	27、Thymeleaf的常见属性 : 
+		1) th:action : 定义后台控制器的路径,类似<form>标签的action属性,但是可以给请求路径中添加动态内容
+		2) th:href : 超链接
+		3) th:src 
+		4) th:id : 相当于HTMl标签对的id属性,但是可以获取后台的动态内容
+		5) th:onclick : 在标签对中指定函数,可以获取动态内容
+		6) th:each="变量名,[变量名Stat]:${需要遍历的数据}"
+		7) th:if="${条件}" : 如果满足条件则执行,否则不执行
+		8) th:unless="${条件} : 如果条件满足,则不执行,条件不满足则执行.
+		9) th:switch="${}" 
+		10) th:case="条件" : 条件为"*"则代表其余所有情况
+		11) th:inline : 在标签对的内部可以使用[[${}]]获取数据
+			th:inline="javascript"时,可以在js中使用${}直接取到后台的数据
+		12) th:text="| |" : 字面量的拼接,直接在||内部使用${}和字面量即可
+		
+	28、在Thymeleaf中获取SESSION中的值 : 
+		th:text="${#session.getAttribute('xxx')}
+		th:text="${#httpSession.getAttribute('xxx')}
+		th:text="${session.xxx}
+		使用<script type="text/javascript" th:inline="javascript">声明,可以在js中使用表达式
+			var requestURL = [[${#httpServletRequest.requestURL}]];			//这是请求的全路径,不包括参数
+			var queryString = [[${#httpServletRequest.queryString}]];			//这是请求的参数
+			
+	29、Thymeleaf表达式功能对象 : 
+		模板引擎提供的一组功能性内置对象,可以在模板内部直接使用这些对象提供的功能方法,工作中常使用的数据类型
+			如 : 集合,时间,数值,可以使用Thymeleaf提供的功能性对象来处理他们.
+			内置对象前一般需要添加#号,内置对象一般以s结尾.
+			1) #dates : java.util.Date对象的实用方法 : 
+				<span th:text="${#date.format(curDate,'yyyy-MM-dd HH:mm:ss)}"></span>
+			2) #calendars : 和dates类似,但是是java.util.Calendar对象
+			3) #numbers : 格式化数字对象的实用方法
+			4) #strings : 字符串对象的实用方法 : 
+				contains,startsWith,prepending/appending等
+			5) #objects : 对objects操作的实用方法
+			6) #bools : 对布尔值求值的实用方法
+			7) #arrays : 数组的实用方法
+			8) #lists : list的实用方法 : 
+				<span th:text="${#lists.size(datas)}"></span>
+			9) #sets : set的实用方法
+			10) #maps : map的实用方法
+			
+	30、常用注解 :
+		1) @ImportResource(location = "classpath:xxx.xml") : 向Spring容器中添加xml配置文件
+		2) @ComponentScan("com.leviii.xxx") : 通知Spring容器扫描目标包下的注解
+		3) @SpringBootApplication(exclude={DataSourceAutoConfiguration.class}) : 禁用某些自动配置,或者在配置文件中使用
+			spring.autoconfigure.exculd=xxx 进行排除,可以达到优化程序的效果
+			
+	31、延迟初始化bean : spring.main.lazy-initialization=true 在启动Spring容器的时候不去创建对象,当使用对象的时候才去创建.
+		在Web程序应用中,启用延迟初始化将导致许多与Web相关的Bean直到收到Http请求后才被初始化.延迟初始化的缺点是,他可能会延迟发现应用程序的问题.
+		如果错误配置的bean延迟了初始化,那么在启动时就不会发生错误,并且只有在初始化bean时问题在会变得明显,还必须保证JVM有足够的内存来容纳所有应用程序的
+		bean,而不仅仅时启动过程中初始化的bean.因此在启用延迟初始化的情况下推荐先对JVM的堆内存大小进行微调.
+		
+	32、CommandLineRunner,ApplicationRunner在springboot启动后回调
+	
+	33、SpringBoot敏感信息加密 : 
+		配置信息加密主要利用了http://www.jasypt.org/这个类库,Jasypt是一个Java库,允许开发人员以最小的努力将基本的加密功能添加到你的项目中,而无需对
+		密码加机密的工作原理有深入了解
+	
+	34、SpringBoot跨域资源共享CORS支持
+		Spring4.2x版本开始支持CORS
+		传统的AJAX请求只能获取在同一个域名下的资源,但是HTML5规范中打破了这个限制,允许AJAX发起跨域的请求.
+		浏览器本身是可以发起跨域请求的,比如你可以连接一个外域的图片或者脚本,但是JavaScript脚本是不能获取这些外域资源的
+		CORS是一个W3C标准,全称是"跨域资源共享"(Cross-origin resource sharing),它允许浏览器想跨域资源服务器发出XMLHttpRequest请求,从而克服了Ajax只能同源使用的限制
+	
+	35、同源和非同源 : 
+		如果访问协议、端口(如果指定了端口)、host都相同,则称之为同源,否则为非同源
+		
+	36、SpringBoot处理静态资源 :
+		静态资源 : js,css,html,图片,音视频等
+		静态资源路径 : 是指系统可以直接访问的路径,且路径下所有的文件均可被用户直接访问.
+		SpringBoot默认静态资源目录位置存放在classpath下,目录名须符合如下规则 : 
+			/static
+			/public
+			/resources
+			/META-INF/resources
+		可以在SpringBoot的核心配置文件中修改静态资源路径 :
+			spring.resources.static-locations=classpath:/myresource/
+	
+	37、SpringBoot的核心配置文件 : 
+		1) .properties文件 : 
+			键值对的properties属性文件配置方式
+			SpringBoot默认读取该文件作为项目配置文件
+		2) .yml文件 : 
+			yml也是一种配置文件格式,主要采用空格,换行,冒号等格式排版进行配置
+			yml也可以使用yaml后缀
+		3) 多环境配置文件 : 
+			默认优先使用.properties文件
+			配置测试环境 : 
+				spring.profile.active=dev
+				application-dev.properties
+			配置生产环境 : 
+				spring.profile.active=product
+				application-product.properties
+				
+	38、SpringBoot的核心配置文件 : 
+		1) 配置文件中可以使用占位符 : 
+			my.name=leviii
+			my.desc=${my.name} is a student
+		2) Duration单位换算 : 
+			30秒超时 : 
+				30,PT30S,30s都是等效的
+			500ms超时 : 
+				500,PT0.5S和500ms都是等效的
+			也可以使用任何受支持的单位,包括 : 
+				ns : 纳秒
+				us : 微秒
+				ms : 毫秒
+				s : 秒
+				m : 分钟
+				H : 小时
+				d : 天
+				w : 周
+				m : 月
+				y : 年
+				server.servlet.session.timeout=1800s
+				server.servlet.session.timeout=30m
+		3) DataSize类型单位转换 : 
+			若要指定10MB的缓冲区大小,则10和10MB是等效的
+			256个字节的大小阈值可以指定为256和256B
+			B for bytes
+			KB for kilobytes
+			MB for megabytes
+			GB for gigabytes
+			TB for terabytes
+			server.tomcat.max-swallow-size=2048KB
+		4) application.properties/yml文件的读取
+			a、通过@Value读取,配置项较少的时候使用
+			b、通过映射类读取
+				新建一个映射类,只需要说明配置的前缀
+				@ConfigurationProperties(prefix = "myconfig.config")  //前缀
+				public class User{
+					private String name;		//自动匹配name
+					private Integer sex;		//自动匹配sex
+					private Integer age;		//自动匹配age
+				}
+			c、通过Environment对象获取 : 
+				从环境信息中读取配置
+				@Autowired
+				Environment env;
+				@GetMapping("/user")
+				public String user(){
+					StringBuilder sb = new StringBuilder();
+					sb.append("从Environment中获取配置:\n");
+					sb.append(env.getProperty("myconfig.user.name"));
+				}
+		5) SpringBoot线程池异步调用 :
+			SpringBoot框架自动装配提供了一个线程池,用于提交异步任务;
+			有了线程池,我们就只需写任务即可,提交任务采用@Async注解;
+			SpringBoot自动装配提供的线程池还可以根据需要进行配置 : 
+				
+		6) SpringBoot集成Swagger
+			说到Swagger(丝袜哥),首先了解一下OpenAPI规范(OpenAPI Specification 简称OAS)是Linux基金会的一个项目,试图通过定义一种描述API格式或API定义的语言,
+			来规范RESTFul服务开发过程.
+			Swagger是目前最受欢迎的OpenAPI规范API开发工具框架,它支持从设计和文档到测试和部署的整个API生命周期的开发
+			Swagger的作用 :
+				随项目自动生成RESTFul API文档,减少开发人员工作量;使用Swagger,只需要在代码中添加一些注解即可生成API接口文档,便于同步更新API文档的说明.
+				另外生成的API文档页面带有测试功能,可以用来调试每个RESTFul API接口
+			使用步骤 :
+				a、添加相关依赖
+				b、配置SpringBoot核心配置文件
+				c、编写代码
+			Swagger常用注解 : 
+				@Api : 用在类上面,说明该类的作用
+				@ApiOperation : 用在方法上面,说明方法的作用
+				@ApiImplicitParams : 用在方法上包含一组参数说明
+				@ApiImplicitParam : 用在@ApiImplicitParams注解中,指定一个请求参数的各个方面 :
+					paramType : 参数放在哪个地方;
+						header-->请求参数的获取 : @RequestHeader
+						query-->请求参数的获取 : @RequestParam
+						path-->请求参数的获取 : @PathVariable(用于RESTFul接口)
+						body(不常用)
+						form(不常用)
+					name : 参数名
+					
+		7) SpringBoot集成WebSocket : 
+			WebSocket是由HTML5定义的,基于TCP协议实现的一种网络协议,通过该协议可以主动向客户端发送信息;
+			WebSocket协议在2008年诞生,2011年成为W3C国际标准
+			a、起因 : 
+				http协议是短连接,请求完成之后会关闭连接,下次重新请求数据,需要再次打开链接
+				WebSocket协议是一种长连接,只需要通过一次请求来初始化连接,然后所有的请求和相应都是通过这个TCP连接进行通讯
+				http协议通讯只能是客户端向服务器发出请求,服务器返回响应结果,HTTP协议做不到服务器向客户端推送信息,而WebSocket能实现服务器和客户端全双工通信
+				信息只能单向传送为单工;信息能双向传送但不能同时双向传送为半双工;信息能够同时双向传送为全双工
+				WebSocket协议基于TCP协议实现,客户端和服务器只需要做一个握手的动作,就可以形成一条基于客户端和服务器之间的快速通道,就可以进行数据帧双向传输
+			b、传统Web推送的实现方式 : 
+				在页面通过Ajax定时轮询,比如每隔一秒中向服务器发送一次HTTP请求,询问服务器是否有新消息,服务器返回结果;
+				这种方式浏览器需要不断向服务器发送HTTP请求,而HTTP请求包含较长的头部,有效信息相对较少,反复的无效请求占用了大量的带宽和CPU资源.
+				HTML5定义的WebSocket协议,能很好地节省服务器资源和带宽,并且能够更实时地进行通讯
+			c、WebSocket的特点 : 
+				全双工通信,客户端和服务器可以实现双向平等通信
+				建立在TCP协议之上,服务端实现比较容易
+				数据格式比较轻量,性能开销小,通信高效
+				可以发送文本,也可以发送二进制数据
+				通信具有更强的实时性
+				协议标识符是ws,服务器网址就是URL : ws://www.abc.com/some/path
+				
+		8) WebSocket有很多优点,弥补了Http协议的很多不足,但是如果服务端维护很多长连接也是很耗费资源的,服务器集群带来了复杂性以及存在老版本浏览器兼容性问题,
+			各大厂目前大多数还是基于轮询的方式实现的,比如 : 扫码登录、支付成功、秒杀成功;
+			在秒杀场景中,用轮询即可,前端轮询一般不可能穿透到后端数据库查询,一般是采用高性能的缓存标记来判断是否成功,相对于WebSocket长连接以及其不确定因素,
+			轮询依然是比较合适的方案
+			
+	39、SpringBoot内嵌Web服务器
+		SpringBoot默认是采用Tomcat来作为内嵌的Servlet容器运行我们的web程序,我们也可以将Servlet容器切换为其他服务器,比如Undertow,Jetty,只需要在Pom.xml文件中配置一下
+		
+	40、SpringBoot全局异常处理
+		在项目的开发中,如果报错了,直接在页面显示错误,对用户很不友好,所以在企业里面对这些异常都会同一捕获
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

@@ -1,0 +1,7 @@
+	1、JavaScript是运行浏览器上的脚本语言，简称JS。
+	JavaScript和Java没有关系。
+	Java运行在JVM中，JavaScript运行在浏览器的内存中。
+	JavaScript不需要程序员手动编译，编写完源码之后直接打开浏览器解释执行。JavaScript的可执行程序以普通文本形式保存；Java的可执行程序是.class文件，不能使用普通文本浏览器打开。
+	2、JSP：JavaServer Pages （隶属于Java语言的，运行在JVM中）
+	JS：JavaScript（运行在浏览器上）
+	3、在HTML中嵌入JavaScript

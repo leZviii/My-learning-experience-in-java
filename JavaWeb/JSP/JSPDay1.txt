@@ -1,0 +1,25 @@
+	1、< 在JSP文件中JAVA命令必须写在这个标签内部才会执行%>，否则不会被JSP文件识别，而会被当作字符串写入到响应体中
+	2、JSP的内置对象：
+		1）request：
+			类型：HttpServletRequest
+			作用：在JSP文件运行的过程中读取请求包的信息，与Servlet在请求转发的过程中实现数据共享
+		2）session：
+			类型：HttpSession
+			作用：JSP文件在运行时，可以用session指向当前用户的私人储物柜、添加共享数据、或者读取共享数据，不同的JSP文件中可以共用一个session。
+		3）application：
+			类型：ServletContext（全局作用域对象）
+			作用：同一个网站中的Servlet和JSP，都可以通过当前网站的全局作用域对象实现数据共享
+	3、Servlet与JSP的分工：
+		1）Servlet主要负责业务并得到处理结果，JSP不负责业务处理，主要任务是将Servlet的处理结果写入到响应体中
+	4、Servlet与JSP之间的调用关系：
+		1）Servlet工作完毕之后通过请求转发的方式向Tomcat申请调用JSP
+	5、Servlet与JSP之间的数据共享
+		1）Servlet将处理结果添加到【请求作用域对象】中，JSP文件在运行时从【请求作用域对象】中获取处理结果
+	6、Http服务器调用JSP文件的步骤：
+		1）Http服务器将JSP文件内容【编辑】到一个Servlet接口实现类中
+		2）Http服务器将这个Servlet接口实现类【编译】为.class文件
+		3）Http服务器负责创建这个class的实例对象，这个实例对象就是Servlet实例对象
+		4）Http服务器通过Servlet实例对象调用jsp_Service（）方法，将JSP文件内容写入到响应体
+	7、Http服务器【编辑】与【编译】JSP文件的位置：
+		C:\Users\leviii\AppData\Local\JetBrains\IntelliJIdea2020.2\tomcat\【网站工作空间（项目名）】\work\Catalina\localhost\【网站名】\org\apache\jsp
+		在IDEA的work文件夹下

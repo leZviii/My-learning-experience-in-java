@@ -1,0 +1,44 @@
+	1、在MyBatis使用模糊查询
+		a、在java代码中把“%%”字符串准备好
+		b、在mapper中拼接like的内容
+	2、动态sql：sql语句的内容是变化的，可以根据条件获取到不同的sql语句
+		a、动态sql的实现是利用MyBatis提供的各种标签
+			<if>、<where>、<foreach>
+		b、<if>：判断条件
+			1）
+				<if test = "java对象的属性值（属性名=值）">
+					sql语句
+				</if>
+		c、<where>：用来包含多个<if>，当多个if中有一个if成立的时候，<where>会自动去掉<if>中多余的and和or等内容
+			sql语句中不需要写where，<where>会自动加
+			<where>
+				<if></if>
+				<if></if>
+				……
+			</where>
+		d、<foreach>：用来实现对于数组和集合的遍历，主要用在sql语句的in子句中
+			1）collection：表示要遍历的集合类型，list、array等
+			2）open、close、separator：对遍历内容的拼接
+			3）语法：
+				<foreach collection =“集合类型” open = ”开始的字符“ close = ”结束的字符“
+						item = “集合中的成员” separator = “集合成员之间的分隔符”>
+					#{item的值}
+				</foreach>
+		e、<sql>：用来自定义sql片段，可以重复使用，其他标签中需要使用<sql>标签中的sql语句时，需要使用<include>子标签。<sql>标签可以定义sql语句的任意部分，所以<include>子标签可以放在动态sql的任何位置。
+			1）语法格式：
+				mapper文件：
+					<sql id = “studentSql”>
+						select id，name，email，age from student
+					</sql>
+	3、数据库的属性配置文件：把数据库连接信息放到一个单独的文件中，和MyBatis的主配置文件分开，目的是便于修改、保存、处理多个数据库的信息
+		1）在resources目录定义一个属性配置文件（properties），在属性配置文件中定义数据，格式是：key=value
+			a、key：一般使用“.”做多级目录
+				例如：
+					jdbc.mysql.driver=com.mysql.cj.jdbc.Driver
+					jdbc.mysql.url=mysql：//……
+					jdbc.mysql.username=root
+					jdbc.mysql.password=6252008237
+		2）在MyBatis的主配置文件中使用<property>标签指定文件的位置，在需要赋值的地方使用：${key}
+	4、PageHelper：MyBatis的通用分页插件，支持多种数据库
+		用法：
+			a、PageHelper.startPage(2,2);

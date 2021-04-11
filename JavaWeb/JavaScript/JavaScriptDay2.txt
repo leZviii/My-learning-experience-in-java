@@ -1,0 +1,104 @@
+	1、javaScript中的变量
+		声明变量：var 变量名；
+		变量赋值：变量名 = 值；
+		javaScript是一种弱类型语言，没有编译阶段，一个量可以任意赋值。
+	2、javaScript是一种弱类型编程语言
+		在js中，当一个变量声明后没有赋值时，系统会默认赋值：undefined
+		当一个变量没有声明直接使用时，会报错：Uncaught ReferenceError: 变量名 is not defined
+	3、javaScript中的函数等同于java中的方法，是一段可以被重复利用的代码片段
+	4、javaScript函数定义：
+		语法格式1：function 函数名（形式参数列表）{
+			函数体；
+		}
+		语法格式2：函数名 = function（形式参数列表）{
+			函数体；
+		}
+		JavaScript中的函数不需要指定返回值类型，可以是任意值。
+	5、函数不调用不会执行，必须手动调用。
+	7、在函数调用的时候，多传递的参数没用。
+	8、在JS中，如果两个函数同名了，那么后一个函数会把前一个函数覆盖掉。
+		所以JS中的函数不能重名。
+	9、JS中的局部变量和全局变量
+		局部变量：在函数体内声明的变量，包括函数的形参，局部变量的生命周期是：函数开始执行时
+	局部变量的内存空间开辟，函数执行结束时，局部变量的内存空间释放。
+		全局变量：在函数体之外声明的变量属于全局变量，全局变量的生命周期是：浏览器打开时声
+	明，浏览器关闭时销毁，非常占用内存，尽量少用。
+	10、在JS中如果一个变量没有加var那么，无论这个变量在哪里声明，这个变量都是全局变量。
+	11、JS中的数据类型有：原始类型、引用类型
+		原始类型：undefined、Number、String、Boolean、Null
+		引用类型：Object以及Object的子类
+	12、ES（ECMAScript规范），在ES6之前有以上6种数据类型，之后又添加了一种Symbol类型。
+	13、JS中有一个运算符叫typeof，这个运算符可以在程序的运行阶段动态的获取变量的数据类型。
+	typeof运算结果是以下六种字符串之一：（全部小写）
+								“undefined”
+								“number”
+								“string”
+								“boolean”
+								“object”
+								“function”
+	14、在JS中比较字符串使用==号。 
+	15、JS中Undefined类型只有一个值，这个值就是undefined
+	16、JS中的Number类型
+	1、3.14、-1、NaN、Infinity都是Number类型数据
+	其中的NaN在以下情况中出现：
+		1、运算结果本来应该是一个数字，最后算完不是数字的时候结果是NaN
+		var a = 100；
+		var b = ”中国人“；
+		alert（a / b）； //这里的除号运算结果应该是数字，但是运算过程导致结果不是一个数字，那么最后的结果会是NaN。
+	Infinity（无穷大）当除数为零时，结果就是Infinity
+	17、isNaN（）函数，结果为真，表示不是一个数字，结果为假，表示是一个数字。
+		parseInt（）函数，可以将字符串转换为数字，并取整数位
+		parseFloat（）函数，可以将字符串转换为数字
+		Math.ceil（）函数，作用是向上取整，返回一个不小于参数的整数。
+	18、JS的Boolean类型永远都只有两个值：true、false（和java相同）
+	Boolean类型有一个函数Boolean（），可以把非布尔类型转换为布尔类型，JS中if（）的括号内必须是布尔类型，如果不是，JS会自动将其转换为布尔类型。
+			Boolean（1）；   //true
+			Boolean（0）；  //false
+			Boolean（“”）；  //false
+			Boolean（“abc”）；   //true
+			Boolean（null）；   //false
+			Boolean（NaN）；   //false
+			Boolean（Undefined）；   //false
+			Boolean（Infinity）；    //true
+	19、Null类型只有一个值：null
+	20、在JS当中字符串可以使用单引号，也可以使用双引号
+			var s1 = ‘abcdef’；
+			var s2 = “test”；
+	21、创建字符串对象有两种方式：
+			--var s =“abc”；（这种方式叫小String，属于String类）
+			--使用JS内置的支持类String（这种方式叫大String，属于Object类）
+				var s2 = new String（“abc”）；
+			需要注意的是：String是一个内置类，可以直接使用，其父类是Object。
+		无论小String还是大String，他们的函数和属性是通用的。
+	22、关于String类型的常用函数和属性
+		常用函数：
+				indexOf（）：获取指定字符串在当前字符串第一次出现的索引
+				lastIndexOf（）：获取指定字符串在当前字符串最后一次出现的索引
+				replace（）：替换
+				substr（）：截取子字符串
+				substring（）：截取子字符串
+				toLowerCase（）：转换为小写
+				toUppercase（）：转换为大写
+				split：拆分字符串
+	23、substr（）和substring（）的区别
+		substr（start index，length）
+		substring（start index，end index）：注意这个substring不包含end index。
+	24、JS中的Object
+		--Object是所有类型的超类，自定义的类型默认继承Object
+		--属性：
+			prototype：作用是给类动态的扩展属性和函数。
+			constructor
+		--函数：
+			toString（）
+			valueOf（）
+			tolocaleString（）
+	25、在JS中定义一个类：
+				--function 类名（形参）{
+					
+				}
+				--类名 = function（形参）{
+				
+				}
+	26、JS中创建对象：
+				new 构造方法名（实参）；//构造方法名和类名一致
+
