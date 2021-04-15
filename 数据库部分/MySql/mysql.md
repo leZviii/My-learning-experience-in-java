@@ -330,7 +330,7 @@ where 条件子句
 
 **联表查询**
 
-![Image text](https://github.com/leZviii/My-learning-experience-in-java/main/picture/Multi_tableQuery.png)
+![Image text](https://github.com/leZviii/My-learning-experience-in-java/blob/main/picture/Multi_tableQuery.png)
 
 > 自连接self join
 
